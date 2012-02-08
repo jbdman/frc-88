@@ -7,12 +7,19 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Solenoid;
 
+/**********************************
+ * comments to check that SVN works
+ * add something to this comment block:
+ *
+ *  + Mike added this from a TJ team laptop
+ *
+ **********************************/
+
 /**
  *
  * @author tj2
  */
 public class Arm {
-    // comment to see if SVN works
 
     private Solenoid m_elbow;
     private Solenoid m_gripper;
