@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 /**********************************
  * comments to check that SVN works
  * add something to this comment block:
- *
+ * Didn't Chris design this? He is so cool.
  *  + Mike added this from a TJ team laptop
  *
  **********************************/
