@@ -87,9 +87,9 @@ public class KinectProto extends IterativeRobot {
             slow = true;
         }
 
-        double yDriveValue =  -map(joystick.getY());
-        double xDriveValue = map(joystick.getX());
-        double turnDriveValue = turnSensitivity * map(joystick.getRawAxis(4));
+        double yDriveValue =  -deadzoneMap(joystick.getY());
+        double xDriveValue = deadzoneMap(joystick.getX());
+        double turnDriveValue = turnSensitivity * deadzoneMap(joystick.getRawAxis(4));
 
         if(slow) {
             yDriveValue *=0.5;
@@ -97,12 +97,20 @@ public class KinectProto extends IterativeRobot {
         drive(yDriveValue, xDriveValue, turnDriveValue);
     }
 
-    private double map(double val) {
+/*
+ * This function provides a deadzone around
+ * zero for the joysticks
+ */
+    final static double deadzone = 0.2;
+    final static double deadzoneScale = 1.0/(1.0-deadzone);
+    
+    private double deadzoneMap(double in) {
         double out = 0.0;
-        if(val > 0.2) {
-            out = (val - 0.2)/0.8;
-        } else if(val < -0.2) {
-            out = (val + 0.2)/0.8;
+
+        if(in > deadzone) {
+            out = (in - 0.2)/0.8;
+        } else if(in < -0.2) {
+            out = (in + 0.2)/0.8;
         }
 
         return out;
