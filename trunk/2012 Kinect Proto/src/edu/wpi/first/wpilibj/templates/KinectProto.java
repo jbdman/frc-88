@@ -53,12 +53,12 @@ public class KinectProto extends IterativeRobot {
 
         try{
             frontLeft = new CANJaguar(3);
-            frontRight = new CANJaguar(5);
-            backLeft = new CANJaguar(6);
+            frontRight = new CANJaguar(6);
+            backLeft = new CANJaguar(5);
             backRight = new CANJaguar(2);
         }
         catch (CANTimeoutException e) {
-            System.err.println("CAN failure");
+            System.err.println("******************CAN failure******************");
         }
 
         System.out.println("systemDone");
@@ -81,11 +81,31 @@ public class KinectProto extends IterativeRobot {
      */
     public void teleopPeriodic() {
 
-        double yDriveValue =  -joystick.getY();
-        double xDriveValue = joystick.getX();
-        double turnDriveValue = turnSensitivity * joystick.getRawAxis(4);
+        boolean slow = false;
 
+        if(Math.abs(joystick.getZ()) > 0.5) {
+            slow = true;
+        }
+
+        double yDriveValue =  -map(joystick.getY());
+        double xDriveValue = map(joystick.getX());
+        double turnDriveValue = turnSensitivity * map(joystick.getRawAxis(4));
+
+        if(slow) {
+            yDriveValue *=0.5;
+        }
         drive(yDriveValue, xDriveValue, turnDriveValue);
+    }
+
+    private double map(double val) {
+        double out = 0.0;
+        if(val > 0.2) {
+            out = (val - 0.2)/0.8;
+        } else if(val < -0.2) {
+            out = (val + 0.2)/0.8;
+        }
+
+        return out;
     }
 
     private void drive (double forward, double sideways, double turn ) {
@@ -102,7 +122,7 @@ public class KinectProto extends IterativeRobot {
             backRight.setX(setBackRight);
         }
         catch(CANTimeoutException e) {
-            System.err.println("CAN timeout");
+            System.err.println("****************CAN timeout***********");
         }
     }
 }
