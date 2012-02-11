@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
 import edu.wpi.first.wpilibj.templates.commands.ExampleCommand;
-import edu.wpi.first.wpilibj.templates.subsystems.Pitcher;
-import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
