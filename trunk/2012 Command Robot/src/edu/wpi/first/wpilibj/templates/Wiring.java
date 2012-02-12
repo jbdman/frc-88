@@ -13,9 +13,10 @@ public class Wiring {
     public static final int landingGearCANID     =  5;    // FIX THIS!
 
     //String theory
-    public static final int liftingStringsCANID  =  8;    // FIX THIS!
+    public static final int lifterMotorCANID  =  2;    // FIX THIS!
     public static final int right_leftStringCanID=  7;    // FIX THIS!
     public static final int front_backStingCANID =  6;    // FIX THIS!
+    public static final int liftingStringsCANID = 0;   //FIX THIS!
 
     // Drive system(motors and encoders
     public static final int driveFrontLeftCANID   =  9;    // FIX THIS!
