@@ -19,20 +19,27 @@ public class Wiring {
     public static final int liftingStringsCANID = 0;   //FIX THIS!
 
     // Drive system(motors and encoders
-    public static final int driveFrontLeftCANID   =  9;    // FIX THIS!
-    public static final int driveFrontLeftEncoder =  1;    // FIX THIS!
-    public static final int driveFrontRightCANID  = 10;    // FIX THIS!
-    public static final int driveFrontRightEncoder=  2;    // FIX THIS!
-    public static final int driveRearLeftCANID    = 11;    // FIX THIS!
-    public static final int driveRearLeftEncoder  =  3;    // FIX THIS!
-    public static final int driveRearRightCANID   = 12;    // FIX THIS!
-    public static final int driveRearRightEncoder =  4;    // FIX THIS!
+    public static final int driveFrontLeftCANID    =  9;    // FIX THIS!
+    public static final int driveFrontLeftEncoder  =  1;    // FIX THIS!
+    public static final int driveFrontRightCANID   = 10;    // FIX THIS!
+    public static final int driveFrontRightEncoder =  2;    // FIX THIS!
+    public static final int driveRearLeftCANID     = 11;    // FIX THIS!
+    public static final int driveRearLeftEncoder   =  3;    // FIX THIS!
+    public static final int driveRearRightCANID    = 12;    // FIX THIS!
+    public static final int driveRearRightEncoder  =  4;    // FIX THIS!
 
     //Turret
-    public static final int pitcherUpperMotorCANID= 2;    // FIX THIS!
-    public static final int pitcherLowerMotorCANID= 3;    // FIX THIS!
-    public static final int turretSpinnerCANID    = 4;    // FIX THIS!
+    public static final int pitcherUpperMotorCANID = 2;    // FIX THIS!
+    public static final int pitcherLowerMotorCANID = 3;    // FIX THIS!
+    public static final int turretSpinnerCANID     = 4;    // FIX THIS!
     
+    /*
+     * ### Solenoids ###
+     */
+    public static final int pitcherLoadSolenoid    = 1;    // FIX THIS!
+    public static final int pitcherAngleSolenoid   = 2;    // FIX THIS!
+    public static final int subdriveSolenoid       = 3;    // FIX THIS!
+
     //Analog
     public static final int turretRotationEncoder  =  5;    // FIX THIS!
     public static final int robotPositionAcelometer=  9;    // FIX THIS!

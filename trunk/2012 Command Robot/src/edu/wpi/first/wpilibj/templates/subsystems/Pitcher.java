@@ -6,8 +6,8 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
-import edu.wpi.first.wpilibj.GearTooth;
 import edu.wpi.first.wpilibj.templates.Wiring;
 
 /**
@@ -22,8 +22,8 @@ public class Pitcher extends Subsystem {
      */
     private CANJaguar m_upperMotor;
     private CANJaguar m_lowerMotor;
-    private GearTooth m_upperSpeedSensor;
-    private GearTooth m_lowerSpeedSensor;
+    private Solenoid  m_anglePiston;
+    private Solenoid  m_firingPiston;
 
     private static final int teethPerGear = 11;
     private static final double stoppedPeriod = 0.1;
@@ -43,13 +43,21 @@ public class Pitcher extends Subsystem {
         catch (CANTimeoutException ex) {
             System.err.println("CAN Init error: ID " + Wiring.pitcherLowerMotorCANID);
         }
+        // set up speed reference encoders
         try {
             m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            m_upperMotor.configEncoderCodesPerRev(11);
+            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN timeout (ID 2)");
+            System.err.println("CAN timeout");
         }
+
+        // set up solenoid for shooting angle
+        m_anglePiston = new Solenoid(Wiring.pitcherAngleSolenoid);
+
+        // set up solenoid for firing
+        m_firingPiston = new Solenoid(Wiring.pitcherLoadSolenoid);
+
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -66,15 +74,47 @@ public class Pitcher extends Subsystem {
     }
 
     public void setSpeed(int upperRPM, int lowerRPM) {
+        setSpeed((double)upperRPM, (double)lowerRPM);
+    }
+
+    public void setSpeed(double upperRPM, double lowerRPM) {
         // TBD
     }
     
-    public int getSpeedUpper(){
-        return rpm(m_upperSpeedSensor.getPeriod());
+    public double getSpeedUpper(){
+        double speed = 0.0;
+        try {
+            speed = m_upperMotor.getSpeed();
+        } catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+        return speed;
     }
 
-    public int getSpeedLower(){
-        return rpm(m_lowerSpeedSensor.getPeriod());
+    public double getSpeedLower(){
+        double speed = 0.0;
+        try {
+            speed = m_lowerMotor.getSpeed();
+        } catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+        return speed;
+    }
+
+    public void farAngle() {
+        m_anglePiston.set(true);
+    }
+
+    public void nearAngle() {
+        m_anglePiston.set(false);
+    }
+
+    public void fire() {
+        m_firingPiston.set(false);
+    }
+
+    public void reload() {
+        m_firingPiston.set(false);
     }
 
     public void enable(){
@@ -83,16 +123,6 @@ public class Pitcher extends Subsystem {
 
     public void disable(){
         //TBD
-    }
-
-    private int rpm(double period) {
-        int rpm = 0;
-
-        // calculate real RPM from time between gear teeth
-        if(period < stoppedPeriod) {
-            rpm = (int)(60.0 / (period * teethPerGear));
-        }
-        return rpm;
     }
 
     public void initDefaultCommand() {
