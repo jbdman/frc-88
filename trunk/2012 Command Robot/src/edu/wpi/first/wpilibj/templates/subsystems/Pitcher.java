@@ -39,16 +39,18 @@ public class Pitcher extends Subsystem {
         }
         try {
             m_lowerMotor = new CANJaguar(Wiring.pitcherLowerMotorCANID);
-        } catch (CANTimeoutException ex) {
+        }
+        catch (CANTimeoutException ex) {
             System.err.println("CAN Init error: ID " + Wiring.pitcherLowerMotorCANID);
         }
-
-        // create geartooth sensor objects
-        m_upperSpeedSensor = new GearTooth(Wiring.pitcherUpperSpeedSensor);
-        m_lowerSpeedSensor = new GearTooth(Wiring.pitcherLowerSpeedSensor);
-    
+        try {
+            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+            m_upperMotor.configEncoderCodesPerRev(11);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN timeout (ID 2)");
+        }
     }
-
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
