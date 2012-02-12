@@ -4,13 +4,11 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick.ButtonType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -20,53 +18,63 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Lifter extends Subsystem {
       
-    private Joystick controller;
     private CANJaguar m_lifterMotor;
-   double lifterMotorPower;
+    private int m_ID;
+    private double m_lifterMotorPower;
+
     public Lifter() {
         try {
             m_lifterMotor = new CANJaguar(Wiring.lifterMotorCANID);
+            m_ID = Wiring.lifterMotorCANID;
         } catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + Wiring.lifterMotorCANID);
-            
-            try{
-                m_lifterMotor.setX(lifterMotorPower);
-            }
-            catch (CANTimeoutException fx) {
-            System.err.println("CAN Timeout");
-            }
-            }
+            System.err.println("CAN Init error: ID " + m_ID);
         }
-
-   public void teleopInit() {
-        lifterMotorPower = 0;
     }
 
-  public void teleop(){
-      double x = controller.getX();
-      final int max = 100;
-      final int offset = 1;
-      
-  
-    if(x>.2) {
-        lifterMotorPower = offset;
-        }
-  if (x<-.2) {
-        lifterMotorPower -= offset;
-        }
+    public void setPower(double power) {
+        set(power);
+    }
 
-      //limits on motor
+    public void stop() {
+        set(0.0);
+    }
 
-  if (lifterMotorPower>max) {
-        lifterMotorPower = max;
-      }
-  if (lifterMotorPower<0) {
-        lifterMotorPower = 0;
-        
-      }
-  }
-    public void initDefaultCommand() {    
+    public void up() {
+        set(1.0);
+    }
+
+    public void down() {
+        set(-1.0);
+    }
+
+
+    private void set(double power) {
+        try {
+            m_lifterMotor.setX(power);
+        } catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout: ID " + m_ID);
+        }
+    }
+
+    public boolean isStopped() {
+        return (m_lifterMotorPower == 0.0);
+    }
+
+    public boolean isGoingUp() {
+        return (m_lifterMotorPower >= 0.0);
+    }
+
+    public boolean isGoingDown() {
+        return (m_lifterMotorPower <= 0.0);
+    }
+
+    public double getPower() {
+        return (m_lifterMotorPower);
+    }
+
+    public void initDefaultCommand() {
+
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new LifterUp());
     }
 }
