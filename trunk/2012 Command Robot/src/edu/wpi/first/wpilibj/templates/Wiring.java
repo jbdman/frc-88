@@ -18,15 +18,11 @@ public class Wiring {
     public static final int front_backStingCANID =  6;    // FIX THIS!
     public static final int liftingStringsCANID = 0;   //FIX THIS!
 
-    // Drive system(motors and encoders
+    // Drive system (motors and encoders)
     public static final int driveFrontLeftCANID    =  9;    // FIX THIS!
-    public static final int driveFrontLeftEncoder  =  1;    // FIX THIS!
     public static final int driveFrontRightCANID   = 10;    // FIX THIS!
-    public static final int driveFrontRightEncoder =  2;    // FIX THIS!
     public static final int driveRearLeftCANID     = 11;    // FIX THIS!
-    public static final int driveRearLeftEncoder   =  3;    // FIX THIS!
     public static final int driveRearRightCANID    = 12;    // FIX THIS!
-    public static final int driveRearRightEncoder  =  4;    // FIX THIS!
 
     //RampPusher
     public static final int rampPushingMotorCANID  = 13;
