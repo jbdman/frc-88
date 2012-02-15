@@ -28,6 +28,9 @@ public class Wiring {
     public static final int driveRearRightCANID    = 12;    // FIX THIS!
     public static final int driveRearRightEncoder  =  4;    // FIX THIS!
 
+    //RampPusher
+    public static final int rampPushingMotorCANID  = 13;
+
     //Turret
     public static final int pitcherUpperMotorCANID = 2;    // FIX THIS!
     public static final int pitcherLowerMotorCANID = 3;    // FIX THIS!
