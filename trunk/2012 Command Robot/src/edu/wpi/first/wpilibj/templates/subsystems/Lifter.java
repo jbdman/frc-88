@@ -13,11 +13,10 @@ import edu.wpi.first.wpilibj.templates.commands.LifterUp;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 /**
- *
- * @author TJ2
+ *  @author TJ2
  */
 public class Lifter extends Subsystem {
-      
+    
     private CANJaguar m_lifterMotor;
     private int m_ID;
     private double m_lifterMotorPower;
@@ -39,19 +38,22 @@ public class Lifter extends Subsystem {
         set(0.0);
     }
 
+    //
     public void up() {
         set(1.0);
     }
 
+    //
     public void down() {
         set(-1.0);
     }
 
-
+    //
     private void set(double power) {
         try {
             m_lifterMotor.setX(power);
-        } catch (CANTimeoutException ex) {
+        }
+        catch (CANTimeoutException ex) {
             System.err.println("CAN Timeout: ID " + m_ID);
         }
     }
