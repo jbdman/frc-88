@@ -12,20 +12,20 @@ import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
  */
 public class RampMover extends CommandBase {
 
-    double m_power = 0.0;
+    private double m_power = 0.0;
+    private static final double maxPositiveCurrent = 20.0;
+    private static final double maxNegativeCurrent = 20.0;
 
     public RampMover(double power) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         super("RampMover(" + power + ")");
-        Subsystem RampPusher = null;
-        requires(RampPusher);
+        requires(rampPusher);
+
         m_power = power;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        RampPusher.setPower(m_power);
+        rampPusher.setPower(m_power);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,8 +35,8 @@ public class RampMover extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
-
+        return (rampPusher.getCurrent() > maxPositiveCurrent ||
+                rampPusher.getCurrent() < maxNegativeCurrent);
     }
 
     // Called once after isFinished returns true
