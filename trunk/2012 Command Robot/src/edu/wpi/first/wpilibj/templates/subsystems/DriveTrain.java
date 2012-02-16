@@ -76,6 +76,43 @@ public class DriveTrain extends Subsystem {
         }
     }
 
+    /**
+     * Returns the average speed of all wheels in meters per second
+     * NOT YET IMPLEMENTED
+     * 
+     * @return Average speed of all wheels in ms^-1
+     */
+    public double getAveSpeed() {
+        double speed = 0.0;
+
+        return speed;
+    }
+
+    public double getRLSpeed() {
+        double rpm = 0.0;
+
+        try {
+            rpm = m_rearLeftMotor.getSpeed();
+        } catch (CANTimeoutException ex) {
+            // should add a helper function for CAN Timeout errors
+            System.err.println("CAN timeout");
+        }
+        return speed(rpm);
+    }
+
+    /**
+     * Converts the gearbox output shaft RPM to speed at the wheel in m/s
+     *
+     * @param gearboxRPM gearbox output shaft RPM as returned by gearbox encoder
+     * @return speed in m/s based on gearbox output rpm
+     */
+    private double speed(double gearboxRPM) {
+        final double wheelCircumference = 0.2;  // FIX THIS
+        final double finalSprocketRatio = 3;    // FIX THIS
+
+        return gearboxRPM * finalSprocketRatio * wheelCircumference;
+    }
+
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
