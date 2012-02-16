@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
-
+import java.lang.Math;
 /**
  *
  * @author TJ2
@@ -104,13 +104,13 @@ public class DriveTrain extends Subsystem {
      * Converts the gearbox output shaft RPM to speed at the wheel in m/s
      *
      * @param gearboxRPM gearbox output shaft RPM as returned by gearbox encoder
-     * @return speed in m/s based on gearbox output rpm
+     * @return speed in m/s based on gearbox output revolutions per minutes
      */
     private double speed(double gearboxRPM) {
-        final double wheelCircumference = 0.2;  // FIX THIS
-        final double finalSprocketRatio = 3;    // FIX THIS
-
-        return gearboxRPM * finalSprocketRatio * wheelCircumference;
+        final double wheelCircumference = 0.0235;
+        final double finalSprocketRatio = 1.7778;
+        
+        return (gearboxRPM * finalSprocketRatio * wheelCircumference)/60;
     }
 
     public void initDefaultCommand() {
