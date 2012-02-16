@@ -15,23 +15,83 @@ import edu.wpi.first.wpilibj.can.CANTimeoutException;
  */
 public class RampPusher extends Subsystem {
 
-    public static void setPower(double m_power) {
-    }
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    private CANJaguar m_RampPusher;
-    private int rampPusherPower;
-    private int m_ID;
+    private CANJaguar m_rampPusher;
 
     public RampPusher(){
         try {
-            m_RampPusher = new CANJaguar(Wiring.rampPushingMotorCANID);
-            m_ID = Wiring.rampPushingMotorCANID;
+            m_rampPusher = new CANJaguar(Wiring.rampPushingMotorCANID);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + m_ID);
+            System.err.println("CAN Init error: " + Wiring.rampPushingMotorCANID);
         }
 
+        try {
+            m_rampPusher.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+
+    }
+
+    public void down() {
+        try {
+            m_rampPusher.setX(1.0);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+    }
+
+    public void up() {
+        try {
+            m_rampPusher.setX(-1.0);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+    }
+
+    public void stop() {
+        try {
+            m_rampPusher.setX(0.0);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+    }
+
+    public void setPower(double power) {
+        try {
+            m_rampPusher.setX(power);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+    }
+
+    public double getCurrent() {
+        double current = 0.0;
+
+        try {
+            current = m_rampPusher.getOutputCurrent();
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+        return current;
+    }
+
+    public double getPosition() {
+        double posn = 0.0;
+
+        try {
+            posn = m_rampPusher.getPosition();
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
+        return posn;
     }
 
     public void initDefaultCommand() {

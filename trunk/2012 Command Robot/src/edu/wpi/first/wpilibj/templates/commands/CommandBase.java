@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.subsystems.Pitcher;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
 import edu.wpi.first.wpilibj.templates.subsystems.Lifter;
 
 /**
@@ -21,6 +22,7 @@ public abstract class CommandBase extends Command {
 //    public static Pitcher pitcher = new Pitcher();
 //    public static DriveTrain drive =new DriveTrain();
     public static Lifter lifter = new Lifter();
+    public static RampPusher rampPusher = new RampPusher();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -32,6 +34,7 @@ public abstract class CommandBase extends Command {
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(lifter);
+        SmartDashboard.putData(rampPusher);
     }
 
     public CommandBase(String name) {
