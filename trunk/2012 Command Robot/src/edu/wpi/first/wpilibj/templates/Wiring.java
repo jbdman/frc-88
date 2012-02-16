@@ -10,19 +10,14 @@ public class Wiring {
     /*
      * ### CAN Motors ###
      */
-    public static final int landingGearCANID     =  5;    // FIX THIS!
-
-    //String theory
-    public static final int lifterMotorCANID  =  2;    // FIX THIS!
-    public static final int right_leftStringCanID=  7;    // FIX THIS!
-    public static final int front_backStingCANID =  6;    // FIX THIS!
-    public static final int liftingStringsCANID = 0;   //FIX THIS!
-
     // Drive system (motors and encoders)
     public static final int driveFrontLeftCANID    =  9;    // FIX THIS!
     public static final int driveFrontRightCANID   = 10;    // FIX THIS!
     public static final int driveRearLeftCANID     = 11;    // FIX THIS!
     public static final int driveRearRightCANID    = 12;    // FIX THIS!
+
+    //String theory
+    public static final int lifterMotorCANID  =  2;    // FIX THIS!
 
     //RampPusher
     public static final int rampPushingMotorCANID  = 13;
@@ -30,14 +25,14 @@ public class Wiring {
     //Turret
     public static final int pitcherUpperMotorCANID = 2;    // FIX THIS!
     public static final int pitcherLowerMotorCANID = 3;    // FIX THIS!
-    public static final int turretSpinnerCANID     = 4;    // FIX THIS!
+    public static final int turretMotorCANID       = 4;    // FIX THIS!
     
     /*
      * ### Solenoids ###
      */
     public static final int pitcherLoadSolenoid    = 1;    // FIX THIS!
     public static final int pitcherAngleSolenoid   = 2;    // FIX THIS!
-    public static final int subdriveSolenoid       = 3;    // FIX THIS!
+    public static final int footSolenoid           = 3;    // FIX THIS!
 
     //Analog
     public static final int turretRotationEncoder  =  5;    // FIX THIS!

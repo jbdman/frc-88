@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 /**
  *  @author TJ2
  */
-public class Lifter extends Subsystem {
+public class BallLifter extends Subsystem {
     
     private CANJaguar m_lifterMotor;
     private int m_ID;
     private double m_lifterMotorPower;
 
-    public Lifter() {
+    public BallLifter() {
         try {
             m_lifterMotor = new CANJaguar(Wiring.lifterMotorCANID);
             m_ID = Wiring.lifterMotorCANID;
