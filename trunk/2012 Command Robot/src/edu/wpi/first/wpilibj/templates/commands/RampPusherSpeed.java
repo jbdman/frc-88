@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
  *
  * @author TJ2
  */
-public class RampMover extends CommandBase {
+public class RampPusherSpeed extends CommandBase {
 
     private double m_power = 0.0;
     private static final double maxPositiveCurrent = 20.0;
     private static final double maxNegativeCurrent = 20.0;
 
-    public RampMover(double power) {
+    public RampPusherSpeed(double power) {
         super("RampMover(" + power + ")");
         requires(rampPusher);
 
