@@ -11,6 +11,8 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class FootUp extends CommandBase {
 
+    private static final double footUpTime = 0.5;
+
     public FootUp() {
         // Use requires() here to declare subsystem dependencies
         super("FootUp");
@@ -19,6 +21,7 @@ public class FootUp extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        setTimeout(footUpTime);
         foot.up();
     }
 
@@ -28,7 +31,7 @@ public class FootUp extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true

@@ -11,15 +11,18 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class FootDown extends CommandBase {
 
+    private static final double footDownTime = 0.5;
+
     public FootDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super("FootUp");
+        super("FootDown");
         requires(foot);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        setTimeout(footDownTime);
         foot.down();
     }
 
@@ -29,7 +32,7 @@ public class FootDown extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
