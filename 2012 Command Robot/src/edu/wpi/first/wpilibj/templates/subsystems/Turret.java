@@ -42,7 +42,7 @@ public class Turret extends Subsystem {
 
     }
 
-    public void set(double power) {
+    public void setPower(double power) {
         try {
             m_turretMotor.setX(power);
         } catch (CANTimeoutException ex) {

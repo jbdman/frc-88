@@ -7,25 +7,25 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author TJ2
+ * @author Michael_Edgington
  */
-public class LifterSpeed extends CommandBase {
+public class PitcherSpeed extends CommandBase {
 
-    double m_power = 0.0;
+    double m_upperRPM;
+    double m_lowerRPM;
 
-    public LifterSpeed(double power) {
+    public PitcherSpeed(double upperRPM, double lowerRPM) {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        super("LifterSpeed(" + power + ")");
-        requires(lifter);
+        super("PitcherSpeed(" + upperRPM + ", " + lowerRPM + ")");
+        requires(pitcher);
 
-        m_power = power;
+        m_upperRPM = upperRPM;
+        m_lowerRPM = lowerRPM;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        lifter.setPower(m_power);
-
+        pitcher.setSpeed(m_upperRPM, m_lowerRPM);
     }
 
     // Called repeatedly when this Command is scheduled to run

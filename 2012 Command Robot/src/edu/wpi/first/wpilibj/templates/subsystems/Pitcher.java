@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.PitcherSpeed;
 
 /**
  *
@@ -43,6 +44,17 @@ public class Pitcher extends Subsystem {
             System.err.println("CAN Init error: ID " + Wiring.pitcherLowerMotorCANID);
         }
 
+        // set up speed reference encoders
+        try {
+            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
+            m_lowerMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+            m_lowerMotor.configEncoderCodesPerRev(teethPerGear);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN timeout");
+        }
+
         // set up solenoid for shooting angle
         m_anglePiston = new Solenoid(Wiring.pitcherAngleSolenoid);
 
@@ -54,12 +66,19 @@ public class Pitcher extends Subsystem {
     // here. Call these from Commands.
 
     public void enable() {
-        // set up speed reference encoders
         try {
-            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
+            m_upperMotor.setPID(1.0, 0.0, 0.0);
+            m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+            m_lowerMotor.setPID(1.0, 0.0, 0.0);
+            m_lowerMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+        } catch (CANTimeoutException ex) {
+            System.err.println("CAN timeout");
         }
-        catch (CANTimeoutException ex) {
+
+        try {
+            m_upperMotor.enableControl();
+            m_lowerMotor.enableControl();
+        } catch (CANTimeoutException ex) {
             System.err.println("CAN timeout");
         }
     }
@@ -76,7 +95,12 @@ public class Pitcher extends Subsystem {
     }
 
     public void setSpeed(double upperRPM, double lowerRPM) {
-        // TBD
+        try {
+            m_upperMotor.setX(upperRPM);
+            m_lowerMotor.setX(lowerRPM);
+        } catch (CANTimeoutException ex) {
+            System.err.println("CAN Timeout");
+        }
     }
     
     public double getSpeedUpper(){
@@ -121,6 +145,6 @@ public class Pitcher extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new PitcherSpeed(120.0, 120.0));
     }
 }

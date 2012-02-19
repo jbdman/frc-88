@@ -9,6 +9,7 @@ package edu.wpi.first.wpilibj.templates;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
@@ -26,6 +27,8 @@ public class MainRobot extends IterativeRobot {
 
     Command autonomousCommand;
 
+    Compressor compressor;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -33,6 +36,11 @@ public class MainRobot extends IterativeRobot {
     public void robotInit() {
         // instantiate the command used for the autonomous period
         autonomousCommand = new LifterUp();
+
+        // Initialize "non-subsystems" i.e. compressor
+        compressor = new Compressor(Wiring.compressorPressureSwitch,
+            Wiring.compressorPowerRelay);
+        compressor.start();
 
         // Initialize all subsystems
         CommandBase.init();
