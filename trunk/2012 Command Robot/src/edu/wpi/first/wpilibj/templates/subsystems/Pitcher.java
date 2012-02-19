@@ -26,7 +26,6 @@ public class Pitcher extends Subsystem {
     private Solenoid  m_firingPiston;
 
     private static final int teethPerGear = 11;
-    private static final double stoppedPeriod = 0.1;
 
     //Here is the Constructor
     public Pitcher() {
@@ -43,14 +42,6 @@ public class Pitcher extends Subsystem {
         catch (CANTimeoutException ex) {
             System.err.println("CAN Init error: ID " + Wiring.pitcherLowerMotorCANID);
         }
-        // set up speed reference encoders
-        try {
-            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN timeout");
-        }
 
         // set up solenoid for shooting angle
         m_anglePiston = new Solenoid(Wiring.pitcherAngleSolenoid);
@@ -62,6 +53,17 @@ public class Pitcher extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    public void enable() {
+        // set up speed reference encoders
+        try {
+            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
+        }
+        catch (CANTimeoutException ex) {
+            System.err.println("CAN timeout");
+        }
+    }
+
     public void setPower(double upperMotorPower, double lowerMotorPower) {
 
         try {
@@ -71,10 +73,6 @@ public class Pitcher extends Subsystem {
             System.err.println("CAN Timeout");
         }
 
-    }
-
-    public void setSpeed(int upperRPM, int lowerRPM) {
-        setSpeed((double)upperRPM, (double)lowerRPM);
     }
 
     public void setSpeed(double upperRPM, double lowerRPM) {
@@ -101,28 +99,24 @@ public class Pitcher extends Subsystem {
         return speed;
     }
 
-    public void farAngle() {
+    public void setFarAngle() {
         m_anglePiston.set(true);
     }
 
-    public void nearAngle() {
+    public void setNearAngle() {
         m_anglePiston.set(false);
     }
 
+    public boolean isFarAngle() {
+        return m_anglePiston.get();
+    }
+
     public void fire() {
-        m_firingPiston.set(false);
+        m_firingPiston.set(true);
     }
 
     public void reload() {
         m_firingPiston.set(false);
-    }
-
-    public void enable(){
-        // TBD
-    }
-
-    public void disable(){
-        //TBD
     }
 
     public void initDefaultCommand() {
