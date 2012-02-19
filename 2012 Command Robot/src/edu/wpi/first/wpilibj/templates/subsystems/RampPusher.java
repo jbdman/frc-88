@@ -16,69 +16,89 @@ import edu.wpi.first.wpilibj.templates.commands.RampPusherStop;
  */
 public class RampPusher extends Subsystem {
 
-    private CANJaguar m_rampPusher;
+    private CANJaguar m_rampPusher = null;
+    private boolean m_fault = false;
 
     public RampPusher(){
         try {
             m_rampPusher = new CANJaguar(Wiring.rampPushingMotorCANID);
         }
         catch (CANTimeoutException ex) {
+            m_fault = true;
             System.err.println("CAN Init error: " + Wiring.rampPushingMotorCANID);
         }
 
-        try {
-            m_rampPusher.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+        if(m_rampPusher != null) {
+            try {
+                m_rampPusher.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
-        }
-
     }
 
     public void down() {
-        try {
-            m_rampPusher.setX(1.0);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_rampPusher != null) {
+            try {
+                m_rampPusher.setX(1.0);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
     }
 
     public void up() {
-        try {
-            m_rampPusher.setX(-1.0);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+
+        if(m_rampPusher != null) {
+            try {
+                m_rampPusher.setX(-1.0);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
     }
 
     public void stop() {
-        try {
-            m_rampPusher.setX(0.0);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_rampPusher != null) {
+            try {
+                m_rampPusher.setX(0.0);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
     }
 
     public void setPower(double power) {
-        try {
-            m_rampPusher.setX(power);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_rampPusher != null) {
+            try {
+                m_rampPusher.setX(power);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
     }
 
     public double getCurrent() {
         double current = 0.0;
 
-        try {
-            current = m_rampPusher.getOutputCurrent();
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_rampPusher != null) {
+            try {
+                current = m_rampPusher.getOutputCurrent();
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
         return current;
     }
@@ -86,13 +106,20 @@ public class RampPusher extends Subsystem {
     public double getPosition() {
         double posn = 0.0;
 
-        try {
-            posn = m_rampPusher.getPosition();
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_rampPusher != null) {
+            try {
+                posn = m_rampPusher.getPosition();
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
         return posn;
+    }
+
+    private boolean getFault() {
+        return m_fault;
     }
 
     public void initDefaultCommand() {
