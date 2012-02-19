@@ -118,7 +118,7 @@ public class RampPusher extends Subsystem {
         return posn;
     }
 
-    private boolean getFault() {
+    public boolean getFault() {
         return m_fault;
     }
 
