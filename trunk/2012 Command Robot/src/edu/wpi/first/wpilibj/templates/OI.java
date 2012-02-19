@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 import edu.wpi.first.wpilibj.templates.commands.LifterDown;
-import edu.wpi.first.wpilibj.templates.commands.LifterSpeed;
+import edu.wpi.first.wpilibj.templates.commands.LifterPower;
 
 public class OI {
     // Process operator interface input here.
@@ -19,8 +19,8 @@ public class OI {
 
     public OI() {
         operatorButtonA.whenPressed(new LifterDown());
-        operatorButtonB.whenPressed(new LifterSpeed(0.0));
-        operatorButtonX.whenPressed(new LifterSpeed(0.0));
-        operatorButtonY.whenPressed(new LifterSpeed(0.5));
+        operatorButtonB.whenPressed(new LifterPower(0.0));
+        operatorButtonX.whenPressed(new LifterPower(0.0));
+        operatorButtonY.whenPressed(new LifterPower(0.5));
     }
 }
