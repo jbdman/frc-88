@@ -70,11 +70,7 @@ public class Pitcher extends Subsystem {
             }
         }
 
-        // set up solenoid for shooting angle
-        m_anglePiston = new Solenoid(Wiring.pitcherAngleSolenoid);
 
-        // set up solenoid for firing
-        m_firingPiston = new Solenoid(Wiring.pitcherLoadSolenoid);
 
     }
 
