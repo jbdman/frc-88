@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.TurretWithController;
 
 /**
  *
@@ -18,25 +19,29 @@ public class Turret extends Subsystem {
 
     // Will become PID subsystem very soon...
 
-    CANJaguar m_turretMotor;
+    private CANJaguar m_turretMotor = null;
+    private boolean m_fault = false;
 
     public Turret() {
         // configure turret motor
         try {
             m_turretMotor = new CANJaguar(Wiring.turretMotorCANID);
         } catch (CANTimeoutException ex) {
-            System.err.println("##### CAN Timeout ####");
+            m_fault = true;
+            System.err.println("##### CAN Init Failure ID: " + Wiring.turretMotorCANID);
         }
     }
 
     public void enable() {
-        try {
-            m_turretMotor.configEncoderCodesPerRev(360);
-            m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-        } catch (CANTimeoutException ex) {
-            System.err.println("##### CAN Timeout ####");
+        if(m_turretMotor != null) {
+            try {
+                m_turretMotor.configEncoderCodesPerRev(360);
+                m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
         }
-        
     }
 
     public void setAngle(double angle) {
@@ -44,27 +49,36 @@ public class Turret extends Subsystem {
     }
 
     public void setPower(double power) {
-        try {
-            m_turretMotor.setX(power);
-        } catch (CANTimeoutException ex) {
-            System.err.println("##### CAN Timeout ####");
+        if(m_turretMotor != null) {
+            try {
+                m_turretMotor.setX(power);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
         }
     }
 
     public double getAngle() {
         double angle = 0.0;
 
-        try {
-            angle = m_turretMotor.getPosition();
-        } catch (CANTimeoutException ex) {
-            System.err.println("##### CAN Timeout ####");
+        if(m_turretMotor != null) {
+            try {
+                angle = m_turretMotor.getPosition();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
         }
-
         return angle;
+    }
+
+    public boolean getFault() {
+        return m_fault;
     }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new TurretWithController());
     }
 }

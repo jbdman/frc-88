@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.DriveWithController;
 
 /**
  *
@@ -16,40 +17,44 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 public class DriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private CANJaguar m_rearRightMotor;
-    private CANJaguar m_rearLeftMotor;
-    private CANJaguar m_frontRightMotor;
-    private CANJaguar m_frontLeftMotor;
+    private CANJaguar m_rearRightMotor = null;
+    private CANJaguar m_rearLeftMotor = null;
+    private CANJaguar m_frontRightMotor = null;
+    private CANJaguar m_frontLeftMotor = null;
 
     public void DriveTrain(){
         //rear right motor
-        try{
+        try {
             m_rearRightMotor= new CANJaguar(Wiring.driveRearRightCANID);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + Wiring.driveRearRightCANID);
+            System.err.println("##### CAN Init error: ID " + Wiring.driveRearRightCANID);
         }
         //rear left motor
-        try{
+        try {
             m_rearLeftMotor= new CANJaguar(Wiring.driveRearLeftCANID);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + Wiring.driveRearLeftCANID);
+            System.err.println("##### CAN Init error: ID " + Wiring.driveRearLeftCANID);
         }
         //front left motor
-        try{
+        try {
             m_frontLeftMotor= new CANJaguar(Wiring.driveFrontLeftCANID);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + Wiring.driveFrontLeftCANID);
+            System.err.println("##### CAN Init error: ID " + Wiring.driveFrontLeftCANID);
         }
         //front right motor
-        try{
+        try {
             m_frontRightMotor= new CANJaguar(Wiring.driveFrontRightCANID);
         }
         catch (CANTimeoutException ex) {
-            System.err.println("CAN Init error: ID " + Wiring.driveFrontRightCANID);
+            System.err.println("##### CAN Init error: ID " + Wiring.driveFrontRightCANID);
         }
+        System.out.println("################### CAN Init #####################");
+        System.out.println("##### m_frontLeftMotor: " + m_frontLeftMotor);
+        System.out.println("##### m_frontRightMotor: " + m_frontRightMotor);
+
     }
 
     // Closed loop control...
@@ -115,6 +120,6 @@ public class DriveTrain extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+//        setDefaultCommand(new DriveWithController());
     }
 }
