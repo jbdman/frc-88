@@ -21,10 +21,11 @@ public class Pitcher extends Subsystem {
      * Member variables
      * 
      */
-    private CANJaguar m_upperMotor;
-    private CANJaguar m_lowerMotor;
+    private CANJaguar m_upperMotor = null;
+    private CANJaguar m_lowerMotor = null;
     private Solenoid  m_anglePiston;
     private Solenoid  m_firingPiston;
+    private boolean m_fault = false;
 
     private static final int teethPerGear = 11;
 
@@ -35,24 +36,38 @@ public class Pitcher extends Subsystem {
         try {
             m_upperMotor = new CANJaguar(Wiring.pitcherUpperMotorCANID);
         } catch (CANTimeoutException ex) {
+            m_fault = true;
             System.err.println("CAN Init error: ID " + Wiring.pitcherUpperMotorCANID);
         }
         try {
             m_lowerMotor = new CANJaguar(Wiring.pitcherLowerMotorCANID);
         }
         catch (CANTimeoutException ex) {
+            m_fault = true;
             System.err.println("CAN Init error: ID " + Wiring.pitcherLowerMotorCANID);
         }
 
         // set up speed reference encoders
-        try {
-            m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            m_upperMotor.configEncoderCodesPerRev(teethPerGear);
-            m_lowerMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            m_lowerMotor.configEncoderCodesPerRev(teethPerGear);
+        if(m_upperMotor != null) {
+            try {
+                m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+                m_upperMotor.configEncoderCodesPerRev(teethPerGear);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
         }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN timeout");
+
+        if(m_lowerMotor != null) {
+            try {
+                m_lowerMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+                m_lowerMotor.configEncoderCodesPerRev(teethPerGear);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
         }
 
         // set up solenoid for shooting angle
@@ -62,63 +77,99 @@ public class Pitcher extends Subsystem {
         m_firingPiston = new Solenoid(Wiring.pitcherLoadSolenoid);
 
     }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
     public void enable() {
-        try {
-            m_upperMotor.setPID(1.0, 0.0, 0.0);
-            m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
-            m_lowerMotor.setPID(1.0, 0.0, 0.0);
-            m_lowerMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN timeout");
-        }
 
-        try {
-            m_upperMotor.enableControl();
-            m_lowerMotor.enableControl();
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN timeout");
+        if(m_upperMotor != null) {
+            try {
+                m_upperMotor.setPID(1.0, 0.0, 0.0);
+                m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                m_upperMotor.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+        if(m_lowerMotor != null) {
+            try {
+                m_lowerMotor.setPID(1.0, 0.0, 0.0);
+                m_lowerMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                m_lowerMotor.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
         }
     }
 
     public void setPower(double upperMotorPower, double lowerMotorPower) {
 
-        try {
-            m_upperMotor.setX(upperMotorPower);
-            m_lowerMotor.setX(lowerMotorPower);
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_upperMotor != null) {
+            try {
+                m_upperMotor.setX(upperMotorPower);
+                m_lowerMotor.setX(lowerMotorPower);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        if(m_lowerMotor != null) {
+            try {
+                m_upperMotor.setX(upperMotorPower);
+                m_lowerMotor.setX(lowerMotorPower);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
 
     }
 
     public void setSpeed(double upperRPM, double lowerRPM) {
-        try {
-            m_upperMotor.setX(upperRPM);
-            m_lowerMotor.setX(lowerRPM);
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+
+        if(m_upperMotor != null) {
+            try {
+                m_upperMotor.setX(upperRPM);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        if(m_lowerMotor != null) {
+            try {
+                m_lowerMotor.setX(lowerRPM);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
     }
     
     public double getSpeedUpper(){
         double speed = 0.0;
-        try {
-            speed = m_upperMotor.getSpeed();
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_upperMotor != null) {
+            try {
+                speed = m_upperMotor.getSpeed();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
         return speed;
     }
 
     public double getSpeedLower(){
         double speed = 0.0;
-        try {
-            speed = m_lowerMotor.getSpeed();
-        } catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout");
+        if(m_lowerMotor != null) {
+            try {
+                speed = m_lowerMotor.getSpeed();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
         }
         return speed;
     }
@@ -141,6 +192,10 @@ public class Pitcher extends Subsystem {
 
     public void reload() {
         m_firingPiston.set(false);
+    }
+
+    public boolean getFault() {
+        return m_fault;
     }
 
     public void initDefaultCommand() {

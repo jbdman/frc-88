@@ -17,7 +17,8 @@ public class Foot extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    Solenoid m_foot;
+    private Solenoid m_foot;
+    private boolean m_fault = false;
 
     public Foot() {
         m_foot = new Solenoid(Wiring.footSolenoid);
@@ -30,6 +31,10 @@ public class Foot extends Subsystem {
 
     public void down() {
         m_foot.set(false);
+    }
+
+    public boolean getFault() {
+        return m_fault;
     }
 
     public void initDefaultCommand() {
