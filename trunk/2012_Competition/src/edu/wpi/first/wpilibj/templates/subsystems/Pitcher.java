@@ -69,9 +69,6 @@ public class Pitcher extends Subsystem {
                 System.err.println("CAN timeout");
             }
         }
-
-
-
     }
 
     // Put methods for controlling this subsystem
