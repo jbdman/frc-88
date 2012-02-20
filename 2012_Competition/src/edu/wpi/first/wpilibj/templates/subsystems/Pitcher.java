@@ -110,7 +110,6 @@ public class Pitcher extends Subsystem {
         if(m_upperMotor != null) {
             try {
                 m_upperMotor.setX(upperMotorPower);
-                m_lowerMotor.setX(lowerMotorPower);
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN Timeout");
@@ -118,7 +117,6 @@ public class Pitcher extends Subsystem {
         }
         if(m_lowerMotor != null) {
             try {
-                m_upperMotor.setX(upperMotorPower);
                 m_lowerMotor.setX(lowerMotorPower);
             } catch (CANTimeoutException ex) {
                 m_fault = true;
