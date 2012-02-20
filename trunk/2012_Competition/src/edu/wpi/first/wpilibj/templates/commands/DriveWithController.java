@@ -4,26 +4,29 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+
 /**
  *
  * @author Michael_Edgington
  */
-public class FootDown extends CommandBase {
+public class DriveWithController extends CommandBase {
 
-    public FootDown() {
+    public DriveWithController() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        super("FootDown");
-        requires(foot);
+        super("DriveWithController");
+        requires(driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        foot.down();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        driveTrain.drivePower(oi.getFwdStick(),
+                              oi.getTurnStick(),
+                              oi.getSideStick());
     }
 
     // Make this return true when this Command no longer needs to run execute()

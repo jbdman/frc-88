@@ -4,26 +4,26 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+
 /**
  *
  * @author Michael_Edgington
  */
-public class FootDown extends CommandBase {
+public class TurretWithController extends CommandBase {
 
-    public FootDown() {
+    public TurretWithController() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        super("FootDown");
-        requires(foot);
+        super("TurretWithController");
+        requires(turret);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        foot.down();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        turret.setPower(oi.getTurretTurnStick());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -4,22 +4,21 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+
 /**
  *
  * @author Michael_Edgington
  */
-public class FootDown extends CommandBase {
+public class RampPusherUp extends CommandBase {
 
-    public FootDown() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        super("FootDown");
-        requires(foot);
+    public RampPusherUp() {
+        super("RampPusherUp");
+        requires(rampPusher);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        foot.down();
+
     }
 
     // Called repeatedly when this Command is scheduled to run

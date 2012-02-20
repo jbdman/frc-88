@@ -21,8 +21,6 @@ public abstract class CommandBase extends Command {
     public static OI oi;
 
     // Create a single static instance of all of your subsystems
-//    public static Pitcher pitcher = new Pitcher();
-//    public static DriveTrain drive =new DriveTrain();
     public static BallLifter lifter = new BallLifter();
     public static RampPusher rampPusher = new RampPusher();
     public static DriveTrain driveTrain = new DriveTrain();
@@ -43,6 +41,7 @@ public abstract class CommandBase extends Command {
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(lifter);
+        SmartDashboard.putData(pitcher);
         SmartDashboard.putData(driveTrain);
         SmartDashboard.putData(rampPusher);
         SmartDashboard.putData(foot);

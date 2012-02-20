@@ -30,7 +30,7 @@ public class Foot extends Subsystem {
     }
 
     public void down() {
-        m_foot.set(false);
+        m_foot.set(true);
     }
 
     public boolean getFault() {
