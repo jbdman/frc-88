@@ -16,13 +16,13 @@ public class PitcherFire extends CommandBase {
     public PitcherFire() {
         // Use requires() here to declare subsystem dependencies
         super("PitcherFire");
-//        requires(pitcher);
+        requires(shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         setTimeout(firingTime);
-        pitcher.fire();
+        shooter.fire();
     }
 
     // Called repeatedly when this Command is scheduled to run

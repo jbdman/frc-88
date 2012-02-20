@@ -16,13 +16,13 @@ public class PitcherReload extends CommandBase {
     public PitcherReload() {
         // Use requires() here to declare subsystem dependencies
         super("PitcherReload");
-        // requires(pitcher);
+        requires(shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         setTimeout(reloadTime);
-        pitcher.reload();
+        shooter.reload();
     }
 
     // Called repeatedly when this Command is scheduled to run

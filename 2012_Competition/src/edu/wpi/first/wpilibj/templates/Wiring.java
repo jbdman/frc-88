@@ -30,8 +30,8 @@ public class Wiring {
     /*
      * ### Solenoids ###
      */
-    public static final int pitcherLoadSolenoid    = 4;
-    public static final int pitcherAngleSolenoid   = 5;
+    public static final int shooterLoadSolenoid    = 4;
+    public static final int shooterAngleSolenoid   = 5;
     public static final int footSolenoid           = 6;
 
     // Analog
