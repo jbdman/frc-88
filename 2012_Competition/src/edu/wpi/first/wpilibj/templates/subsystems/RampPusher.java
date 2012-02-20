@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherStop;
 
 /**
@@ -17,7 +18,16 @@ import edu.wpi.first.wpilibj.templates.commands.RampPusherStop;
 public class RampPusher extends Subsystem {
 
     private CANJaguar m_rampPusher = null;
+    private DigitalInput m_limitSwitch;
+
+    private double m_posnOffset = 0.0;
+
     private boolean m_fault = false;
+
+    private static final int ticksPerRev = 250;
+
+    private static final double defaultDownPower = -1.0;
+    private static final double defaultUpPower = 1.0;
 
     public RampPusher(){
         try {
@@ -31,52 +41,35 @@ public class RampPusher extends Subsystem {
         if(m_rampPusher != null) {
             try {
                 m_rampPusher.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                m_rampPusher.configEncoderCodesPerRev(ticksPerRev);
             }
             catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN Timeout");
             }
         }
+
+        m_limitSwitch = new DigitalInput(Wiring.rampPusherLimitSwitch);
+
     }
 
     public void down() {
-        if(m_rampPusher != null) {
-            try {
-                m_rampPusher.setX(1.0);
-            }
-            catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
+        set(defaultDownPower);
     }
 
     public void up() {
-
-        if(m_rampPusher != null) {
-            try {
-                m_rampPusher.setX(-1.0);
-            }
-            catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
+        set(defaultUpPower);
     }
 
     public void stop() {
-        if(m_rampPusher != null) {
-            try {
-                m_rampPusher.setX(0.0);
-            }
-            catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
+        set(0.0);
     }
 
     public void setPower(double power) {
+        set(power);
+    }
+
+    private void set(double power) {
         if(m_rampPusher != null) {
             try {
                 m_rampPusher.setX(power);
@@ -86,6 +79,10 @@ public class RampPusher extends Subsystem {
                 System.err.println("CAN Timeout");
             }
         }
+    }
+
+    public boolean isLimitSwitchPressed() {
+        return !m_limitSwitch.get();
     }
 
     public double getCurrent() {
@@ -104,6 +101,14 @@ public class RampPusher extends Subsystem {
     }
 
     public double getPosition() {
+        return getPosnRaw() - m_posnOffset;
+    }
+
+    public void resetPosition() {
+        m_posnOffset = getPosition();
+    }
+
+    private double getPosnRaw() {
         double posn = 0.0;
 
         if(m_rampPusher != null) {

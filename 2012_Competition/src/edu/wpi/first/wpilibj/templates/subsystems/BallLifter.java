@@ -21,6 +21,9 @@ public class BallLifter extends Subsystem {
     private int m_ID;
     private double m_lifterMotorPower;
 
+    private static final double defaultUpSpeed = 0.8;
+    private static final double defaultDownSpeed = -0.8;
+
     public BallLifter() {
         try {
             m_lifterMotor = new CANJaguar(Wiring.lifterMotorCANID);
@@ -40,12 +43,12 @@ public class BallLifter extends Subsystem {
 
     //
     public void up() {
-        set(1.0);
+        set(defaultUpSpeed);
     }
 
     //
     public void down() {
-        set(-1.0);
+        set(defaultDownSpeed);
     }
 
     //
