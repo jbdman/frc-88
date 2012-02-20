@@ -17,7 +17,7 @@ public class PitcherSpeed extends CommandBase {
     public PitcherSpeed(double upperRPM, double lowerRPM) {
         // Use requires() here to declare subsystem dependencies
         super("PitcherSpeed(" + upperRPM + ", " + lowerRPM + ")");
-        requires(pitcher);
+        requires(wheelSpinner);
 
         m_upperRPM = upperRPM;
         m_lowerRPM = lowerRPM;
@@ -25,7 +25,7 @@ public class PitcherSpeed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        pitcher.setSpeed(m_upperRPM, m_lowerRPM);
+        wheelSpinner.setSpeed(m_upperRPM, m_lowerRPM);
     }
 
     // Called repeatedly when this Command is scheduled to run
