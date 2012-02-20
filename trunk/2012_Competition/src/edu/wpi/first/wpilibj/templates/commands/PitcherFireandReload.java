@@ -14,7 +14,9 @@ public class PitcherFireandReload extends CommandGroup {
 
     public PitcherFireandReload() {
         addSequential(new PitcherFire());
+        addSequential(new PitcherDown());
         addSequential(new PitcherReload());
+        addSequential(new LifterUp());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

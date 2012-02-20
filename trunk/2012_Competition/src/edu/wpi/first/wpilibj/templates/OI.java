@@ -10,6 +10,13 @@ import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherReload;
 import edu.wpi.first.wpilibj.templates.commands.FootDown;
+import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
+import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
+import edu.wpi.first.wpilibj.templates.commands.PitcherReload;
+import edu.wpi.first.wpilibj.templates.commands.LifterStop;
+import edu.wpi.first.wpilibj.templates.commands.FootDown;
+import edu.wpi.first.wpilibj.templates.commands.FootUp;
+import edu.wpi.first.wpilibj.templates.commands.RampPusherSpeed;
 
 public class OI {
     // Process operator interface input here.
@@ -32,6 +39,7 @@ public class OI {
         operatorButtonB.whenPressed(new LifterStop());
         operatorButtonX.whenPressed(new LifterUp());
         operatorButtonY.whenPressed(new PitcherFireandReload());
+       
 
         driverButtonA.whenPressed(new FootDown());
     }

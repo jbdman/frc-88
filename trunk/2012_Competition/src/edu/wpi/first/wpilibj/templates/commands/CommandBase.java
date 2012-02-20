@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
 import edu.wpi.first.wpilibj.templates.subsystems.BallLifter;
 import edu.wpi.first.wpilibj.templates.subsystems.Foot;
+import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
 import edu.wpi.first.wpilibj.templates.subsystems.Turret;
 
 /**
@@ -26,6 +27,7 @@ public abstract class CommandBase extends Command {
     public static DriveTrain driveTrain = new DriveTrain();
     public static Foot foot = new Foot();
     public static Turret turret = new Turret();
+    public static Shooter shooter = new Shooter();
     public static Pitcher pitcher = new Pitcher();
 
     public static void init() {
@@ -45,6 +47,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(driveTrain);
         SmartDashboard.putData(rampPusher);
         SmartDashboard.putData(foot);
+        SmartDashboard.putData(shooter);
         SmartDashboard.putData(turret);
     }
 
