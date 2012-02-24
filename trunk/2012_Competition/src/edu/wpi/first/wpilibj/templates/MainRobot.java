@@ -71,5 +71,7 @@ public class MainRobot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        CommandBase.updateDashboard();  // !!! EXPERIMENTAL !!!
+
     }
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.templates.commands.LifterStop;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherReload;
+import edu.wpi.first.wpilibj.templates.commands.PitcherSpeedDelta;
 import edu.wpi.first.wpilibj.templates.commands.FootDown;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
@@ -31,14 +32,19 @@ public class OI {
     private Button operatorButtonB = new JoystickButton(operatorController, 2);
     private Button operatorButtonX = new JoystickButton(operatorController, 3);
     private Button operatorButtonY = new JoystickButton(operatorController, 4);
+    private Button operatorButtonLeftBumper = new JoystickButton(operatorController, 5);
+    private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
 
+    private static final double pitcherSpeedDelta = 50;
 
     public OI() {
-        operatorButtonA.whenPressed(new PitcherFire());
-        operatorButtonA.whenReleased(new PitcherReload());
+        operatorButtonA.whenPressed(new PitcherFireandReload());
+        operatorButtonY.whenPressed(new PitcherFire());
+        operatorButtonY.whenReleased(new PitcherReload());
         operatorButtonB.whenPressed(new LifterStop());
         operatorButtonX.whenPressed(new LifterUp());
-        operatorButtonY.whenPressed(new PitcherFireandReload());
+        operatorButtonLeftBumper.whenPressed(new PitcherSpeedDelta(-pitcherSpeedDelta));
+        operatorButtonRightBumper.whenPressed(new PitcherSpeedDelta(pitcherSpeedDelta));
        
 
         driverButtonA.whenPressed(new FootDown());
