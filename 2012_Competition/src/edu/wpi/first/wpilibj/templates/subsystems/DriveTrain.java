@@ -22,7 +22,7 @@ public class DriveTrain extends Subsystem {
     private CANJaguar m_frontRightMotor = null;
     private CANJaguar m_frontLeftMotor = null;
 
-    public void DriveTrain(){
+    public DriveTrain(){
         //rear right motor
         try {
             m_rearRightMotor= new CANJaguar(Wiring.driveRearRightCANID);
@@ -51,9 +51,6 @@ public class DriveTrain extends Subsystem {
         catch (CANTimeoutException ex) {
             System.err.println("##### CAN Init error: ID " + Wiring.driveFrontRightCANID);
         }
-        System.out.println("################### CAN Init #####################");
-        System.out.println("##### m_frontLeftMotor: " + m_frontLeftMotor);
-        System.out.println("##### m_frontRightMotor: " + m_frontRightMotor);
 
     }
 
