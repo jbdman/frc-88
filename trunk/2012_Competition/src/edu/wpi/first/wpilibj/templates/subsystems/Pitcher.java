@@ -17,17 +17,20 @@ import edu.wpi.first.wpilibj.templates.commands.PitcherSpeed;
  */
 public class Pitcher extends Subsystem {
 
-    /*
-     * Member variables
-     * 
-     */
+
+    // Member variables
+
     private CANJaguar m_upperMotor = null;
     private CANJaguar m_lowerMotor = null;
-    private Solenoid  m_anglePiston;
-    private Solenoid  m_firingPiston;
+    private double m_averageSpeedSetpoint = 0.0;
+
     private boolean m_fault = false;
 
-    private static final int teethPerGear = 11;
+    private static final int teethPerGearUpper = 10;
+    /*************************************************************
+     * NOTE: PRACTICE BOT HAS 11 teeth in lower sensing sprocket *
+     *************************************************************/
+    private static final int teethPerGearLower = 11;
 
     //Here is the Constructor
     public Pitcher() {
@@ -51,7 +54,7 @@ public class Pitcher extends Subsystem {
         if(m_upperMotor != null) {
             try {
                 m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-                m_upperMotor.configEncoderCodesPerRev(teethPerGear);
+                m_upperMotor.configEncoderCodesPerRev(teethPerGearUpper);
             }
             catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -62,7 +65,7 @@ public class Pitcher extends Subsystem {
         if(m_lowerMotor != null) {
             try {
                 m_lowerMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-                m_lowerMotor.configEncoderCodesPerRev(teethPerGear);
+                m_lowerMotor.configEncoderCodesPerRev(teethPerGearLower);
             }
             catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -78,8 +81,8 @@ public class Pitcher extends Subsystem {
 
         if(m_upperMotor != null) {
             try {
-                m_upperMotor.setPID(1.0, 0.0, 0.0);
                 m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                m_upperMotor.setPID(0.1, 0.005, 0.0);
                 m_upperMotor.enableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -88,8 +91,8 @@ public class Pitcher extends Subsystem {
         }
         if(m_lowerMotor != null) {
             try {
-                m_lowerMotor.setPID(1.0, 0.0, 0.0);
                 m_lowerMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                m_lowerMotor.setPID(0.1, 0.005, 0.0);
                 m_lowerMotor.enableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -98,28 +101,45 @@ public class Pitcher extends Subsystem {
         }
     }
 
-    public void setPower(double upperMotorPower, double lowerMotorPower) {
+//  DEPRECATED IN FAVOR OF SPEED
+//
+//    public void setPower(double upperMotorPower, double lowerMotorPower) {
+//
+//        if(m_upperMotor != null) {
+//            try {
+//                m_upperMotor.setX(upperMotorPower);
+//            } catch (CANTimeoutException ex) {
+//                m_fault = true;
+//                System.err.println("CAN Timeout");
+//            }
+//        }
+//        if(m_lowerMotor != null) {
+//            try {
+//                m_lowerMotor.setX(lowerMotorPower);
+//            } catch (CANTimeoutException ex) {
+//                m_fault = true;
+//                System.err.println("CAN Timeout");
+//            }
+//        }
+//
+//    }
 
-        if(m_upperMotor != null) {
-            try {
-                m_upperMotor.setX(upperMotorPower);
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
-        if(m_lowerMotor != null) {
-            try {
-                m_lowerMotor.setX(lowerMotorPower);
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
+    private static final double defaultSpeedDelta = 250;
 
+    public void setAverageSpeed(double averageRPM) {
+        setSpeed(averageRPM - defaultSpeedDelta, averageRPM + defaultSpeedDelta);
     }
 
     public void setSpeed(double upperRPM, double lowerRPM) {
+
+        if(upperRPM < 0.0) {
+            upperRPM = 0.0;
+        }
+        if(lowerRPM < 0.0) {
+            lowerRPM = 0.0;
+        }
+
+        m_averageSpeedSetpoint = (upperRPM + lowerRPM)/2;
 
         if(m_upperMotor != null) {
             try {
@@ -139,6 +159,14 @@ public class Pitcher extends Subsystem {
         }
     }
     
+    public double getAverageSpeedSetpoint() {
+        return m_averageSpeedSetpoint;
+    }
+
+    public double getAverageSpeed() {
+        return (getSpeedUpper() + getSpeedLower())/2;
+    }
+
     public double getSpeedUpper(){
         double speed = 0.0;
         if(m_upperMotor != null) {
@@ -165,32 +193,12 @@ public class Pitcher extends Subsystem {
         return speed;
     }
 
-    public void setFarAngle() {
-        m_anglePiston.set(true);
-    }
-
-    public void setNearAngle() {
-        m_anglePiston.set(false);
-    }
-
-    public boolean isFarAngle() {
-        return m_anglePiston.get();
-    }
-
-    public void fire() {
-        m_firingPiston.set(true);
-    }
-
-    public void reload() {
-        m_firingPiston.set(false);
-    }
-
     public boolean getFault() {
         return m_fault;
     }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new PitcherSpeed(120.0, 120.0));
+        setDefaultCommand(new PitcherSpeed(1050));
     }
 }
