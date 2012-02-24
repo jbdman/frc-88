@@ -4,37 +4,26 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-
 /**
  *
- * @author Michael_Edgington
+ * @author Dr. Edgington
  */
-public class PitcherSpeed extends CommandBase {
+public class PitcherSpeedDelta extends CommandBase {
 
-    double m_upperRPM;
-    double m_lowerRPM;
+    private double m_speedDelta;
 
-    public PitcherSpeed(double upperRPM, double lowerRPM) {
+    public PitcherSpeedDelta(double delta) {
         // Use requires() here to declare subsystem dependencies
-        super("PitcherSpeed(" + upperRPM + ", " + lowerRPM + ")");
+        super("PitcherSpeedDelta(" + delta + ")");
         requires(pitcher);
 
-        m_upperRPM = upperRPM;
-        m_lowerRPM = lowerRPM;
-    }
-
-    public PitcherSpeed(double averageRPM) {
-        // Use requires() here to declare subsystem dependencies
-        super("PitcherSpeed(" + averageRPM + ")");
-        requires(pitcher);
-
-        m_upperRPM = averageRPM - 250;
-        m_lowerRPM = averageRPM + 250;
+        m_speedDelta = delta;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        pitcher.setSpeed(m_upperRPM, m_lowerRPM);
+        double speed = pitcher.getAverageSpeedSetpoint();
+        pitcher.setAverageSpeed(speed + m_speedDelta);
     }
 
     // Called repeatedly when this Command is scheduled to run
