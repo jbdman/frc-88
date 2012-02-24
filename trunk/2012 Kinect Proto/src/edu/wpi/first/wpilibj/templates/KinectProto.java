@@ -113,17 +113,35 @@ public class KinectProto extends IterativeRobot {
 
         System.out.println("CANinitializing");
 
-        try{
-            frontLeft = new CANJaguar(10);              //FIX THIS!!
-            frontRight = new CANJaguar(2);              //FIX THIS!!
-            backLeft = new CANJaguar(8);                //FIX THIS!!
-            backRight = new CANJaguar(11);              //FIX THIS!!
-            rampPusher = new CANJaguar(3);              //FIX THIS!!
-            stringTheoryFront = new CANJaguar(7);       //FIX THIS!!
-            stringTheoryVertical = new CANJaguar(4);    //FIX THIS!!
-            turretMotor = new CANJaguar(9);             //FIX THIS!!
-            shooterUpper = new CANJaguar(6);            //FIX THIS!!
-            shooterLower = new CANJaguar (5);           //FIX THIS!!
+        //the following are the correct Jag assignments for Jordan
+//        try{
+//            //frontLeft = new CANJaguar(10);              //FIX THIS!!
+//            //frontRight = new CANJaguar(2);              //FIX THIS!!
+//            //backLeft = new CANJaguar(8);                //FIX THIS!!
+//            //backRight = new CANJaguar(11);              //FIX THIS!!
+//            rampPusher = new CANJaguar(3);              //FIX THIS!!
+//            stringTheoryFront = new CANJaguar(7);       //FIX THIS!!
+//            stringTheoryVertical = new CANJaguar(4);    //FIX THIS!!
+//            turretMotor = new CANJaguar(9);             //FIX THIS!!
+//            shooterUpper = new CANJaguar(6);            //FIX THIS!!
+//            shooterLower = new CANJaguar (5);           //FIX THIS!!
+//            //As of 2/15, Jag listings are correct.  Jag #4 is physically non-functional
+//            //and needs replacement.
+//        }
+
+        
+        //the following are the correct Jag assignments for Terry
+         try{
+            frontLeft = new CANJaguar(15);
+            frontRight = new CANJaguar(4);
+            backLeft = new CANJaguar(5);
+            backRight = new CANJaguar(14);
+            rampPusher = new CANJaguar(2);
+            stringTheoryFront = new CANJaguar(11);
+            stringTheoryVertical = new CANJaguar(11);
+            turretMotor = new CANJaguar(8);
+            shooterUpper = new CANJaguar(3);
+            shooterLower = new CANJaguar (12);
             //As of 2/15, Jag listings are correct.  Jag #4 is physically non-functional
             //and needs replacement.
         }
@@ -132,12 +150,14 @@ public class KinectProto extends IterativeRobot {
             System.err.println("******************CAN failure******************");
         }
 
-        // configure shooter geartooth sensors
+        // configure shooter geartooth sensors & turret
         try {
+            turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            turretMotor.configEncoderCodesPerRev(360);
             shooterLower.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
             shooterUpper.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
-            shooterLower.configEncoderCodesPerRev(11);
-            shooterUpper.configEncoderCodesPerRev(11);
+            shooterLower.configEncoderCodesPerRev(10);
+            shooterUpper.configEncoderCodesPerRev(10);
         } catch (CANTimeoutException ex) {
             System.err.println("******************CAN timeout******************");
         }
@@ -353,9 +373,9 @@ public class KinectProto extends IterativeRobot {
 
         rampPusherLimitSwitchReading = rampPusherLimitSwitch.get();
 
-        if (!rampPusherLimitSwitchReading){
-            pusherPower = 0;
-        }
+//        if (!rampPusherLimitSwitchReading){
+//            pusherPower = 0;
+//        }
 
 
         try {
@@ -441,19 +461,23 @@ public class KinectProto extends IterativeRobot {
         if(updateCount % 5 == 0) {
             double upperRPM = 0.0;
             double lowerRPM = 0.0;
+            double turretPosn = 0.0;
 
-            try {
-                upperRPM = shooterUpper.getSpeed();
-                lowerRPM = shooterLower.getSpeed();
-            } catch (CANTimeoutException ex) {
-                System.err.println("******************CAN timeout******************");
-            }
+           try {
+               upperRPM = shooterUpper.getSpeed();
+               lowerRPM = shooterLower.getSpeed();
+               turretPosn = turretMotor.getPosition();
+           } catch (CANTimeoutException ex) {
+               System.err.println("******************CAN timeout******************");
+           }
 
             SmartDashboard.putDouble("Upper rpm", upperRPM);
             SmartDashboard.putDouble("Lower rpm", lowerRPM);
-
-            updateCount++;
+            SmartDashboard.putDouble("Turret posn", turretPosn);
+            System.out.println(upperRPM + ", " + lowerRPM + ", " + turretPosn);
         }
+        updateCount++;
+       
     }
 
     private double map(double val) {
@@ -487,4 +511,28 @@ public class KinectProto extends IterativeRobot {
             System.err.println("****************CAN timeout***********");
         }
     }
+
+//    private int count = 0;
+//
+//    private void debugOutput() {
+//
+//        if(count % 10 == 5) {
+//            double upperSpeed = 0.0;
+//            double lowerSpeed = 0.0;
+//            double turretPosn = 0.0;
+//
+//            try {
+//                upperSpeed = shooterUpper.getSpeed();
+//                lowerSpeed = shooterLower.getSpeed();
+//                turretPosn = turretMotor.getPosn();
+//            } catch (CANTimeoutException ex) {
+//                System.err.println("CAN Timeout");
+//            }
+//            System.out.println("Upper Speed" + upperSpeed);
+//            System.out.println("Lower Speed" + lowerSpeed);
+//        }
+//        count++;
+//    }
+
+
 }
