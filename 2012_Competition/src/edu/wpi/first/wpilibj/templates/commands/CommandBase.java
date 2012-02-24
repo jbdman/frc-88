@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.subsystems.Pitcher;
-import edu.wpi.first.wpilibj.templates.subsystems.WheelSpinner;
+//import edu.wpi.first.wpilibj.templates.subsystems.WheelSpinner;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
 import edu.wpi.first.wpilibj.templates.subsystems.BallLifter;
@@ -28,7 +28,7 @@ public abstract class CommandBase extends Command {
     public static DriveTrain driveTrain = new DriveTrain();
     public static Foot foot = new Foot();
     public static Turret turret = new Turret();
-    public static WheelSpinner wheelSpinner=new WheelSpinner();
+//    public static WheelSpinner wheelSpinner = new WheelSpinner();
     public static Shooter shooter = new Shooter();
     public static Pitcher pitcher = new Pitcher();
 
@@ -51,7 +51,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(foot);
         SmartDashboard.putData(shooter);
         SmartDashboard.putData(turret);
-        SmartDashboard.putData(wheelSpinner);
+//        SmartDashboard.putData(wheelSpinner);
     }
 
     public CommandBase(String name) {
@@ -61,4 +61,18 @@ public abstract class CommandBase extends Command {
     public CommandBase() {
         super();
     }
+
+    public static void updateDashboard() {
+        SmartDashboard.putDouble("Pitcher upper ", pitcher.getSpeedUpper());
+        SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
+        // Subsystem faults lights
+        SmartDashboard.putBoolean("Pitcher Fault ", !pitcher.getFault());
+        SmartDashboard.putBoolean("Turret Fault ", !turret.getFault());
+        SmartDashboard.putBoolean("RampPusher Fault ", !rampPusher.getFault());
+        SmartDashboard.putBoolean("Foot Fault ", !foot.getFault());
+//        SmartDashboard.putBoolean("Drivetrain Fault ", !driveTrain.getFault());
+//        SmartDashboard.putBoolean("Lifter Fault ", !lifter.getFault());
+    }
+
+
 }
