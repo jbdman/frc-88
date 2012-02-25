@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.templates.commands.LifterStop;
 import edu.wpi.first.wpilibj.templates.commands.FootDown;
 import edu.wpi.first.wpilibj.templates.commands.FootUp;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherSpeed;
+import edu.wpi.first.wpilibj.templates.commands.RampPusherUp;
+import edu.wpi.first.wpilibj.templates.commands.RampPusherDown;
 
 public class OI {
     // Process operator interface input here.
@@ -26,6 +28,8 @@ public class OI {
 
     // driver can deploy foot
     private Button driverButtonA = new JoystickButton(driverController, 1);
+    private Button driverButtonLeftBumper = new JoystickButton(driverController, 5);
+    private Button driverButtonRightBumper = new JoystickButton(driverController, 6);
 
     // operator stuff
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
@@ -48,6 +52,8 @@ public class OI {
        
 
         driverButtonA.whenPressed(new FootDown());
+        driverButtonLeftBumper.whileHeld(new RampPusherUp());
+        driverButtonRightBumper.whileHeld(new RampPusherDown());
     }
 
     public double getTurretTurnStick() {

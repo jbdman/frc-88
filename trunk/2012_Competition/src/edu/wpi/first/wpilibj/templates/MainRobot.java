@@ -46,6 +46,14 @@ public class MainRobot extends IterativeRobot {
         CommandBase.init();
     }
 
+    /**
+     * This function is called periodically during disabled
+     */
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+        CommandBase.updateDashboard();
+    }
+
     public void autonomousInit() {
         // schedule the autonomous command (example)
         autonomousCommand.start();
@@ -56,6 +64,7 @@ public class MainRobot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        CommandBase.updateDashboard();
     }
 
     public void teleopInit() {
@@ -71,7 +80,7 @@ public class MainRobot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        CommandBase.updateDashboard();  // !!! EXPERIMENTAL !!!
+        CommandBase.updateDashboard();
 
     }
 }
