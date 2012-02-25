@@ -9,7 +9,9 @@ package edu.wpi.first.wpilibj.templates.commands;
  * @author David Wigley
  */
 public class PitcherUp extends CommandBase {
-    
+
+    private static final double movingTime = 0.5;
+
     public PitcherUp() {
         super("PitcherUp");
         requires(shooter);
@@ -19,6 +21,7 @@ public class PitcherUp extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        setTimeout(movingTime);
         shooter.setNearAngle();
         //for scoring up close
     }
@@ -29,7 +32,7 @@ public class PitcherUp extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
