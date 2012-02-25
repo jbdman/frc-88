@@ -42,6 +42,7 @@ public abstract class CommandBase extends Command {
 
         turret.enable();
         pitcher.enable();
+        pitcher.setAverageSpeed(1000);
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(lifter);
@@ -65,13 +66,19 @@ public abstract class CommandBase extends Command {
     public static void updateDashboard() {
         SmartDashboard.putDouble("Pitcher upper ", pitcher.getSpeedUpper());
         SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
+        SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
+
+        SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
+        SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
+
         // Subsystem faults lights
         SmartDashboard.putBoolean("Pitcher Fault ", !pitcher.getFault());
+        SmartDashboard.putBoolean("Shooter Fault ", !shooter.getFault());
         SmartDashboard.putBoolean("Turret Fault ", !turret.getFault());
         SmartDashboard.putBoolean("RampPusher Fault ", !rampPusher.getFault());
         SmartDashboard.putBoolean("Foot Fault ", !foot.getFault());
-//        SmartDashboard.putBoolean("Drivetrain Fault ", !driveTrain.getFault());
-//        SmartDashboard.putBoolean("Lifter Fault ", !lifter.getFault());
+        SmartDashboard.putBoolean("Drivetrain Fault ", !driveTrain.getFault());
+        SmartDashboard.putBoolean("Lifter Fault ", !lifter.getFault());
     }
 
 
