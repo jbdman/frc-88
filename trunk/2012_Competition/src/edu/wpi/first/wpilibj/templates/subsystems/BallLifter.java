@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
-import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -17,9 +16,10 @@ import edu.wpi.first.wpilibj.templates.commands.LifterUp;
  */
 public class BallLifter extends Subsystem {
     
-    private CANJaguar m_lifterMotor;
+    private CANJaguar m_lifterMotor = null;
     private int m_ID;
     private double m_lifterMotorPower;
+    private boolean m_fault = false;
 
     private static final double defaultUpSpeed = 0.8;
     private static final double defaultDownSpeed = -0.8;
@@ -29,6 +29,7 @@ public class BallLifter extends Subsystem {
             m_lifterMotor = new CANJaguar(Wiring.lifterMotorCANID);
             m_ID = Wiring.lifterMotorCANID;
         } catch (CANTimeoutException ex) {
+            m_fault = true;
             System.err.println("CAN Init error: ID " + m_ID);
         }
     }
@@ -53,11 +54,14 @@ public class BallLifter extends Subsystem {
 
     //
     private void set(double power) {
-        try {
-            m_lifterMotor.setX(power);
-        }
-        catch (CANTimeoutException ex) {
-            System.err.println("CAN Timeout: ID " + m_ID);
+        if(m_lifterMotor != null) {
+            try {
+                m_lifterMotor.setX(power);
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout: ID " + m_ID);
+            }
         }
     }
 
@@ -75,6 +79,10 @@ public class BallLifter extends Subsystem {
 
     public double getPower() {
         return (m_lifterMotorPower);
+    }
+
+    public boolean getFault() {
+        return m_fault;
     }
 
     public void initDefaultCommand() {
