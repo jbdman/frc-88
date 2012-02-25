@@ -19,6 +19,7 @@ public class RampPusher extends Subsystem {
 
     private CANJaguar m_rampPusher = null;
     private DigitalInput m_limitSwitch;
+    private boolean m_isCalibrated = false;
 
     private double m_posnOffset = 0.0;
 
@@ -26,8 +27,8 @@ public class RampPusher extends Subsystem {
 
     private static final int ticksPerRev = 250;
 
-    private static final double defaultDownPower = -1.0;
-    private static final double defaultUpPower = 1.0;
+    private static final double defaultDownPower = -0.4;
+    private static final double defaultUpPower = 0.4;
 
     public RampPusher(){
         try {
@@ -100,15 +101,20 @@ public class RampPusher extends Subsystem {
         return current;
     }
 
-    public double getPosition() {
-        return getPosnRaw() - m_posnOffset;
+    public boolean isCalibrated() {
+        return m_isCalibrated;
     }
 
-    public void resetPosition() {
-        m_posnOffset = getPosition();
+    public double getAngle() {
+        return getAngleRaw() - m_posnOffset;
     }
 
-    private double getPosnRaw() {
+    public void resetAngle() {
+        m_posnOffset = getAngleRaw();
+        m_isCalibrated = true;
+    }
+
+    private double getAngleRaw() {
         double posn = 0.0;
 
         if(m_rampPusher != null) {
