@@ -11,8 +11,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class PitcherSpeed extends CommandBase {
 
-    double m_upperRPM;
-    double m_lowerRPM;
+    private double m_upperRPM;
+    private double m_lowerRPM;
+
+    private static final double settlingTime = 1.0; // should be replaced with checking for speeds
 
     public PitcherSpeed(double upperRPM, double lowerRPM) {
         // Use requires() here to declare subsystem dependencies
@@ -35,6 +37,7 @@ public class PitcherSpeed extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         pitcher.setSpeed(m_upperRPM, m_lowerRPM);
+        setTimeout(settlingTime);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -43,7 +46,7 @@ public class PitcherSpeed extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
