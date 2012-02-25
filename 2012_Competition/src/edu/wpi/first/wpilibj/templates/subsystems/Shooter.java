@@ -25,6 +25,7 @@ public class Shooter extends Subsystem {
         // set up solenoid for firing
         m_firingPiston = new Solenoid(Wiring.shooterLoadSolenoid);
     }
+
     public void setFarAngle() {
         m_anglePiston.set(true);
     }
