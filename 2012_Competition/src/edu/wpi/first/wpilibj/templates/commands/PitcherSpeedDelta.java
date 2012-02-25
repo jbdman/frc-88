@@ -11,6 +11,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 public class PitcherSpeedDelta extends CommandBase {
 
     private double m_speedDelta;
+    private static final double settlingTime = 1.0; // should be replaced with checking for speeds
 
     public PitcherSpeedDelta(double delta) {
         // Use requires() here to declare subsystem dependencies
@@ -24,6 +25,8 @@ public class PitcherSpeedDelta extends CommandBase {
     protected void initialize() {
         double speed = pitcher.getAverageSpeedSetpoint();
         pitcher.setAverageSpeed(speed + m_speedDelta);
+        setTimeout(settlingTime);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,7 +35,7 @@ public class PitcherSpeedDelta extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
