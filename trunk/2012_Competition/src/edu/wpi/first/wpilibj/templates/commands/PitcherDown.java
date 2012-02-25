@@ -9,7 +9,9 @@ package edu.wpi.first.wpilibj.templates.commands;
  * @author David Wigley
  */
 public class PitcherDown extends CommandBase {
-        
+
+    private static final double movingTime = 0.5;
+
     public PitcherDown() {
         super("PitcherDown");
         requires(shooter);
@@ -20,6 +22,7 @@ public class PitcherDown extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
          shooter.setFarAngle();
+         setTimeout(movingTime);
          //for scoring far away
     }
 
@@ -29,7 +32,7 @@ public class PitcherDown extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
