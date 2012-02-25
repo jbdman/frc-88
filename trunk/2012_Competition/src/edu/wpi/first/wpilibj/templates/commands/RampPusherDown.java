@@ -7,18 +7,19 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author Michael_Edgington
+ * @author TJ2
  */
-public class RampPusherUp extends CommandBase {
+public class RampPusherDown extends CommandBase {
 
-    public RampPusherUp() {
-        super("RampPusherUp");
+    public RampPusherDown() {
+        // Use requires() here to declare subsystem dependencies
+        super("RampPusherDown");
         requires(rampPusher);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        rampPusher.up();
+        rampPusher.down();
     }
 
     // Called repeatedly when this Command is scheduled to run
