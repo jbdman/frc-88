@@ -6,7 +6,6 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.PitcherSpeed;
@@ -23,6 +22,7 @@ public class Pitcher extends Subsystem {
     private CANJaguar m_upperMotor = null;
     private CANJaguar m_lowerMotor = null;
     private double m_averageSpeedSetpoint = 0.0;
+    private static final double defaultSpeedDelta = 300;
 
     private boolean m_fault = false;
 
@@ -54,6 +54,7 @@ public class Pitcher extends Subsystem {
         if(m_upperMotor != null) {
             try {
                 m_upperMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+                m_upperMotor.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 m_upperMotor.configEncoderCodesPerRev(teethPerGearUpper);
             }
             catch (CANTimeoutException ex) {
@@ -65,6 +66,7 @@ public class Pitcher extends Subsystem {
         if(m_lowerMotor != null) {
             try {
                 m_lowerMotor.setSpeedReference(CANJaguar.SpeedReference.kEncoder);
+                m_lowerMotor.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 m_lowerMotor.configEncoderCodesPerRev(teethPerGearLower);
             }
             catch (CANTimeoutException ex) {
@@ -82,7 +84,8 @@ public class Pitcher extends Subsystem {
         if(m_upperMotor != null) {
             try {
                 m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                m_upperMotor.setPID(0.1, 0.005, 0.0);
+//                m_upperMotor.setPID(0.1, 0.005, 0.0);
+                m_upperMotor.setPID(0.08, 0.005, 0.002);
                 m_upperMotor.enableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -100,31 +103,6 @@ public class Pitcher extends Subsystem {
             }
         }
     }
-
-//  DEPRECATED IN FAVOR OF SPEED
-//
-//    public void setPower(double upperMotorPower, double lowerMotorPower) {
-//
-//        if(m_upperMotor != null) {
-//            try {
-//                m_upperMotor.setX(upperMotorPower);
-//            } catch (CANTimeoutException ex) {
-//                m_fault = true;
-//                System.err.println("CAN Timeout");
-//            }
-//        }
-//        if(m_lowerMotor != null) {
-//            try {
-//                m_lowerMotor.setX(lowerMotorPower);
-//            } catch (CANTimeoutException ex) {
-//                m_fault = true;
-//                System.err.println("CAN Timeout");
-//            }
-//        }
-//
-//    }
-
-    private static final double defaultSpeedDelta = 250;
 
     public void setAverageSpeed(double averageRPM) {
         setSpeed(averageRPM - defaultSpeedDelta, averageRPM + defaultSpeedDelta);
@@ -193,12 +171,38 @@ public class Pitcher extends Subsystem {
         return speed;
     }
 
+    public double getCurrentUpper(){
+        double current = 0.0;
+        if(m_upperMotor != null) {
+            try {
+                current = m_upperMotor.getOutputCurrent();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        return current;
+    }
+
+    public double getCurrentLower(){
+        double current = 0.0;
+        if(m_lowerMotor != null) {
+            try {
+                current = m_lowerMotor.getOutputCurrent();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        return current;
+    }
+
     public boolean getFault() {
         return m_fault;
     }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new PitcherSpeed(1050));
+//        setDefaultCommand(new PitcherSpeed(1050));
     }
 }
