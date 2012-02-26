@@ -28,7 +28,14 @@ public class RampPusherDown extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return rampPusher.isLimitSwitchPressed() || Math.abs(rampPusher.getCurrent()) > 20;
+        boolean done = false;
+        if(!rampPusher.isCalibrated()) {
+            done = rampPusher.isLimitSwitchPressed();
+        } else {
+            done = (rampPusher.getAngle() > 30 && rampPusher.isLimitSwitchPressed());
+        }
+        
+        return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxDownCurrent;
     }
 
     // Called once after isFinished returns true
