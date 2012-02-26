@@ -6,18 +6,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 import edu.wpi.first.wpilibj.templates.commands.LifterStop;
-import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
-import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
-import edu.wpi.first.wpilibj.templates.commands.PitcherReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherSpeedDelta;
-import edu.wpi.first.wpilibj.templates.commands.FootDown;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
 import edu.wpi.first.wpilibj.templates.commands.PitcherReload;
-import edu.wpi.first.wpilibj.templates.commands.LifterStop;
 import edu.wpi.first.wpilibj.templates.commands.FootDown;
 import edu.wpi.first.wpilibj.templates.commands.FootUp;
-import edu.wpi.first.wpilibj.templates.commands.RampPusherSpeed;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherUp;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherDown;
 
@@ -52,6 +46,7 @@ public class OI {
        
 
         driverButtonA.whenPressed(new FootDown());
+        driverButtonA.whenReleased(new FootUp());
         driverButtonLeftBumper.whileHeld(new RampPusherDown());
         driverButtonRightBumper.whileHeld(new RampPusherUp());
     }
