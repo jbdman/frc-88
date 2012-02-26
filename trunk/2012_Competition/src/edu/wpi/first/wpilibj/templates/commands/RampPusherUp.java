@@ -56,7 +56,7 @@ public class RampPusherUp extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         boolean done = false;
-        if(state == kNormal && rampPusher.isLimitSwitchPressed()) {
+        if(state == kNormal && rampPusher.getAngle() < 30 && rampPusher.isLimitSwitchPressed()) {
             done = true;
         }
         return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxUpCurrent;
