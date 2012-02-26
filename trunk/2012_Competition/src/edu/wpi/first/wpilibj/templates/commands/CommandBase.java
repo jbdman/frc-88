@@ -68,8 +68,10 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
         SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
 
+        // DEBUG STUFF FOR RAMPPUSHER
         SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
         SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
+        SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
 
         // Subsystem faults lights
         SmartDashboard.putBoolean("Pitcher Fault ", !pitcher.getFault());
