@@ -46,6 +46,7 @@ public class RampPusher extends Subsystem {
             try {
                 m_rampPusher.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 m_rampPusher.configEncoderCodesPerRev(ticksPerRev);
+                m_rampPusher.configNeutralMode(CANJaguar.NeutralMode.kBrake);
             }
             catch (CANTimeoutException ex) {
                 m_fault = true;
