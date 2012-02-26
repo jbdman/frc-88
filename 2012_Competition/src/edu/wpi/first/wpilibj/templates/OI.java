@@ -52,8 +52,8 @@ public class OI {
        
 
         driverButtonA.whenPressed(new FootDown());
-        driverButtonLeftBumper.whileHeld(new RampPusherUp());
-        driverButtonRightBumper.whileHeld(new RampPusherDown());
+        driverButtonLeftBumper.whileHeld(new RampPusherDown());
+        driverButtonRightBumper.whileHeld(new RampPusherUp());
     }
 
     public double getTurretTurnStick() {
