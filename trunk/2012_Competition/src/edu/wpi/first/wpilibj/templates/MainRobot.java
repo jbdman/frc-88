@@ -10,6 +10,7 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.templates.subsystems.Tracking;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
@@ -28,6 +29,7 @@ public class MainRobot extends IterativeRobot {
     Command autonomousCommand;
 
     Compressor compressor;
+    public static Tracking tracker = new Tracking();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -73,6 +75,10 @@ public class MainRobot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		autonomousCommand.cancel();
+    }
+
+    public void teleopContinuous() {
+        tracker.processImage();
     }
 
     /**

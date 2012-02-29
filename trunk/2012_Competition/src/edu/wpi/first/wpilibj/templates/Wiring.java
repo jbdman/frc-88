@@ -12,9 +12,9 @@ public class Wiring {
      */
     // Drive system (motors and encoders)
     public static final int driveFrontLeftCANID    = 10;
-    public static final int driveFrontRightCANID   = 2;
+    public static final int driveFrontRightCANID   = 11;
     public static final int driveRearLeftCANID     = 8;
-    public static final int driveRearRightCANID    = 11;
+    public static final int driveRearRightCANID    = 2;
 
     //String theory
     public static final int lifterMotorCANID  =  7;
