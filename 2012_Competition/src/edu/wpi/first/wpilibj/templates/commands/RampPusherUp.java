@@ -56,6 +56,8 @@ public class RampPusherUp extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         boolean done = false;
+//        FIX - takes a fraction of a second to check angle - so better to have a slowly
+//        checked variable for "nearTop"
         if(state == kNormal && rampPusher.getAngle() < 30 && rampPusher.isLimitSwitchPressed()) {
             done = true;
         }

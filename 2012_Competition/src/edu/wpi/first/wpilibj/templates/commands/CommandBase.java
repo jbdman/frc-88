@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.BallLifter;
 import edu.wpi.first.wpilibj.templates.subsystems.Foot;
 import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
 import edu.wpi.first.wpilibj.templates.subsystems.Turret;
+import edu.wpi.first.wpilibj.templates.subsystems.Tracking;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -63,24 +64,29 @@ public abstract class CommandBase extends Command {
         super();
     }
 
+    private static int iterator = 0;
+
     public static void updateDashboard() {
-        SmartDashboard.putDouble("Pitcher upper ", pitcher.getSpeedUpper());
-        SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
-        SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
+        if(iterator % 5 == 0) {
+            SmartDashboard.putDouble("Pitcher upper ", pitcher.getSpeedUpper());
+            SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
+            SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
 
-        // DEBUG STUFF FOR RAMPPUSHER
-        SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
-        SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
-        SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
+            // DEBUG STUFF FOR RAMPPUSHER
+            SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
+            SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
+            SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
 
-        // Subsystem faults lights
-        SmartDashboard.putBoolean("Pitcher Fault ", !pitcher.getFault());
-        SmartDashboard.putBoolean("Shooter Fault ", !shooter.getFault());
-        SmartDashboard.putBoolean("Turret Fault ", !turret.getFault());
-        SmartDashboard.putBoolean("RampPusher Fault ", !rampPusher.getFault());
-        SmartDashboard.putBoolean("Foot Fault ", !foot.getFault());
-        SmartDashboard.putBoolean("Drivetrain Fault ", !driveTrain.getFault());
-        SmartDashboard.putBoolean("Lifter Fault ", !lifter.getFault());
+            // Subsystem faults lights
+            SmartDashboard.putBoolean("Pitcher Fault ", !pitcher.getFault());
+            SmartDashboard.putBoolean("Shooter Fault ", !shooter.getFault());
+            SmartDashboard.putBoolean("Turret Fault ", !turret.getFault());
+            SmartDashboard.putBoolean("RampPusher Fault ", !rampPusher.getFault());
+            SmartDashboard.putBoolean("Foot Fault ", !foot.getFault());
+            SmartDashboard.putBoolean("Drivetrain Fault ", !driveTrain.getFault());
+            SmartDashboard.putBoolean("Lifter Fault ", !lifter.getFault());
+        }
+        iterator++;
     }
 
 
