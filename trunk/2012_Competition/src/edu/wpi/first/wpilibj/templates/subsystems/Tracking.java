@@ -13,18 +13,22 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.image.CriteriaCollection;
 import edu.wpi.first.wpilibj.image.NIVision.MeasurementType;
 import edu.wpi.first.wpilibj.image.NIVisionException;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *  This is for flashing lights and the camera.
  *  @author Edge
  */
 public class Tracking extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
     private AxisCamera camera;
     private CriteriaCollection filterCriteria;
+
+    private boolean m_fault = false;
+
+    private double m_targetAngle = 0.0;
+    private double m_targetDistance = 0.0;
+    private boolean m_isNewTarget = false;
+    private boolean m_foundTarget = false;
 
     public Tracking() {
         camera = AxisCamera.getInstance();
@@ -58,18 +62,19 @@ public class Tracking extends Subsystem {
 //                ParticleAnalysisReport[] particles = filteredImage.getOrderedParticleAnalysisReports(4);
                 ParticleAnalysisReport[] particles = convexHullImage.getOrderedParticleAnalysisReports();
 
+                m_foundTarget = false;
                 if(particles.length > 0) {
                     // find highest (i.e. lowest y)
                     int index = -1;
                     double lowestY = 1.0;
                     for(int i = 0; i < particles.length; i++) {
                         p = particles[i];
-                        if(p.boundingRectHeight * p.boundingRectWidth > 100) {
+                        if(p.boundingRectHeight * p.boundingRectWidth > 500) {
                             if(p.center_mass_y_normalized < lowestY) {
                                 index = i;
                             }
-                            System.out.println(i + ": " + p.center_mass_x_normalized + ", " +
-                                    p.center_mass_y_normalized + " " + p.boundingRectHeight);
+ //                           System.out.println(i + ": " + p.center_mass_x_normalized + ", " +
+ //                                   p.center_mass_y_normalized + " " + p.boundingRectHeight);
                         }
                     }
                     if(index >= 0) {
@@ -77,8 +82,11 @@ public class Tracking extends Subsystem {
                         p = particles[index];
                         double angle = p.center_mass_x_normalized * 22; // FIX THE MAGIC NUMBER!
                         double distance = 480.0/p.boundingRectHeight; // FIX THE MAGIC NUMBER!
-                        SmartDashboard.putDouble("Target Angle", angle);
-                        SmartDashboard.putDouble("Target Distance", distance);
+
+                        m_foundTarget = true;
+                        m_isNewTarget = true;
+                        m_targetAngle = angle;
+                        m_targetDistance = distance;
                     }
                 }
 //                filteredImage.free();
@@ -89,16 +97,40 @@ public class Tracking extends Subsystem {
 
 
             } catch (NIVisionException ex) {
+                m_fault = true;
                 System.out.println("Camera NI exception");
             } catch (AxisCameraException ex) {
+                m_fault = true;
                 System.out.println("Camera getImage() exception");
             }
         }
         
     }
 
+    public boolean isNewTarget() {
+        return m_isNewTarget;
+    }
+
+    public boolean foundTarget() {
+        return m_foundTarget;
+    }
+
+    public double getTargetAngle() {
+        m_isNewTarget = false;
+        return m_targetAngle;
+    }
+
+    public double getTargetDistance() {
+        m_isNewTarget = false;
+        return m_targetDistance;
+    }
+
+    public boolean getFault() {
+        return m_fault;
+    }
+
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        // setDefaultCommand(new TrackerAuto());
     }
 }

@@ -5,10 +5,14 @@
 package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.TurretWithController;
+import edu.wpi.first.wpilibj.templates.commands.TurretAuto;
+// for debugging
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,7 +24,13 @@ public class Turret extends Subsystem {
     // Will become PID subsystem very soon...
 
     private CANJaguar m_turretMotor = null;
+    private DigitalInput m_limitSwitch;
     private boolean m_fault = false;
+
+    // ratio between drive wheel posn and turret angle
+    private static final double driveRatio = 80.0;
+    // offset for angle calculation
+    private double posnOffset = 0.0;
 
     public Turret() {
         // configure turret motor
@@ -30,6 +40,8 @@ public class Turret extends Subsystem {
             m_fault = true;
             System.err.println("##### CAN Init Failure ID: " + Wiring.turretMotorCANID);
         }
+        m_limitSwitch = new DigitalInput(Wiring.turretLimitSwitch);
+
     }
 
     public void enable() {
@@ -37,6 +49,33 @@ public class Turret extends Subsystem {
             try {
                 m_turretMotor.configEncoderCodesPerRev(360);
                 m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPosition);
+//                m_turretMotor.setPID(20.0, 0.0, 0.0);
+                m_turretMotor.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
+        }
+    }
+
+    public void setDeltaAngle(double deltaAngle) {
+        double deltaPosn = deltaAngle / driveRatio;
+        SmartDashboard.putDouble("deltaposn", deltaPosn);
+        if(m_turretMotor != null) {
+            try {
+                double posn = m_turretMotor.getPosition();
+//                m_turretMotor.setX(posn + deltaPosn);
+                double power = 0.0;
+                if(Math.abs(deltaPosn) > .05) {
+                    if(deltaPosn > 0) {
+                        power = 0.2;
+                    } else {
+                        power = -0.2;
+                    }
+                }
+                m_turretMotor.setX(power);
+//                m_turretMotor.setX(posn + deltaPosn);
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("##### CAN Timeout ####");
@@ -45,7 +84,15 @@ public class Turret extends Subsystem {
     }
 
     public void setAngle(double angle) {
-
+        double posn = (angle / driveRatio) - posnOffset;
+        if(m_turretMotor != null) {
+            try {
+                m_turretMotor.setX(posn);
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
+        }
     }
 
     public void setPower(double power) {
@@ -64,13 +111,17 @@ public class Turret extends Subsystem {
 
         if(m_turretMotor != null) {
             try {
-                angle = m_turretMotor.getPosition();
+                angle = (m_turretMotor.getPosition() + posnOffset) * driveRatio;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("##### CAN Timeout ####");
             }
         }
         return angle;
+    }
+
+    public boolean isLimitSwitchPressed() {
+        return !m_limitSwitch.get();
     }
 
     public boolean getFault() {
@@ -80,5 +131,6 @@ public class Turret extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new TurretWithController());
+//        setDefaultCommand(new TurretAuto());
     }
 }

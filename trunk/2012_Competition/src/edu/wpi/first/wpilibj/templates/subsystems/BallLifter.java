@@ -81,6 +81,23 @@ public class BallLifter extends Subsystem {
         return (m_lifterMotorPower);
     }
 
+        public double getCurrent() {
+        double current = 0.0;
+
+        if(m_lifterMotor != null) {
+            try {
+                current = m_lifterMotor.getOutputCurrent();
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        return current;
+    }
+
+
+
     public boolean getFault() {
         return m_fault;
     }
