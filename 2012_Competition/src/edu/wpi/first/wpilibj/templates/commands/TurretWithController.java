@@ -11,6 +11,9 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class TurretWithController extends CommandBase {
 
+
+    final double sensitivity = 0.3;
+
     public TurretWithController() {
         // Use requires() here to declare subsystem dependencies
         super("TurretWithController");
@@ -24,7 +27,7 @@ public class TurretWithController extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        turret.setPower(oi.getTurretTurnStick());
+        turret.setPower(sensitivity * oi.getTurretTurnStick());
     }
 
     // Make this return true when this Command no longer needs to run execute()

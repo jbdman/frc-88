@@ -107,7 +107,8 @@ public abstract class CommandBase extends Command {
         if(iterator % 5 == 2) {
             // DEBUG STUFF FOR RAMPPUSHER
             SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
-            SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
+            SmartDashboard.putBoolean("Pusher Down ", rampPusher.isDown());
+//            SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
             SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
 
             SmartDashboard.putDouble("Lifter IOut", lifter.getCurrent());
