@@ -36,7 +36,9 @@ public class RampPusherUp extends CommandBase {
         }
         if(state == kCalibrateDown) {
             rampPusher.down();
-        } else {
+        } else if(state == kCalibrateUp) {
+            rampPusher.up();
+        } else if(rampPusher.getAngle() > 30 || !rampPusher.isLimitSwitchPressed()) {
             rampPusher.up();
         }
     }

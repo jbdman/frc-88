@@ -4,46 +4,47 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.subsystems.Tracking;
+import edu.wpi.first.wpilibj.templates.subsystems.Turret;
 
 /**
  *
- * @author TJ2
+ * @author Michael_Edgington
  */
-public class RampPusherDown extends CommandBase {
+public class TurretAuto extends CommandBase {
 
-    public RampPusherDown() {
+    public TurretAuto() {
         // Use requires() here to declare subsystem dependencies
-        super("RampPusherDown");
-        requires(rampPusher);
+        super("TurretAuto");
+        requires(turret);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if((rampPusher.isCalibrated() && rampPusher.getAngle() < 30)
-                || !rampPusher.isLimitSwitchPressed()) {
-            rampPusher.down();
-        }
+        turret.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if(tracker.foundTarget()) {
+            if(tracker.isNewTarget()) {
+                double deltaAngle = tracker.getTargetAngle();
+                turret.setDeltaAngle(deltaAngle);
+                // should set pitcher speed based on distance...
+            
+            }
+        } else {
+            turret.setPower(0.0);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean done = false;
-        if(!rampPusher.isCalibrated()) {
-            done = rampPusher.isLimitSwitchPressed();
-        } else {
-            done = (rampPusher.getAngle() > 30 && rampPusher.isLimitSwitchPressed());
-        }
-        
-        return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxDownCurrent;
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        rampPusher.stop();
     }
 
     // Called when another command which requires one or more of the same
