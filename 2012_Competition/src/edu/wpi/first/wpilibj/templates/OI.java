@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.templates.commands.FootDown;
 import edu.wpi.first.wpilibj.templates.commands.FootUp;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherUp;
 import edu.wpi.first.wpilibj.templates.commands.RampPusherDown;
+import edu.wpi.first.wpilibj.templates.commands.TurretAuto;
 
 public class OI {
     // Process operator interface input here.
@@ -30,6 +31,7 @@ public class OI {
     private Button operatorButtonB = new JoystickButton(operatorController, 2);
     private Button operatorButtonX = new JoystickButton(operatorController, 3);
     private Button operatorButtonY = new JoystickButton(operatorController, 4);
+    private Button operatorButtonLeftThumb = new JoystickButton(operatorController, 9);
     private Button operatorButtonLeftBumper = new JoystickButton(operatorController, 5);
     private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
 
@@ -41,6 +43,7 @@ public class OI {
         operatorButtonY.whenReleased(new PitcherReload());
         operatorButtonB.whenPressed(new LifterStop());
         operatorButtonX.whenPressed(new LifterUp());
+        operatorButtonLeftThumb.whileHeld(new TurretAuto());
         operatorButtonLeftBumper.whenPressed(new PitcherSpeedDelta(-pitcherSpeedDelta));
         operatorButtonRightBumper.whenPressed(new PitcherSpeedDelta(pitcherSpeedDelta));
        
@@ -52,7 +55,7 @@ public class OI {
     }
 
     public double getTurretTurnStick() {
-        return map(operatorController.getRawAxis(4));
+        return map(operatorController.getX());
     }
 
     public double getFwdStick() {

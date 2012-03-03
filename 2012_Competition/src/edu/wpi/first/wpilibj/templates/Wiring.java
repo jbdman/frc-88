@@ -47,6 +47,6 @@ public class Wiring {
      * ### Digital IO ports ###
      */
     public static final int compressorPressureSwitch = 3;
-    public static final int turretLimitSwitch = 6;
+    public static final int turretLimitSwitch = 14;
     public static final int rampPusherLimitSwitch = 1;
 }
