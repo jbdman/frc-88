@@ -40,6 +40,16 @@ public class Turret extends Subsystem {
             m_fault = true;
             System.err.println("##### CAN Init Failure ID: " + Wiring.turretMotorCANID);
         }
+        try {
+            m_turretMotor.configEncoderCodesPerRev(360);
+            m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPosition);
+            m_turretMotor.setPID(500.0, 2.0, 1.0);
+        } catch (CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("##### CAN Timeout #####");
+        }
+
         m_limitSwitch = new DigitalInput(Wiring.turretLimitSwitch);
 
     }
@@ -47,11 +57,21 @@ public class Turret extends Subsystem {
     public void enable() {
         if(m_turretMotor != null) {
             try {
-                m_turretMotor.configEncoderCodesPerRev(360);
-                m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-//                m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPosition);
-//                m_turretMotor.setPID(20.0, 0.0, 0.0);
+                m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPosition);
+                m_turretMotor.setPID(500.0, 2.0, 1.0);
                 m_turretMotor.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("##### CAN Timeout ####");
+            }
+        }
+    }
+
+    public void disable() {
+        if(m_turretMotor != null) {
+            try {
+                m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                m_turretMotor.disableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("##### CAN Timeout ####");
@@ -65,17 +85,7 @@ public class Turret extends Subsystem {
         if(m_turretMotor != null) {
             try {
                 double posn = m_turretMotor.getPosition();
-//                m_turretMotor.setX(posn + deltaPosn);
-                double power = 0.0;
-                if(Math.abs(deltaPosn) > .05) {
-                    if(deltaPosn > 0) {
-                        power = 0.2;
-                    } else {
-                        power = -0.2;
-                    }
-                }
-                m_turretMotor.setX(power);
-//                m_turretMotor.setX(posn + deltaPosn);
+                m_turretMotor.setX(posn + deltaPosn);
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("##### CAN Timeout ####");

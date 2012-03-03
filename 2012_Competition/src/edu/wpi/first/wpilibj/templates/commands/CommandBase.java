@@ -51,7 +51,7 @@ public abstract class CommandBase extends Command {
         // Initialize "non-subsystems" i.e. compressor
         compressor.start();
 
-        turret.enable();
+        // not sure this is the right place - should be in default command
         pitcher.enable();
         pitcher.setAverageSpeed(1000);
 
