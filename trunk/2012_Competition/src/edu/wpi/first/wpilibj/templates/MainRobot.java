@@ -28,9 +28,6 @@ public class MainRobot extends IterativeRobot {
 
     Command autonomousCommand;
 
-    Compressor compressor;
-    public static Tracking tracker = new Tracking();
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -38,11 +35,6 @@ public class MainRobot extends IterativeRobot {
     public void robotInit() {
         // instantiate the command used for the autonomous period
         autonomousCommand = new LifterUp();
-
-        // Initialize "non-subsystems" i.e. compressor
-        compressor = new Compressor(Wiring.compressorPressureSwitch,
-            Wiring.compressorPowerRelay);
-        compressor.start();
 
         // Initialize all subsystems
         CommandBase.init();
@@ -78,7 +70,15 @@ public class MainRobot extends IterativeRobot {
     }
 
     public void teleopContinuous() {
-        tracker.processImage();
+        CommandBase.continuous();
+    }
+
+    public void autonomousContinuous() {
+        CommandBase.continuous();
+    }
+
+    public void disabledContinuous() {
+        CommandBase.continuous();
     }
 
     /**
