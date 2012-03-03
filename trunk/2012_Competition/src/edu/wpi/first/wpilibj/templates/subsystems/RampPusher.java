@@ -19,6 +19,7 @@ public class RampPusher extends Subsystem {
 
     private CANJaguar m_rampPusher = null;
     private DigitalInput m_limitSwitch;
+    private DigitalInput m_downSwitch;
     private boolean m_isCalibrated = false;
 
     private double m_posnOffset = 0.0;
@@ -27,8 +28,8 @@ public class RampPusher extends Subsystem {
 
     private static final int ticksPerRev = 250;
 
-    private static final double defaultDownPower = 1.0;
-    private static final double defaultUpPower = -1.0;
+    private static final double defaultDownPower = 0.7;
+    private static final double defaultUpPower = -0.7;
 
     public static final double maxDownCurrent = 20.0;
     public static final double maxUpCurrent = 10.0;
@@ -54,7 +55,8 @@ public class RampPusher extends Subsystem {
             }
         }
 
-        m_limitSwitch = new DigitalInput(Wiring.rampPusherLimitSwitch);
+        m_limitSwitch = new DigitalInput(Wiring.rampPusherMainLimitSwitch);
+        m_downSwitch = new DigitalInput(Wiring.rampPusherDownSwitch);
 
     }
 
@@ -88,6 +90,10 @@ public class RampPusher extends Subsystem {
 
     public boolean isLimitSwitchPressed() {
         return !m_limitSwitch.get();
+    }
+
+    public boolean isDown() {
+        return !m_downSwitch.get();
     }
 
     public double getCurrent() {

@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 import edu.wpi.first.wpilibj.templates.commands.LifterStop;
+import edu.wpi.first.wpilibj.templates.commands.LifterDown;
+import edu.wpi.first.wpilibj.templates.commands.PitcherUp;
+import edu.wpi.first.wpilibj.templates.commands.PitcherDown;
 import edu.wpi.first.wpilibj.templates.commands.PitcherSpeedDelta;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFireandReload;
 import edu.wpi.first.wpilibj.templates.commands.PitcherFire;
@@ -23,6 +26,9 @@ public class OI {
 
     // driver can deploy foot
     private Button driverButtonA = new JoystickButton(driverController, 1);
+    private Button driverButtonB = new JoystickButton(driverController, 2);
+    private Button driverButtonX = new JoystickButton(driverController, 3);
+    private Button driverButtonY = new JoystickButton(driverController, 4);
     private Button driverButtonLeftBumper = new JoystickButton(driverController, 5);
     private Button driverButtonRightBumper = new JoystickButton(driverController, 6);
 
@@ -41,15 +47,17 @@ public class OI {
         operatorButtonA.whenPressed(new PitcherFireandReload());
         operatorButtonY.whenPressed(new PitcherFire());
         operatorButtonY.whenReleased(new PitcherReload());
-        operatorButtonB.whenPressed(new LifterStop());
-        operatorButtonX.whenPressed(new LifterUp());
+        operatorButtonB.whenPressed(new PitcherDown());
+        operatorButtonX.whenPressed(new PitcherUp());
         operatorButtonLeftThumb.whileHeld(new TurretAuto());
         operatorButtonLeftBumper.whenPressed(new PitcherSpeedDelta(-pitcherSpeedDelta));
         operatorButtonRightBumper.whenPressed(new PitcherSpeedDelta(pitcherSpeedDelta));
        
-
         driverButtonA.whenPressed(new FootDown());
         driverButtonA.whenReleased(new FootUp());
+        driverButtonB.whenPressed(new LifterStop());
+        driverButtonY.whenPressed(new LifterUp());
+        driverButtonX.whenPressed(new LifterDown());
         driverButtonLeftBumper.whileHeld(new RampPusherDown());
         driverButtonRightBumper.whileHeld(new RampPusherUp());
     }

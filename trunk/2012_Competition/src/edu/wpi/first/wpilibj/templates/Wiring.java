@@ -48,5 +48,7 @@ public class Wiring {
      */
     public static final int compressorPressureSwitch = 3;
     public static final int turretLimitSwitch = 14;
-    public static final int rampPusherLimitSwitch = 1;
+    public static final int rampPusherMainLimitSwitch = 1;
+    public static final int rampPusherDownSwitch = 5;
+
 }

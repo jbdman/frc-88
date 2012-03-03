@@ -19,8 +19,7 @@ public class RampPusherDown extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if((rampPusher.isCalibrated() && rampPusher.getAngle() < 30)
-                || !rampPusher.isLimitSwitchPressed()) {
+        if(!rampPusher.isLimitSwitchPressed() || !rampPusher.isDown()) {
             rampPusher.down();
         }
     }
@@ -32,10 +31,8 @@ public class RampPusherDown extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         boolean done = false;
-        if(!rampPusher.isCalibrated()) {
-            done = rampPusher.isLimitSwitchPressed();
-        } else {
-            done = (rampPusher.getAngle() > 30 && rampPusher.isLimitSwitchPressed());
+        if(rampPusher.isDown() && rampPusher.isLimitSwitchPressed()) {
+            done = true;
         }
         
         return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxDownCurrent;

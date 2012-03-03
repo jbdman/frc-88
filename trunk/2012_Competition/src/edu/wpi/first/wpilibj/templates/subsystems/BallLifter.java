@@ -22,7 +22,7 @@ public class BallLifter extends Subsystem {
     private boolean m_fault = false;
 
     private static final double defaultUpSpeed = 0.8;
-    private static final double defaultDownSpeed = -0.8;
+    private static final double defaultDownSpeed = -0.5;
 
     public BallLifter() {
         try {
