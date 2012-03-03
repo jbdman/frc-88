@@ -37,7 +37,7 @@ public class Tracking extends Subsystem {
         camera.writeBrightness(20);
         filterCriteria = new CriteriaCollection();
         filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_WIDTH, 20, 200, false);
-        filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT, 20, 200, false);
+        filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT, 15, 200, false);
     }
 
     public void processImage() {
@@ -48,7 +48,8 @@ public class Tracking extends Subsystem {
         final int SAT_HI = 255;
         final int LUM_LO = 60;
         final int LUM_HI = 255;
-        
+        final double minBoundingRectArea = 200;
+
         if (camera.freshImage()) {
 
             try {
@@ -69,7 +70,7 @@ public class Tracking extends Subsystem {
                     double lowestY = 1.0;
                     for(int i = 0; i < particles.length; i++) {
                         p = particles[i];
-                        if(p.boundingRectHeight * p.boundingRectWidth > 500) {
+                        if(p.boundingRectHeight * p.boundingRectWidth > minBoundingRectArea) {
                             if(p.center_mass_y_normalized < lowestY) {
                                 index = i;
                             }
