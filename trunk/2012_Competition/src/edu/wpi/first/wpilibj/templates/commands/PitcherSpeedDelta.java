@@ -11,7 +11,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 public class PitcherSpeedDelta extends CommandBase {
 
     private double m_speedDelta;
-    private static final double settlingTime = 0.5; // should be replaced with checking for speeds
+    private static final double settlingTime = 0.25; // should be replaced with checking for speeds
 
     public PitcherSpeedDelta(double delta) {
         // Use requires() here to declare subsystem dependencies
