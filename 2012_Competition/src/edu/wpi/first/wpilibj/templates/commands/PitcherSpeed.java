@@ -34,6 +34,16 @@ public class PitcherSpeed extends CommandBase {
         m_lowerRPM = averageRPM + 250;
     }
 
+    public PitcherSpeed() {
+        // Use requires() here to declare subsystem dependencies
+        super("PitcherSpeed");
+        requires(pitcher);
+
+        double averageRPM = pitcher.getAverageSpeedSetpoint();
+        m_upperRPM = averageRPM - 250;
+        m_lowerRPM = averageRPM + 250;
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
         pitcher.setSpeed(m_upperRPM, m_lowerRPM);

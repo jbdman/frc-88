@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.templates.subsystems.BallLifter;
 import edu.wpi.first.wpilibj.templates.subsystems.Foot;
 import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
 import edu.wpi.first.wpilibj.templates.subsystems.Turret;
-import edu.wpi.first.wpilibj.templates.subsystems.Tracking;
 import edu.wpi.first.wpilibj.templates.Wiring;
 
 /**
@@ -37,8 +36,6 @@ public abstract class CommandBase extends Command {
     public static Turret turret = new Turret();
     public static Shooter shooter = new Shooter();
     public static Pitcher pitcher = new Pitcher();
-    public static Tracking tracker = new Tracking();
-
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -53,7 +50,7 @@ public abstract class CommandBase extends Command {
 
         // not sure this is the right place - should be in default command
         pitcher.enable();
-        pitcher.setAverageSpeed(1000);
+        pitcher.setAverageSpeed(1200);
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(lifter);
@@ -74,7 +71,7 @@ public abstract class CommandBase extends Command {
     }
 
     public static void continuous() {
-        tracker.processImage();
+        turret.processImage();
     }
 
     private static int iterator = 0;
@@ -88,15 +85,15 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putBoolean("Foot ", !foot.getFault());
             SmartDashboard.putBoolean("DriveTrain ", !driveTrain.getFault());
             SmartDashboard.putBoolean("Lifter ", !lifter.getFault());
-            SmartDashboard.putBoolean("Tracker ", !tracker.getFault());
+            SmartDashboard.putBoolean("Tracker ", !turret.getFault());
 
             // get non-CAN data
             SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
 
             // get Target Data
-            SmartDashboard.putBoolean("Target found ", tracker.foundTarget());
-            SmartDashboard.putDouble("Target angle ", tracker.getTargetAngle());
-            SmartDashboard.putDouble("Target dist  ", tracker.getTargetDistance());
+            SmartDashboard.putBoolean("Target found ", turret.foundTarget());
+            SmartDashboard.putDouble("Target angle ", turret.getTargetAngle());
+            SmartDashboard.putDouble("Target dist  ", turret.getTargetDistance());
 
         }
 

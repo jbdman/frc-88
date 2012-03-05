@@ -4,7 +4,6 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-import edu.wpi.first.wpilibj.templates.subsystems.Tracking;
 import edu.wpi.first.wpilibj.templates.subsystems.Turret;
 
 /**
@@ -12,6 +11,12 @@ import edu.wpi.first.wpilibj.templates.subsystems.Turret;
  * @author Michael_Edgington
  */
 public class TurretAuto extends CommandBase {
+
+    /**************************
+     * FUDGE FACTOR IN DEGREES
+     **************************/
+    private static final double fudgeFactorAngle = 8.0;
+
 
     public TurretAuto() {
         // Use requires() here to declare subsystem dependencies
@@ -26,15 +31,12 @@ public class TurretAuto extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(tracker.foundTarget()) {
-            if(tracker.isNewTarget()) {
-                double deltaAngle = tracker.getTargetAngle();
-                turret.setDeltaAngle(deltaAngle);
+        if(turret.foundTarget()) {
+            if(turret.isNewTarget()) {
+                double angle = turret.getTargetAngle();
+                turret.setAngle(angle + fudgeFactorAngle);
                 // should set pitcher speed based on distance...
-            
             }
-        } else {
-            turret.setPower(0.0);
         }
     }
 

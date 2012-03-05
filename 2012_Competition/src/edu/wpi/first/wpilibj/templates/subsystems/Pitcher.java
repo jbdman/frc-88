@@ -84,8 +84,7 @@ public class Pitcher extends Subsystem {
         if(m_upperMotor != null) {
             try {
                 m_upperMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
-//                m_upperMotor.setPID(0.1, 0.005, 0.0);
-                m_upperMotor.setPID(0.08, 0.005, 0.002);
+                m_upperMotor.setPID(1.0, 0.005, 0.0);
                 m_upperMotor.enableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -95,7 +94,7 @@ public class Pitcher extends Subsystem {
         if(m_lowerMotor != null) {
             try {
                 m_lowerMotor.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                m_lowerMotor.setPID(0.1, 0.005, 0.0);
+                m_lowerMotor.setPID(1.0, 0.005, 0.0);
                 m_lowerMotor.enableControl();
             } catch (CANTimeoutException ex) {
                 m_fault = true;
