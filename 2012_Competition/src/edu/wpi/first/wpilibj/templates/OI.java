@@ -31,6 +31,8 @@ public class OI {
     private Button driverButtonY = new JoystickButton(driverController, 4);
     private Button driverButtonLeftBumper = new JoystickButton(driverController, 5);
     private Button driverButtonRightBumper = new JoystickButton(driverController, 6);
+    private LowAxisButton driverButtonLeftTrigger = new LowAxisButton(driverController);
+    private HighAxisButton driverButtonRightTrigger = new HighAxisButton(driverController);
 
     // operator stuff
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
@@ -44,19 +46,31 @@ public class OI {
     private static final double pitcherSpeedDelta = 25;
 
     public OI() {
+        // fire ball control
         operatorButtonA.whenPressed(new PitcherFireandReload());
+        // shooter angle control
         operatorButtonB.whenPressed(new PitcherDown());
         operatorButtonX.whenPressed(new PitcherUp());
-        operatorButtonY.whenPressed(new PitcherSpeed());
+        // turret auto steer mode
         operatorButtonLeftThumb.whileHeld(new TurretAuto());
+        // shooter speed control
         operatorButtonLeftBumper.whileHeld(new PitcherSpeedDelta(-pitcherSpeedDelta));
         operatorButtonRightBumper.whileHeld(new PitcherSpeedDelta(pitcherSpeedDelta));
+        operatorButtonY.whenPressed(new PitcherSpeed());
        
+        // foot control
         driverButtonA.whenPressed(new FootDown());
         driverButtonA.whenReleased(new FootUp());
-        driverButtonB.whenPressed(new LifterStop());
-        driverButtonY.whenPressed(new LifterUp());
-        driverButtonX.whenPressed(new LifterDown());
+// old lifter control
+//        driverButtonB.whenPressed(new LifterStop());
+//        driverButtonY.whenPressed(new LifterUp());
+//        driverButtonX.whenPressed(new LifterDown());
+        // lifter control
+        driverButtonLeftTrigger.whenPressed(new LifterDown());
+        driverButtonLeftTrigger.whenReleased(new LifterStop());
+        driverButtonRightTrigger.whenPressed(new LifterUp());
+        driverButtonRightTrigger.whenReleased(new LifterStop());
+        // ramp push control
         driverButtonLeftBumper.whileHeld(new RampPusherDown());
         driverButtonRightBumper.whileHeld(new RampPusherUp());
     }
