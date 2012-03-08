@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
-import edu.wpi.first.wpilibj.templates.commands.LifterUp;
+import edu.wpi.first.wpilibj.templates.commands.Autonomous;
 
 
 /**
@@ -32,7 +32,7 @@ public class MainRobot extends IterativeRobot {
      */
     public void robotInit() {
         // instantiate the command used for the autonomous period
-        autonomousCommand = new LifterUp();
+        autonomousCommand = new Autonomous();
 
         // Initialize all subsystems
         CommandBase.init();
