@@ -86,7 +86,9 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putBoolean("DriveTrain ", !driveTrain.getFault());
             SmartDashboard.putBoolean("Lifter ", !lifter.getFault());
             SmartDashboard.putBoolean("Tracker ", !turret.getFault());
+        }
 
+        if(iterator % 3 == 1) {
             // get non-CAN data
             SmartDashboard.putDouble("Pitcher Target ", pitcher.getAverageSpeedSetpoint());
 
@@ -94,24 +96,27 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putBoolean("Target found ", turret.foundTarget());
             SmartDashboard.putDouble("Target angle ", turret.getTargetAngle());
             SmartDashboard.putDouble("Target dist  ", turret.getTargetDistance());
-
         }
 
-        if(iterator % 5 == 1) {
-            SmartDashboard.putDouble("Pitcher upper ", pitcher.getSpeedUpper());
-            SmartDashboard.putDouble("Pitcher lower ", pitcher.getSpeedLower());
+        if(iterator % 3 == 2) {
+            double upper = pitcher.getSpeedUpper();
+            double lower = pitcher.getSpeedUpper();
+            boolean stopped = (upper < 50.0 || lower < 50.0);
+            SmartDashboard.putBoolean("Running ", !stopped);
+            SmartDashboard.putDouble("Pitcher upper ", upper);
+            SmartDashboard.putDouble("Pitcher lower ", lower);
         }
-        if(iterator % 5 == 2) {
-            // DEBUG STUFF FOR RAMPPUSHER
-            SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
-            SmartDashboard.putBoolean("Pusher Down ", rampPusher.isDown());
-//            SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
-            SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
-
-            SmartDashboard.putDouble("Lifter IOut", lifter.getCurrent());
-            SmartDashboard.putDouble("Turret Posn ", turret.getAngle());
-            SmartDashboard.putBoolean("Turret Switch ", turret.isLimitSwitchPressed());
-        }
+//        if(iterator % 5 == 2) {
+//            // DEBUG STUFF FOR RAMPPUSHER
+//            SmartDashboard.putBoolean("Pusher LimitSwitch ", rampPusher.isLimitSwitchPressed());
+//            SmartDashboard.putBoolean("Pusher Down ", rampPusher.isDown());
+////            SmartDashboard.putDouble("Pusher Angle ", rampPusher.getAngle());
+//            SmartDashboard.putDouble("Pusher Current ", rampPusher.getCurrent());
+//
+//            SmartDashboard.putDouble("Lifter IOut", lifter.getCurrent());
+//            SmartDashboard.putDouble("Turret Posn ", turret.getAngle());
+//            SmartDashboard.putBoolean("Turret Switch ", turret.isLimitSwitchPressed());
+//        }
         iterator++;
     }
 
