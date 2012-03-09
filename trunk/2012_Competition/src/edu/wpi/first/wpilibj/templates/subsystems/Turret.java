@@ -42,6 +42,8 @@ public class Turret extends Subsystem {
     private AxisCamera camera;
     private CriteriaCollection filterCriteria;
 
+    private boolean findLowermostTarget = false;
+
     private double m_targetAngle = 0.0;
     private double m_targetDistance = 0.0;
     private boolean m_isNewTarget = false;
@@ -62,7 +64,8 @@ public class Turret extends Subsystem {
             m_turretMotor.configEncoderCodesPerRev(360);
             m_turretMotor.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
             m_turretMotor.changeControlMode(CANJaguar.ControlMode.kPosition);
-            m_turretMotor.setPID(500.0, 2.0, 1.0);
+//            m_turretMotor.setPID(500.0, 2.0, 1.0);
+            m_turretMotor.setPID(300.0, 2.0, 1.0);
         } catch (CANTimeoutException ex) {
             m_fault = true;
             System.err.println("##### CAN Timeout #####");
@@ -78,7 +81,6 @@ public class Turret extends Subsystem {
         filterCriteria = new CriteriaCollection();
         filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_WIDTH, 20, 200, false);
         filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT, 15, 200, false);
-
     }
 
     public void enable() {
@@ -186,18 +188,26 @@ public class Turret extends Subsystem {
 
                 m_foundTarget = false;
                 if(particles.length > 0) {
-                    // find highest (i.e. lowest y) or closest
+                    // find highest target (i.e. lowest y)
                     int index = -1;
-                    double lowestY = 1.0;
+                    double bestY = 1.0;
+                    if(findLowermostTarget) {
+                        bestY = -1.0;
+                    }
                     for(int i = 0; i < particles.length; i++) {
                         p = particles[i];
                         if(p.boundingRectHeight * p.boundingRectWidth > minBoundingRectArea) {
-                            if(p.center_mass_y_normalized < lowestY) {
-                                index = i;
-                                lowestY = p.center_mass_y_normalized;
+                            if(findLowermostTarget) {
+                                if(p.center_mass_y_normalized > bestY) {
+                                    index = i;
+                                    bestY = p.center_mass_y_normalized;
+                                }
+                            } else {
+                                if(p.center_mass_y_normalized < bestY) {
+                                    index = i;
+                                    bestY = p.center_mass_y_normalized;
+                                }
                             }
- //                           System.out.println(i + ": " + p.center_mass_x_normalized + ", " +
- //                                   p.center_mass_y_normalized + " " + p.boundingRectHeight);
                         }
                     }
                     if(index >= 0) {
@@ -232,6 +242,10 @@ public class Turret extends Subsystem {
             }
         }
 
+    }
+
+    public void setFindLowestTarget(boolean value) {
+        findLowermostTarget = value;
     }
 
     public boolean isNewTarget() {

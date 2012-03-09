@@ -27,15 +27,15 @@ public class Shooter extends Subsystem {
     }
 
     public void setFarAngle() {
-        m_anglePiston.set(true);
-    }
-
-    public void setNearAngle() {
         m_anglePiston.set(false);
     }
 
+    public void setNearAngle() {
+        m_anglePiston.set(true);
+    }
+
     public boolean isFarAngle() {
-        return m_anglePiston.get();
+        return !m_anglePiston.get();
     }
 
     public void fire() {
