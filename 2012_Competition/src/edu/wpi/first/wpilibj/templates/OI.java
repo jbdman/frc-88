@@ -26,13 +26,13 @@ public class OI {
 
     // driver can deploy foot
     private Button driverButtonA = new JoystickButton(driverController, 1);
-    private Button driverButtonB = new JoystickButton(driverController, 2);
-    private Button driverButtonX = new JoystickButton(driverController, 3);
-    private Button driverButtonY = new JoystickButton(driverController, 4);
+//    private Button driverButtonB = new JoystickButton(driverController, 2);
+//    private Button driverButtonX = new JoystickButton(driverController, 3);
+//    private Button driverButtonY = new JoystickButton(driverController, 4);
     private Button driverButtonLeftBumper = new JoystickButton(driverController, 5);
     private Button driverButtonRightBumper = new JoystickButton(driverController, 6);
-    private LowAxisButton driverButtonLeftTrigger = new LowAxisButton(driverController);
-    private HighAxisButton driverButtonRightTrigger = new HighAxisButton(driverController);
+    private LowAxisButton driverButtonRightTrigger = new LowAxisButton(driverController);
+    private HighAxisButton driverButtonLeftTrigger = new HighAxisButton(driverController);
 
     // operator stuff
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
@@ -42,8 +42,11 @@ public class OI {
     private Button operatorButtonLeftThumb = new JoystickButton(operatorController, 9);
     private Button operatorButtonLeftBumper = new JoystickButton(operatorController, 5);
     private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
+    private LowAxisButton operatorButtonRightTrigger = new LowAxisButton(operatorController);
+    private HighAxisButton operatorButtonLeftTrigger = new HighAxisButton(operatorController);
 
-    private static final double pitcherSpeedDelta = 25;
+    private static final double pitcherFineSpeedDelta = 25;
+    private static final double pitcherCoarseSpeedDelta = 100;
 
     public OI() {
         // fire ball control
@@ -54,17 +57,15 @@ public class OI {
         // turret auto steer mode
         operatorButtonLeftThumb.whileHeld(new TurretAuto());
         // shooter speed control
-        operatorButtonLeftBumper.whileHeld(new PitcherSpeedDelta(-pitcherSpeedDelta));
-        operatorButtonRightBumper.whileHeld(new PitcherSpeedDelta(pitcherSpeedDelta));
-        operatorButtonY.whenPressed(new PitcherSpeed());
+        operatorButtonLeftBumper.whenPressed(new PitcherSpeedDelta(-pitcherFineSpeedDelta));
+        operatorButtonRightBumper.whenPressed(new PitcherSpeedDelta(pitcherFineSpeedDelta));
+        operatorButtonLeftTrigger.whenPressed(new PitcherSpeedDelta(-pitcherCoarseSpeedDelta));
+        operatorButtonRightTrigger.whenPressed(new PitcherSpeedDelta(pitcherCoarseSpeedDelta));
+        operatorButtonY.whenPressed(new PitcherSpeed(1250));
        
         // foot control
         driverButtonA.whenPressed(new FootDown());
         driverButtonA.whenReleased(new FootUp());
-// old lifter control
-//        driverButtonB.whenPressed(new LifterStop());
-//        driverButtonY.whenPressed(new LifterUp());
-//        driverButtonX.whenPressed(new LifterDown());
         // lifter control
         driverButtonLeftTrigger.whenPressed(new LifterDown());
         driverButtonLeftTrigger.whenReleased(new LifterStop());
