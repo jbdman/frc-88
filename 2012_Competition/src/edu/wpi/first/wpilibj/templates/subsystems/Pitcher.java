@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.PitcherSpeed;
+import edu.wpi.first.wpilibj.templates.commands.PitcherRefresh;
 
 /**
  *
@@ -24,13 +24,17 @@ public class Pitcher extends Subsystem {
     private double m_averageSpeedSetpoint = 0.0;
     private static final double defaultSpeedDelta = 300;
 
+    private double m_upperSetPoint = 0.0;
+    private double m_lowerSetPoint = 0.0;
+
     private boolean m_fault = false;
 
     private static final int teethPerGearUpper = 10;
     /*************************************************************
      * NOTE: PRACTICE BOT HAS 11 teeth in lower sensing sprocket *
+     *       COMPETITION ROBOT HAS 10                            *
      *************************************************************/
-    private static final int teethPerGearLower = 11;
+    private static final int teethPerGearLower = 10;
 
     //Here is the Constructor
     public Pitcher() {
@@ -116,6 +120,8 @@ public class Pitcher extends Subsystem {
             lowerRPM = 0.0;
         }
 
+        m_upperSetPoint = upperRPM;
+        m_lowerSetPoint = lowerRPM;
         m_averageSpeedSetpoint = (upperRPM + lowerRPM)/2;
 
         if(m_upperMotor != null) {
@@ -135,7 +141,14 @@ public class Pitcher extends Subsystem {
             }
         }
     }
-    
+
+    /**
+     * "Reminds" the pitcher by refreshing the same setpoints
+     */
+    public void refreshSpeed() {
+        setSpeed(m_upperSetPoint, m_lowerSetPoint);
+    }
+
     public double getAverageSpeedSetpoint() {
         return m_averageSpeedSetpoint;
     }
@@ -202,6 +215,6 @@ public class Pitcher extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-//        setDefaultCommand(new PitcherSpeed(1050));
+        setDefaultCommand(new PitcherRefresh());
     }
 }
