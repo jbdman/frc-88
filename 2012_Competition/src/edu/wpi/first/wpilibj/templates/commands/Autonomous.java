@@ -25,12 +25,12 @@ public class Autonomous extends CommandGroup {
         //fires the trigger piston
         addSequential(new PitcherFireandReload());
         //loads the second ball
-        addParallel(new TurretSetAngle(0));
-        addSequential(new PitcherDown());
+//        addSequential(new TurretSetAngle(0));
         addParallel(new LifterUp());
+        addSequential(new PitcherDown());
 
         //repeats for the second ball in the robot
-        addParallel(new TurretAuto());
+//        addParallel(new TurretAuto());
         addSequential(new PitcherSpeed(1300));
         addSequential(new PitcherUp());
         addSequential(new PitcherFireandReload());

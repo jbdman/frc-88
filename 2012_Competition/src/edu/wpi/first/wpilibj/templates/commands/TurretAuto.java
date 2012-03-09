@@ -15,8 +15,7 @@ public class TurretAuto extends CommandBase {
     /**************************
      * FUDGE FACTOR IN DEGREES
      **************************/
-    private static final double fudgeFactorAngle = 8.0;
-
+    private static final double fudgeFactorAngle = 6.0;
 
     public TurretAuto() {
         // Use requires() here to declare subsystem dependencies

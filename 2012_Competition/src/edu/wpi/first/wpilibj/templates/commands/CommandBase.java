@@ -85,7 +85,6 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putBoolean("Foot ", !foot.getFault());
             SmartDashboard.putBoolean("DriveTrain ", !driveTrain.getFault());
             SmartDashboard.putBoolean("Lifter ", !lifter.getFault());
-            SmartDashboard.putBoolean("Tracker ", !turret.getFault());
         }
 
         if(iterator % 3 == 1) {
@@ -100,7 +99,7 @@ public abstract class CommandBase extends Command {
 
         if(iterator % 3 == 2) {
             double upper = pitcher.getSpeedUpper();
-            double lower = pitcher.getSpeedUpper();
+            double lower = pitcher.getSpeedLower();
             boolean stopped = (upper < 50.0 || lower < 50.0);
             SmartDashboard.putBoolean("Running ", !stopped);
             SmartDashboard.putDouble("Pitcher upper ", upper);
