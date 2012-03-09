@@ -25,7 +25,10 @@ public class RampPusherUp extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(!rampPusher.isLimitSwitchPressed() || rampPusher.isDown()) {
+//        if(!rampPusher.isLimitSwitchPressed() || rampPusher.isDown()) {
+//            rampPusher.up();
+//        }
+        if(!rampPusher.isLimitSwitchPressed()) {
             rampPusher.up();
         }
     }
@@ -36,10 +39,10 @@ public class RampPusherUp extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean done = false;
-        if(rampPusher.isLimitSwitchPressed() && !rampPusher.isDown()) {
-            done = true;
-        }
+        boolean done = rampPusher.isLimitSwitchPressed();
+//        if(rampPusher.isLimitSwitchPressed() && !rampPusher.isDown()) {
+//            done = true;
+//        }
         return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxUpCurrent;
     }
 

@@ -7,43 +7,36 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author TJ2
+ * @author Michael_Edgington
  */
-public class RampPusherDown extends CommandBase {
+public class PitcherRefresh extends CommandBase {
 
-    public RampPusherDown() {
+    public PitcherRefresh() {
         // Use requires() here to declare subsystem dependencies
-        super("RampPusherDown");
-        requires(rampPusher);
+        super("PitcherRefresh");
+        requires(pitcher);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-//        if(!rampPusher.isLimitSwitchPressed() || !rampPusher.isDown()) {
-//            rampPusher.down();
-//        }
-        if(!rampPusher.isDown()) {
-            rampPusher.down();
-        }
+        setTimeout(1.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if(isTimedOut()) {
+            pitcher.refreshSpeed();
+            setTimeout(1.0);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean done = false;
-//        if(rampPusher.isDown() && rampPusher.isLimitSwitchPressed()) {
-//            done = true;
-//        }
-        done = rampPusher.isDown();
-        return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxDownCurrent;
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        rampPusher.stop();
     }
 
     // Called when another command which requires one or more of the same
