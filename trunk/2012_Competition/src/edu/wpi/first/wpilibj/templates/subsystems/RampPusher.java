@@ -28,8 +28,8 @@ public class RampPusher extends Subsystem {
 
     private static final int ticksPerRev = 250;
 
-    private static final double defaultDownPower = 0.7;
-    private static final double defaultUpPower = -0.7;
+    private static final double defaultDownPower = 1.0;
+    private static final double defaultUpPower = -1.0;
 
     public static final double maxDownCurrent = 20.0;
     public static final double maxUpCurrent = 10.0;
@@ -89,7 +89,7 @@ public class RampPusher extends Subsystem {
     }
 
     public boolean isLimitSwitchPressed() {
-        return !m_limitSwitch.get();
+        return m_limitSwitch.get();
     }
 
     public boolean isDown() {
