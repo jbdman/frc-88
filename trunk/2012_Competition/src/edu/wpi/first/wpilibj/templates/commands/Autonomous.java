@@ -20,21 +20,21 @@ public class Autonomous extends CommandGroup {
         addParallel(new RampPusherUp());
         //auto-targets the turret; sets the shooter angle; and then tells the pitcher to spin
         addParallel(new TurretAuto());
-        addParallel(new PitcherUp());
-        addParallel(new PitcherSpeed(950));
-//        ***********delay**********
+        addSequential(new PitcherSpeed(1275));
+        addSequential(new PitcherUp());
         //fires the trigger piston
         addSequential(new PitcherFireandReload());
         //loads the second ball
-        addSequential(new TurretSetAngle(0));
+        addParallel(new TurretSetAngle(0));
         addSequential(new PitcherDown());
         addParallel(new LifterUp());
 
         //repeats for the second ball in the robot
-        addParallel(new PitcherSpeed(950));
+        addParallel(new TurretAuto());
+        addSequential(new PitcherSpeed(1300));
         addSequential(new PitcherUp());
         addSequential(new PitcherFireandReload());
-        addParallel(new LifterStop());
+        addSequential(new LifterStop());
 
         // To run multiple commands at the same time,
         // use addParallel()
