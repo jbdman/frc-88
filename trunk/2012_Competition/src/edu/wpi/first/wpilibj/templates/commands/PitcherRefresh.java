@@ -11,6 +11,9 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class PitcherRefresh extends CommandBase {
 
+    // refresh rate in seconds
+    private final double refreshRate = 1.0;
+
     public PitcherRefresh() {
         // Use requires() here to declare subsystem dependencies
         super("PitcherRefresh");
@@ -19,14 +22,14 @@ public class PitcherRefresh extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        setTimeout(1.0);
+        setTimeout(refreshRate);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if(isTimedOut()) {
             pitcher.refreshSpeed();
-            setTimeout(1.0);
+            setTimeout(refreshRate);
         }
     }
 
