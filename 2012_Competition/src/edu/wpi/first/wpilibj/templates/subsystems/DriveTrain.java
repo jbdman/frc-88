@@ -60,13 +60,8 @@ public class DriveTrain extends Subsystem {
 
     }
 
-    // Closed loop control...
-    public void driveSpeed(double forward, double turn, double sideways) {
-
-    }
-
     // Open loop control...
-    public void drivePower(double forward, double turn, double sideways) {
+    public void driveMechanumPower(double forward, double turn, double sideways) {
 
         double setFrontLeft  = forward + sideways + turn;
         double setFrontRight = forward - sideways - turn;
@@ -100,6 +95,43 @@ public class DriveTrain extends Subsystem {
         if(m_rearRightMotor != null) {
             try {
                 m_rearRightMotor.setX(setBackRight);
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+        }
+    }
+
+    // Open loop control...
+    public void driveTankPower(double left, double right) {
+
+        if(m_frontLeftMotor != null) {
+            try {
+                m_frontLeftMotor.setX(-left);
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+        }
+        if(m_frontRightMotor != null) {
+            try {
+                m_frontRightMotor.setX(right);
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+        }
+        if(m_rearLeftMotor != null) {
+            try {
+                m_rearLeftMotor.setX(-left);
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+        }
+        if(m_rearRightMotor != null) {
+            try {
+                m_rearRightMotor.setX(right);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

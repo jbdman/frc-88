@@ -80,7 +80,7 @@ public class OI {
         return map(operatorController.getX());
     }
 
-    public double getFwdStick() {
+    public double getFwdLeftStick() {
         return map(-driverController.getY());
     }
 
@@ -90,6 +90,10 @@ public class OI {
 
     public double getTurnStick() {
         return map(driverController.getRawAxis(4));
+    }
+
+    public double getFwdRightStick() {
+        return map(-driverController.getRawAxis(5));
     }
 
     private static final double deadZone = 0.2;
