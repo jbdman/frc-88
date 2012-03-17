@@ -164,11 +164,11 @@ public class Turret extends Subsystem {
 
     public void processImage() {
 
-        final int HUE_LO = 60;
-        final int HUE_HI = 140;
+        final int HUE_LO = 80;
+        final int HUE_HI = 120;
         final int SAT_LO = 60;
         final int SAT_HI = 255;
-        final int LUM_LO = 60;
+        final int LUM_LO = 40;
         final int LUM_HI = 255;
         final double minBoundingRectArea = 100;
 

@@ -60,8 +60,7 @@ public class DriveTrain extends Subsystem {
 
     }
 
-    // Open loop control...
-    public void driveMechanumPower(double forward, double turn, double sideways) {
+    public void driveMechanum(double forward, double turn, double sideways) {
 
         double setFrontLeft  = forward + sideways + turn;
         double setFrontRight = forward - sideways - turn;
@@ -102,8 +101,14 @@ public class DriveTrain extends Subsystem {
         }
     }
 
+    public void driveArcade(double forward, double turn) {
+
+        driveMechanum(forward, turn, 0.0);
+
+    }
+
     // Open loop control...
-    public void driveTankPower(double left, double right) {
+    public void driveTank(double left, double right) {
 
         if(m_frontLeftMotor != null) {
             try {
