@@ -5,6 +5,8 @@
 package edu.wpi.first.wpilibj.templates.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+
 /**
  *
  * @author Chris
@@ -19,7 +21,9 @@ public class Autonomous extends CommandGroup {
         //sets the rampPusher to the limit switch at the top
         addParallel(new RampPusherUp());
         //auto-targets the turret; sets the shooter angle; and then tells the pitcher to spin
+        addSequential(new PitcherSpeed(1275));
         addParallel(new TurretAuto());
+        addSequential(new WaitCommand(1.5));
         addSequential(new PitcherSpeed(1275));
         addSequential(new PitcherUp());
         //fires the trigger piston
@@ -31,9 +35,11 @@ public class Autonomous extends CommandGroup {
 
         //repeats for the second ball in the robot
 //        addParallel(new TurretAuto());
-        addSequential(new PitcherSpeed(1300));
+        addSequential(new PitcherSpeed(1275));
         addSequential(new PitcherUp());
         addSequential(new PitcherFireandReload());
+//        addParallel(new RampPusherDown());
+//        addParallel(new DriveWithKinect());
         addSequential(new LifterStop());
 
         // To run multiple commands at the same time,

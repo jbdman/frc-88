@@ -24,10 +24,10 @@ public class DriveWithController extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//        driveTrain.driveMechanumPower(oi.getFwdLeftStick(),
+//        driveTrain.driveMechanum(oi.getFwdLeftStick(),
 //                              oi.getTurnStick(),
 //                              oi.getSideStick());
-        driveTrain.driveTankPower(oi.getFwdLeftStick(),
+        driveTrain.driveTank(oi.getFwdLeftStick(),
                                   oi.getFwdRightStick());
     }
 

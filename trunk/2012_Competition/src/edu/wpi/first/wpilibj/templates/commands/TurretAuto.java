@@ -26,6 +26,7 @@ public class TurretAuto extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         turret.enable();
+//        turret.setFindLowestTarget(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
