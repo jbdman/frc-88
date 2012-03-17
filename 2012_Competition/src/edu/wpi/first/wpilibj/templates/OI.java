@@ -4,6 +4,7 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.KinectStick;
 import edu.wpi.first.wpilibj.templates.commands.LifterUp;
 import edu.wpi.first.wpilibj.templates.commands.LifterStop;
 import edu.wpi.first.wpilibj.templates.commands.LifterDown;
@@ -23,6 +24,8 @@ public class OI {
     // Process operator interface input here.
     Joystick driverController = new Joystick(1);
     Joystick operatorController = new Joystick(2);
+    KinectStick leftKinectStick = new KinectStick(2);
+    KinectStick rightKinectStick = new KinectStick(1);
 
     // driver can deploy foot
     private Button driverButtonA = new JoystickButton(driverController, 1);
@@ -72,7 +75,7 @@ public class OI {
         driverButtonRightTrigger.whenPressed(new LifterUp());
         driverButtonRightTrigger.whenReleased(new LifterStop());
         // ramp push control
-        driverButtonLeftBumper.whileHeld(new RampPusherDown());
+        driverButtonLeftBumper.whenPressed(new RampPusherDown());
         driverButtonRightBumper.whileHeld(new RampPusherUp());
     }
 
@@ -94,6 +97,14 @@ public class OI {
 
     public double getFwdRightStick() {
         return map(-driverController.getRawAxis(5));
+    }
+
+    public double getKinectLeftStick() {
+        return -leftKinectStick.getY();
+    }
+
+    public double getKinectRightStick() {
+        return -rightKinectStick.getY();
     }
 
     private static final double deadZone = 0.2;
