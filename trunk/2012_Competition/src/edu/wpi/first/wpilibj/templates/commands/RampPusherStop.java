@@ -15,12 +15,12 @@ public class RampPusherStop extends CommandBase {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         super("RampStop");
-        requires(rampPusher);
+        requires(rampPusherSimple);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        rampPusher.stop();
+        rampPusherSimple.stop();
     }
 
     // Called repeatedly when this Command is scheduled to run

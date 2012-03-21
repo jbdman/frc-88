@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.subsystems.Pitcher;
 //import edu.wpi.first.wpilibj.templates.subsystems.WheelSpinner;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.templates.subsystems.RampPusher;
+import edu.wpi.first.wpilibj.templates.subsystems.RampPusherSimple;
 import edu.wpi.first.wpilibj.templates.subsystems.BallLifter;
 import edu.wpi.first.wpilibj.templates.subsystems.Foot;
 import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
@@ -30,7 +30,7 @@ public abstract class CommandBase extends Command {
 
     // Create a single static instance of all of your subsystems
     public static BallLifter lifter = new BallLifter();
-    public static RampPusher rampPusher = new RampPusher();
+    public static RampPusherSimple rampPusherSimple = new RampPusherSimple();
     public static DriveTrain driveTrain = new DriveTrain();
     public static Foot foot = new Foot();
     public static Turret turret = new Turret();
@@ -56,7 +56,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(lifter);
         SmartDashboard.putData(pitcher);
         SmartDashboard.putData(driveTrain);
-        SmartDashboard.putData(rampPusher);
+        SmartDashboard.putData(rampPusherSimple);
         SmartDashboard.putData(foot);
         SmartDashboard.putData(shooter);
         SmartDashboard.putData(turret);
@@ -81,7 +81,7 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putBoolean("Pitcher ", !pitcher.getFault());
             SmartDashboard.putBoolean("Shooter ", !shooter.getFault());
             SmartDashboard.putBoolean("Turret ", !turret.getFault());
-            SmartDashboard.putBoolean("RampPusher ", !rampPusher.getFault());
+            SmartDashboard.putBoolean("RampPusher ", !rampPusherSimple.getFault());
             SmartDashboard.putBoolean("Foot ", !foot.getFault());
             SmartDashboard.putBoolean("DriveTrain ", !driveTrain.getFault());
             SmartDashboard.putBoolean("Lifter ", !lifter.getFault());
