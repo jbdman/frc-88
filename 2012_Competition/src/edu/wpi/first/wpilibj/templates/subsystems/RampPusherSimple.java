@@ -64,6 +64,21 @@ public class RampPusherSimple extends Subsystem {
         }
     }
 
+    public double getCurrent() {
+        double current = 0.0;
+
+        if(m_rampPusher != null) {
+            try {
+                current = m_rampPusher.getOutputCurrent();
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        return current;
+    }
+
     public boolean getFault(){
         return m_fault;
     }
