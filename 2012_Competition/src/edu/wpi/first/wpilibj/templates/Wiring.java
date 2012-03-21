@@ -11,22 +11,22 @@ public class Wiring {
      * ### CAN Motors ###
      */
     // Drive system (motors and encoders)
-    public static final int driveFrontLeftCANID    = 15;
-    public static final int driveFrontRightCANID   = 4;
-    public static final int driveRearLeftCANID     = 5;
-    public static final int driveRearRightCANID    = 14;
+    public static final int driveFrontLeftCANID    = 10;
+    public static final int driveFrontRightCANID   = 11;
+    public static final int driveRearLeftCANID     = 8;
+    public static final int driveRearRightCANID    = 2;
 
     //String theory
-    public static final int lifterMotorCANID  =  17;
+    public static final int lifterMotorCANID  =  9;
 
     //RampPusher
-    public static final int rampPushingMotorCANID  = 16;
+    public static final int rampPushingMotorCANID  = 6;
 
     //Turret
     public static final int pitcherUpperMotorCANID = 3;
-    public static final int pitcherLowerMotorCANID = 12;
-    public static final int turretMotorCANID       = 8;
-    
+    public static final int pitcherLowerMotorCANID = 7;
+    public static final int turretMotorCANID       = 5;
+
     /*
      * ### Solenoids ###
      */
@@ -50,5 +50,4 @@ public class Wiring {
     public static final int turretLimitSwitch = 14;
     public static final int rampPusherMainLimitSwitch = 1;
     public static final int rampPusherDownSwitch = 5;
-
 }
