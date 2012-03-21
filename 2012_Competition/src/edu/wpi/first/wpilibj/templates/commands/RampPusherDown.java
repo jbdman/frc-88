@@ -14,7 +14,7 @@ public class RampPusherDown extends CommandBase {
     public RampPusherDown() {
         // Use requires() here to declare subsystem dependencies
         super("RampPusherDown");
-        requires(rampPusher);
+        requires(rampPusherSimple);
     }
 
     // Called just before this Command runs the first time
@@ -22,31 +22,26 @@ public class RampPusherDown extends CommandBase {
 //        if(!rampPusher.isLimitSwitchPressed() || !rampPusher.isDown()) {
 //            rampPusher.down();
 //        }
-        if(!rampPusher.isDown()) {
-            rampPusher.down();
-        }
+
+            rampPusherSimple.down();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(!rampPusher.isDown()) {
-            rampPusher.down();
-        } else {
-            rampPusher.stop();
-        }
+
+            rampPusherSimple.down();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
 //        boolean done = false;
 //        done = rampPusher.isDown();
-//        return done || Math.abs(rampPusher.getCurrent()) > rampPusher.maxDownCurrent;
-        return false;
+        return Math.abs(rampPusherSimple.getCurrent()) > rampPusherSimple.maxDownCurrent;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        rampPusher.stop();
+        rampPusherSimple.stop();
     }
 
     // Called when another command which requires one or more of the same
