@@ -60,22 +60,41 @@ public class RampPusher extends Subsystem {
 
     }
 
+    /**
+     * Sets the power to a preset default down power.
+     */
     public void down() {
         set(defaultDownPower);
     }
 
+    /**
+     * Sets the power to a preset default up power.
+     */
     public void up() {
         set(defaultUpPower);
     }
 
+    /**
+     * Sets the power equal to 0.
+     */
     public void stop() {
         set(0.0);
     }
 
+    /**
+     * This sets power equal to the variable "power".
+     *
+     * @param power
+     */
     public void setPower(double power) {
         set(power);
     }
 
+    /**
+     * This is the method that actually sets the power.
+     *
+     * @param power
+     */
     private void set(double power) {
         if(m_rampPusher != null) {
             try {

@@ -82,7 +82,6 @@ public class Pitcher extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
     public void enable() {
 
         if(m_upperMotor != null) {
@@ -106,11 +105,17 @@ public class Pitcher extends Subsystem {
             }
         }
     }
-
+    /**
+     *
+     * @param averageRPM
+     */
     public void setAverageSpeed(double averageRPM) {
         setSpeed(averageRPM - defaultSpeedDelta, averageRPM + defaultSpeedDelta);
     }
 
+    /**
+     *
+     */
     public void setSpeed(double upperRPM, double lowerRPM) {
 
         if(upperRPM < 0.0) {
@@ -149,14 +154,26 @@ public class Pitcher extends Subsystem {
         setSpeed(m_upperSetPoint, m_lowerSetPoint);
     }
 
+    /**
+     *
+     * @return averageSpeedSetpoint
+     */
     public double getAverageSpeedSetpoint() {
         return m_averageSpeedSetpoint;
     }
 
+    /**
+     *
+     * @return AverageSpeed of the upper and lower spinners
+     */
     public double getAverageSpeed() {
         return (getSpeedUpper() + getSpeedLower())/2;
     }
 
+    /**
+     *
+     * @return SpeedOfUpperWheels
+     */
     public double getSpeedUpper(){
         double speed = 0.0;
         if(m_upperMotor != null) {
@@ -170,6 +187,10 @@ public class Pitcher extends Subsystem {
         return speed;
     }
 
+    /**
+     *
+     * @return SpeedOfLowerWheels
+     */
     public double getSpeedLower(){
         double speed = 0.0;
         if(m_lowerMotor != null) {
@@ -183,6 +204,10 @@ public class Pitcher extends Subsystem {
         return speed;
     }
 
+    /**
+     *
+     * @return currentDrawnByUpper
+     */
     public double getCurrentUpper(){
         double current = 0.0;
         if(m_upperMotor != null) {
@@ -196,6 +221,10 @@ public class Pitcher extends Subsystem {
         return current;
     }
 
+    /**
+     * 
+     * @return currentDrawnByLower
+     */
     public double getCurrentLower(){
         double current = 0.0;
         if(m_lowerMotor != null) {

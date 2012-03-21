@@ -34,25 +34,38 @@ public class BallLifter extends Subsystem {
         }
     }
 
+    /**
+     * This sends the double power to the set() method.
+     * @param power
+     */
     public void setPower(double power) {
         set(power);
     }
-
+    /**
+     * This method sends a stop signal to the set() method.
+     */
     public void stop() {
         set(0.0);
     }
 
-    //
+    /**
+     * This increases the speed by a set default speed
+     */
     public void up() {
         set(defaultUpSpeed);
     }
 
-    //
+    /*
+     * This decreases the speed by a default set speed.
+     */
     public void down() {
         set(defaultDownSpeed);
     }
 
-    //
+    /**
+     * This is a private method that sets the power going to the ball-lifter 775 motor
+     * @param power this sets the power on the ball-lifter motor to this value
+     */
     private void set(double power) {
         if(m_lifterMotor != null) {
             try {
@@ -64,24 +77,38 @@ public class BallLifter extends Subsystem {
             }
         }
     }
-
+    /**
+     * This method determines and returns whether the ball-lifter 775 is stopped
+     * @return isStopped */
     public boolean isStopped() {
         return (m_lifterMotorPower == 0.0);
     }
 
+    /**
+     * This next method determines and return whether the ball-lifter 775 is powered up
+     * @return isGoingUp
+     */
     public boolean isGoingUp() {
         return (m_lifterMotorPower >= 0.0);
     }
-
+    /**
+     * This next method determines and return whether the ball-lifter 775 is powered down
+     * @return isGoingDown
+     */
     public boolean isGoingDown() {
         return (m_lifterMotorPower <= 0.0);
     }
+
 
     public double getPower() {
         return (m_lifterMotorPower);
     }
 
-        public double getCurrent() {
+    /**returns current
+     * 
+     * @return current the current drawn by the 775 on the ball-lifter
+     */
+    public double getCurrent() {
         double current = 0.0;
 
         if(m_lifterMotor != null) {
@@ -95,7 +122,6 @@ public class BallLifter extends Subsystem {
         }
         return current;
     }
-
 
 
     public boolean getFault() {

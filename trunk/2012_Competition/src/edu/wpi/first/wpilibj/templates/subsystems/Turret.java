@@ -83,6 +83,7 @@ public class Turret extends Subsystem {
         filterCriteria.addCriteria(MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT, 15, 200, false);
     }
 
+    
     public void enable() {
         if(m_turretMotor != null) {
             try {
@@ -162,14 +163,18 @@ public class Turret extends Subsystem {
         return !m_limitSwitch.get();
     }
 
+    /**
+     * This is the image processing software.
+     * It determines weather there is a new image, and then does some imge processing to determine the
+     */
     public void processImage() {
 
         final int HUE_LO = 80;
-        final int HUE_HI = 120;
-        final int SAT_LO = 60;
+        final int HUE_HI = 110;
+        final int SAT_LO = 50;
         final int SAT_HI = 255;
-        final int LUM_LO = 40;
-        final int LUM_HI = 255;
+        final int LUM_LO = 35;
+        final int LUM_HI = 100;
         final double minBoundingRectArea = 100;
 
         if (camera.freshImage()) {
