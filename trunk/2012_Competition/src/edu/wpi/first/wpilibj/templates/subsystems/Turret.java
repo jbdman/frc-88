@@ -137,7 +137,7 @@ public class Turret extends Subsystem {
     public void setPower(double power) {
         if(m_turretMotor != null) {
             try {
-                m_turretMotor.setX(power);
+                m_turretMotor.setX(-power);
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("##### CAN Timeout ####");

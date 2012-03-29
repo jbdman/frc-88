@@ -112,7 +112,7 @@ public class DriveTrain extends Subsystem {
 
         if(m_frontLeftMotor != null) {
             try {
-                m_frontLeftMotor.setX(-left);
+                m_frontLeftMotor.setX(left);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -120,7 +120,7 @@ public class DriveTrain extends Subsystem {
         }
         if(m_frontRightMotor != null) {
             try {
-                m_frontRightMotor.setX(right);
+                m_frontRightMotor.setX(-right);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -128,7 +128,7 @@ public class DriveTrain extends Subsystem {
         }
         if(m_rearLeftMotor != null) {
             try {
-                m_rearLeftMotor.setX(-left);
+                m_rearLeftMotor.setX(left);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -136,7 +136,7 @@ public class DriveTrain extends Subsystem {
         }
         if(m_rearRightMotor != null) {
             try {
-                m_rearRightMotor.setX(right);
+                m_rearRightMotor.setX(-right);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
