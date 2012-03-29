@@ -21,10 +21,11 @@ public class Autonomous extends CommandGroup {
         //sets the rampPusher to the limit switch at the top
         addParallel(new RampPusherUp());
         //auto-targets the turret; sets the shooter angle; and then tells the pitcher to spin
-        addSequential(new PitcherSpeed(1275));
-        addParallel(new TurretAuto());
+        addSequential(new PitcherSpeed(1325));
+//        addParallel(new TurretAuto());
         addSequential(new WaitCommand(1.5));
-        addSequential(new PitcherSpeed(1275));
+        addSequential(new PitcherSpeed(1325));
+        addParallel(new RampPusherDown());
         addSequential(new PitcherUp());
         //fires the trigger piston
         addSequential(new PitcherFireandReload());
@@ -35,11 +36,13 @@ public class Autonomous extends CommandGroup {
 
         //repeats for the second ball in the robot
 //        addParallel(new TurretAuto());
-        addSequential(new PitcherSpeed(1275));
+        addSequential(new PitcherSpeed(1350));
         addSequential(new PitcherUp());
         addSequential(new PitcherFireandReload());
-//        addParallel(new RampPusherDown());
 //        addParallel(new DriveWithKinect());
+
+        addSequential(new DriveAuto(-0.7, -0.7, 3.0)); // TOM - THE LAST NUMBER IS THE TIME DRIVE RUNS
+
         addSequential(new LifterStop());
 
         // To run multiple commands at the same time,
