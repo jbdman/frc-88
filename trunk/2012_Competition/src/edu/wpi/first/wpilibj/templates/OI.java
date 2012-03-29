@@ -47,6 +47,8 @@ public class OI {
     private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
     private LowAxisButton operatorButtonRightTrigger = new LowAxisButton(operatorController);
     private HighAxisButton operatorButtonLeftTrigger = new HighAxisButton(operatorController);
+    private LowAxisButton operatorButtonLeftThumbUp = new LowAxisButton(operatorController, 2);
+    private HighAxisButton operatorButtonLeftThumbDown = new HighAxisButton(operatorController, 2);
 
     private static final double pitcherFineSpeedDelta = 25;
     private static final double pitcherCoarseSpeedDelta = 100;
@@ -58,14 +60,19 @@ public class OI {
         operatorButtonB.whenPressed(new PitcherDown());
         operatorButtonX.whenPressed(new PitcherUp());
         // turret auto steer mode
-        operatorButtonLeftThumb.whileHeld(new TurretAuto());
+//        operatorButtonLeftThumb.whileHeld(new TurretAuto());
         // shooter speed control
         operatorButtonLeftBumper.whenPressed(new PitcherSpeedDelta(-pitcherFineSpeedDelta));
         operatorButtonRightBumper.whenPressed(new PitcherSpeedDelta(pitcherFineSpeedDelta));
         operatorButtonLeftTrigger.whenPressed(new PitcherSpeedDelta(-pitcherCoarseSpeedDelta));
         operatorButtonRightTrigger.whenPressed(new PitcherSpeedDelta(pitcherCoarseSpeedDelta));
         operatorButtonY.whenPressed(new PitcherSpeed(1250));
-       
+        operatorButtonLeftThumbUp.whenPressed(new LifterUp());
+        operatorButtonLeftThumbUp.whenReleased(new LifterStop());
+        operatorButtonLeftThumbDown.whenPressed(new LifterDown());
+        operatorButtonLeftThumbDown.whenReleased(new LifterStop());
+
+
         // foot control
         driverButtonA.whenPressed(new FootDown());
         driverButtonA.whenReleased(new FootUp());
