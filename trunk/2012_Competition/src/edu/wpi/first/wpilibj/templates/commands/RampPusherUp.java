@@ -34,7 +34,14 @@ public class RampPusherUp extends CommandBase {
         rampPusherSimple.stop();
     }
     public boolean isFinished(){
-        return Math.abs(rampPusherSimple.getCurrent()) > rampPusherSimple.maxUpCurrent;
+        if(Math.abs(rampPusherSimple.getCurrent()) > rampPusherSimple.maxUpCurrent||
+                (rampPusherSimple.isUpLimitSwitchPressed())==true){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     // Called when another command which requires one or more of the same

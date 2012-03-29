@@ -28,7 +28,14 @@ public class TurretWithController extends CommandBase {
     protected void execute() {
         double controller=oi.getTurretTurnStick();
 
-        controller=controller*controller;
+        if(controller>0){
+            controller=controller*controller;
+        }
+
+        else
+            if(controller<0){
+            controller=-controller*controller;
+            }
         turret.setPower(sensitivity * controller);
     }
 
