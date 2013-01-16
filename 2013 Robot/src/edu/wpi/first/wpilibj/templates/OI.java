@@ -3,12 +3,43 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
+import edu.wpi.first.wpilibj.Joystick;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+    Joystick driverController = new Joystick(1);
+    public double getFwdLeftStick() {
+        return map(-driverController.getY());
+    }     
+    public double getSideStick() {
+        return map(driverController.getX());
+    }
+
+    public double getTurnStick() {
+        return map(driverController.getRawAxis(4));
+    }
+
+    public double getFwdRightStick() {
+        return map(-driverController.getRawAxis(5));
+    }
+    
+    private static final double deadZone = 0.2;
+    private static final double scale = 1.0/(1.0 - deadZone);
+    
+    private double map(double in) {
+        double out = 0.0;
+
+        if(in > deadZone) {
+            out = (in - deadZone) * scale;
+        } else if(in < -deadZone) {
+            out = (in + deadZone) * scale;
+        }
+        return out;
+    }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button

@@ -26,7 +26,8 @@ public class DrivewithController extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        drive.Drive();
+        drive.driveTankOpenLoop(oi.getFwdLeftStick(),
+                                  oi.getFwdRightStick());
     }
 
     // Make this return true when this Command no longer needs to run execute()
