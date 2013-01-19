@@ -16,10 +16,8 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
  * @author David
  */
 public class Drive extends Subsystem {
-    CANJaguar frontLeftJag;
-    CANJaguar frontRightJag;
-    CANJaguar backLeftJag;
-    CANJaguar backRightJag;
+    CANJaguar leftJag;
+    CANJaguar rightJag;
     RobotDrive drive;
     Joystick joystick;
     private boolean m_fault = false;
@@ -35,35 +33,24 @@ public class Drive extends Subsystem {
         //David reqs. help
         // Two jags commented out because they don't have encoders plugged in, must be uncommented for speed control
             try {
-                frontLeftJag = new CANJaguar(Wiring.driveFrontLeftCANID);
-                //frontLeftJag.setPID(0.005,0.02,0);
+                leftJag = new CANJaguar(Wiring.driveFrontLeftCANID);
+                // Need to determine encoder codes per rev
+                leftJag.configEncoderCodesPerRev(360);
+                leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                leftJag.setPID(0.005,0.02,0);
             }
             catch (CANTimeoutException ex) {
             }
             try {
-                frontRightJag = new CANJaguar(Wiring.driveFrontRightCANID);
+                rightJag = new CANJaguar(Wiring.driveFrontRightCANID);
                 // Need to determine encoder codes per rev
-                frontRightJag.configEncoderCodesPerRev(360);
-                frontRightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                frontRightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                frontRightJag.setPID(0.005,0.02,0);
+                rightJag.configEncoderCodesPerRev(360);
+                rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                rightJag.setPID(0.005,0.02,0);
             }
             catch  (CANTimeoutException ex) {
-            }
-            try {
-                backLeftJag = new CANJaguar(Wiring.driveBackLeftCANID);
-                backLeftJag.configEncoderCodesPerRev(360);
-                backLeftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                backLeftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                backLeftJag.setPID(0.005,0.02,0);
-            }
-            catch (CANTimeoutException ex) {
-            }
-            try {
-                backRightJag = new CANJaguar(Wiring.driveBackRightCANID);
-                //backRightJag.setPID(0.005,0.02,0);
-            }
-            catch  (CANTimeoutException ex)  {
             }
             
         // Set the default command for a subsystem here.
@@ -72,33 +59,17 @@ public class Drive extends Subsystem {
     
     public void driveTankOpenLoop(double left, double right) {
 
-        if(frontLeftJag != null) {
+        if(leftJag != null) {
             try {
-                frontLeftJag.setX(-left);
+                leftJag.setX(-left);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }
-        if(frontRightJag != null) {
+        if(rightJag != null) {
             try {
-                frontRightJag.setX(right);
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
-        if(backLeftJag != null) {
-            try {
-                backLeftJag.setX(-left);
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
-        if(backRightJag != null) {
-            try {
-                backRightJag.setX(right);
+                rightJag.setX(right);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -109,33 +80,17 @@ public class Drive extends Subsystem {
     public void driveTankClosedLoop(double left, double right) {
         // Change to max speed wanted
         int maxRPM = 100;
-        if(frontLeftJag != null) {
+        if(leftJag != null) {
             try {
-                frontLeftJag.setX(-left * maxRPM);
+                leftJag.setX(-left * maxRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }
-        if(frontRightJag != null) {
+        if(rightJag != null) {
             try {
-                frontRightJag.setX(right * maxRPM);
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
-        if(backLeftJag != null) {
-            try {
-                backLeftJag.setX(-left * maxRPM);
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
-        if(backRightJag != null) {
-            try {
-                backRightJag.setX(right * maxRPM);
+                rightJag.setX(right * maxRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
