@@ -10,9 +10,8 @@ public class Wiring {
     /*
      * ### CAN Motors ###
      */
-    // Drive system (motors and encoders)
-    public static final int driveFrontLeftCANID    = 12;
-    public static final int driveFrontRightCANID   = 5;
-    public static final int driveBackLeftCANID     = 17;
-    public static final int driveBackRightCANID    = 16;
+    public static final int driveLeftCANID    = 12;
+    public static final int driveRightCANID   = 5;
+    
+    public static final int climberCANID = 0;
 }
