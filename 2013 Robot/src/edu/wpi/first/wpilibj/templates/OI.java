@@ -1,9 +1,13 @@
 
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.templates.commands.ClimberDown;
+import edu.wpi.first.wpilibj.templates.commands.ClimberUp;
+import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -13,6 +17,18 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     Joystick driverController = new Joystick(1);
     Joystick operatorController = new Joystick(2);
+    
+    private Button operatorButtonA = new JoystickButton(operatorController, 1);
+    private Button operatorButtonB = new JoystickButton(operatorController, 2);
+    private Button operatorButtonX = new JoystickButton(operatorController, 3);
+    
+    public OI() {
+        //climber stop
+        operatorButtonA.whenPressed(new ClimberStop());
+        //climber up/down
+        operatorButtonB.whenPressed(new ClimberUp());
+        operatorButtonX.whenPressed(new ClimberDown());
+    }
     
     public double getFwdLeftStick() {
         return map(-driverController.getY());

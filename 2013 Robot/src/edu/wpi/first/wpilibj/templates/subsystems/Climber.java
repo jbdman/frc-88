@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.templates.Wiring;
 /**
  *
- * @author 
+ * @author David
  */
 public class Climber extends Subsystem {
     CANJaguar ClimbJag;
     //dont know what the stuff under this does just threw it in - David
     private boolean m_climbfault = false;
+    private static final double defaultDownSpeed = -0.5;
+    private static final double defaultUpSpeed = .05;
     
     
     // Put methods for controlling this subsystem
@@ -39,6 +41,16 @@ public class Climber extends Subsystem {
             }
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    }
+    public void stop() {
+        ClimbOpenLoop(0.0);
+    }
+    public void up() {
+        ClimbOpenLoop(defaultUpSpeed);
+    }
+    
+    public void down() {
+        ClimbOpenLoop(defaultDownSpeed);
     }
     public void ClimbOpenLoop(double vertical) {
 

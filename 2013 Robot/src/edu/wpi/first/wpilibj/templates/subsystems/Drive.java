@@ -30,10 +30,10 @@ public class Drive extends Subsystem {
         }
         
     public void initDefaultCommand() {
-        //David reqs. help
+        //David reqs. help with working pid
         // Two jags commented out because they don't have encoders plugged in, must be uncommented for speed control
             try {
-                leftJag = new CANJaguar(Wiring.driveFrontLeftCANID);
+                leftJag = new CANJaguar(Wiring.driveLeftCANID);
                 // Need to determine encoder codes per rev
                 leftJag.configEncoderCodesPerRev(360);
                 leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
@@ -43,7 +43,7 @@ public class Drive extends Subsystem {
             catch (CANTimeoutException ex) {
             }
             try {
-                rightJag = new CANJaguar(Wiring.driveFrontRightCANID);
+                rightJag = new CANJaguar(Wiring.driveRightCANID);
                 // Need to determine encoder codes per rev
                 rightJag.configEncoderCodesPerRev(360);
                 rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
