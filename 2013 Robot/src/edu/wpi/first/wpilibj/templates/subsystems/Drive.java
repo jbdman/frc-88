@@ -19,19 +19,12 @@ public class Drive extends Subsystem {
     CANJaguar leftJag;
     CANJaguar rightJag;
     RobotDrive drive;
-    Joystick joystick;
     private boolean m_fault = false;
     
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public Drive()  {
-        
-        }
-        
-    public void initDefaultCommand() {
-        //David reqs. help with working pid
-        // Two jags commented out because they don't have encoders plugged in, must be uncommented for speed control
             try {
                 leftJag = new CANJaguar(Wiring.driveLeftCANID);
                 // Need to determine encoder codes per rev
@@ -52,9 +45,12 @@ public class Drive extends Subsystem {
             }
             catch  (CANTimeoutException ex) {
             }
-            
+        }
+        
+    public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new DrivewithController());
     }
     
     public void driveTankOpenLoop(double left, double right) {
