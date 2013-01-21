@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class OI {
     Joystick driverController = new Joystick(1);
+    Joystick operatorController = new Joystick(2);
+    
     public double getFwdLeftStick() {
         return map(-driverController.getY());
     }     
