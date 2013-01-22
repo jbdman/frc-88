@@ -21,13 +21,16 @@ public class OI {
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
     private Button operatorButtonB = new JoystickButton(operatorController, 2);
     private Button operatorButtonX = new JoystickButton(operatorController, 3);
+    private Button operatorButtonY = new JoystickButton(operatorController, 4);
+    
     
     public OI() {
-        //climber stop
-        operatorButtonA.whenPressed(new ClimberStop());
-        //climber up/down
-        operatorButtonB.whenPressed(new ClimberUp());
-        operatorButtonX.whenPressed(new ClimberDown());
+        //buttons a and y are currently free - david 1.22.13
+        //climber up/down, also set up when buttons are released the climber SHOULD auto stop
+        operatorButtonB.whileHeld(new ClimberUp());
+        operatorButtonB.whenReleased(new ClimberStop());
+        operatorButtonX.whileHeld(new ClimberDown());
+        operatorButtonX.whenReleased(new ClimberStop());
     }
     
     public double getFwdLeftStick() {
