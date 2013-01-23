@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.subsystems.Climber;
 import edu.wpi.first.wpilibj.templates.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.templates.subsystems.Drive;
-
+import edu.wpi.first.wpilibj.templates.subsystems.Climber;
+import edu.wpi.first.wpilibj.templates.subsystems.Tilter;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -21,6 +22,7 @@ public abstract class CommandBase extends Command {
     public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
     public static Drive drive = new Drive();
     public static Climber climber = new Climber();
+    public static Tilter tilter = new Tilter();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

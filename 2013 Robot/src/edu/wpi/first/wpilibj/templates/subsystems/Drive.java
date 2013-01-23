@@ -30,8 +30,8 @@ public class Drive extends Subsystem {
                 // Need to determine encoder codes per rev
                 leftJag.configEncoderCodesPerRev(360);
                 leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                leftJag.setPID(0.005,0.02,0);
+                //leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                //leftJag.setPID(0.005,0.02,0);
             }
             catch (CANTimeoutException ex) {
             }
@@ -40,8 +40,8 @@ public class Drive extends Subsystem {
                 // Need to determine encoder codes per rev
                 rightJag.configEncoderCodesPerRev(360);
                 rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                rightJag.setPID(0.005,0.02,0);
+                //rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                //rightJag.setPID(0.005,0.02,0);
             }
             catch  (CANTimeoutException ex) {
             }
@@ -57,7 +57,7 @@ public class Drive extends Subsystem {
 
         if(leftJag != null) {
             try {
-                leftJag.setX(-left);
+                leftJag.setX(left);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -65,7 +65,7 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null) {
             try {
-                rightJag.setX(right);
+                rightJag.setX(-right);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
