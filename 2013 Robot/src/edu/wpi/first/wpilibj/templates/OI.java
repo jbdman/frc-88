@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.templates.commands.AngleIncrease;
+import edu.wpi.first.wpilibj.templates.commands.AngleDecrease;
+import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 
 
 /**
@@ -25,7 +28,12 @@ public class OI {
     
     
     public OI() {
-        //buttons a and y are currently free - david 1.22.13
+       //controls the angle for the climber. When the buttons are released the climber should stop automatically - David
+        operatorButtonA.whileHeld(new AngleDecrease());
+        operatorButtonA.whenReleased(new TilterStop());
+        operatorButtonY.whileHeld(new AngleIncrease());
+        operatorButtonY.whenReleased(new TilterStop());
+        
         //climber up/down, also set up when buttons are released the climber SHOULD auto stop
         operatorButtonB.whileHeld(new ClimberUp());
         operatorButtonB.whenReleased(new ClimberStop());
