@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
  */
 public class Climber extends Subsystem {
     CANJaguar ClimbJag;
-    //dont know what the stuff under this does just threw it in - David
+    //speeds can change if needed as of now full power will give you full power
     private boolean m_climbfault = false;
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
