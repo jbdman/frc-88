@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
  *
  * @author David
  */
+// 1/24/12 drive motors may have to be inverted because they are subject to switch
 public class Drive extends Subsystem {
     CANJaguar leftJag;
     CANJaguar rightJag;
@@ -78,7 +79,7 @@ public class Drive extends Subsystem {
         int maxRPM = 100;
         if(leftJag != null) {
             try {
-                leftJag.setX(-left * maxRPM);
+                leftJag.setX(left * maxRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -86,7 +87,7 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null) {
             try {
-                rightJag.setX(right * maxRPM);
+                rightJag.setX(-right * maxRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
