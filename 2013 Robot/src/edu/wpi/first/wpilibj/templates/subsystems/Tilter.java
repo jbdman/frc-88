@@ -51,6 +51,18 @@ public class Tilter extends Subsystem {
     public void Tiltstop(){
         TilterOpenLoop(0.0);
     }
+    
+    //I've commented this out because I'm not sure its relevant for the Titler
+    //public boolean LimitTripped() {
+      //  try {
+            // Also not sure if it returns true or false when the switch is tripped
+        //    return TilterJag.getForwardLimitOK();
+       // } catch(CANTimeoutException ex) {
+         //   m_tiltJag = true;
+           // System.err.println("****************CAN timeout***********");
+            //return true;
+       // }
+    //}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

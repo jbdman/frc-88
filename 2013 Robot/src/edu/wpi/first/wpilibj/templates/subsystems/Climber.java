@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
+import edu.wpi.first.wpilibj.DigitalInput;
 /**
  *
  * @author David
@@ -58,6 +59,34 @@ public class Climber extends Subsystem {
     public void down() {
         ClimbOpenLoop(defaultDownSpeed);
     }
+    
+    public boolean lowerLimitTripped() {
+        try {
+            // Not sure it this should be forward or reverse limit
+            // Also not sure if it returns true or false when the switch is tripped
+            return ClimbJag.getForwardLimitOK();
+        } catch(CANTimeoutException ex) {
+            m_climbfault = true;
+            System.err.println("****************CAN timeout***********");
+            return true;
+        }
+    }
+    
+
+    public boolean upperLimitTripped() {
+        try {
+            // Not sure it this should be forward or reverse limit
+            // Also not sure if it returns true or false when the switch is tripped
+            return ClimbJag.getReverseLimitOK();
+        } catch(CANTimeoutException ex) {
+            m_climbfault = true;
+            System.err.println("****************CAN timeout***********");
+            return true;
+        }
+    }
+    
+
+    
     public void ClimbOpenLoop(double vertical) {
 
         if(ClimbJag != null) {
