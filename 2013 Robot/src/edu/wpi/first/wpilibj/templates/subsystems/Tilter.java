@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 
-
 /**
  *
  * @author 
@@ -23,6 +22,11 @@ public class Tilter extends Subsystem {
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
+    // Tilter Dimensions, specified in inches
+    private static final double dimensionA = 5.0;
+    private static final double dimensionB = 5.0;
+    private double angleAddition;
+    private double angleMultiplier;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -38,9 +42,10 @@ public class Tilter extends Subsystem {
                 //TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
                 //TilerJag.setPID(0.005,0.02,0);
             }
-            catch (CANTimeoutException ex) {
-            }
-        
+        catch (CANTimeoutException ex) {
+        }
+        angleAddition = (dimensionA * dimensionA) + (dimensionB * dimensionB);
+        angleMultiplier = 2 * dimensionA * dimensionB;
     }
     public void increase(){
         TilterOpenLoop(defaultDownSpeed);
@@ -91,5 +96,11 @@ public class Tilter extends Subsystem {
         }
        
     }
+    
+    public double distanceFromAngle(double angle) {
+        double distance = 0.0;
+        distance = Math.sqrt(angleAddition - (angleMultiplier * Math.cos(angle)));
+        return distance;
     }
+}
 
