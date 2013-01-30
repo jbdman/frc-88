@@ -22,6 +22,8 @@ public class Tilter extends Subsystem {
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
+    public static final double HomeAngle = 0;
+    public static final double DownAngle = -3;
     // Tilter Dimensions, specified in inches
     private static final double dimensionA = 5.0;
     private static final double dimensionB = 5.0;
@@ -37,10 +39,10 @@ public class Tilter extends Subsystem {
                 //encoders and stuff needs to be determined (think it needs to set up for distance)
                 
                 // Need to determine encoder codes per rev
-                //TilterJag.configEncoderCodesPerRev(360);
-                //TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                TilterJag.configEncoderCodesPerRev(360);
+                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 //TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                //TilerJag.setPID(0.005,0.02,0);
+                TilterJag.setPID(0.005,0.02,0);
             }
         catch (CANTimeoutException ex) {
         }
@@ -85,10 +87,9 @@ public class Tilter extends Subsystem {
     }
     public void TilterClosedLoop(double side) {
         //stuff underneath tbd
-        int distance = 100;
         if(TilterJag != null) {
             try {
-                TilterJag.setX(side * distance);
+                TilterJag.setX(side);
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************TiltCAN timeout***********");
