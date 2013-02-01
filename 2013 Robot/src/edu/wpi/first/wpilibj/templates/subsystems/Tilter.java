@@ -22,6 +22,7 @@ public class Tilter extends Subsystem {
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
+    private static final double defualtTiltMax = 1;
     public static final double HomeAngle = 0;
     public static final double DownAngle = -3;
     // Tilter Dimensions, specified in inches
@@ -74,10 +75,10 @@ public class Tilter extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
-    public void TilterOpenLoop(double side){
+    public void TilterOpenLoop(double power){
         if(TilterJag != null) {
             try {
-                TilterJag.setX(side);
+                TilterJag.setX(power * defualtTiltMax);
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************CAN timeout***********");

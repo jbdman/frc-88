@@ -22,6 +22,7 @@ public class Climber extends Subsystem {
     private boolean m_climbfault = false;
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
+    private static final double defaultMaxSpeed = 1;
     
     
     // Put methods for controlling this subsystem
@@ -87,14 +88,13 @@ public class Climber extends Subsystem {
     
 
     
-    public void ClimbOpenLoop(double vertical) {
+    public void ClimbOpenLoop(double power) {
 
         if(ClimbJag != null) {
             try {
                 //play with stuff under to see if it needs to be inverted
-                ClimbJag.setX(-vertical);
+                ClimbJag.setX(-power * defaultMaxSpeed);
             } catch(CANTimeoutException ex) {
-                //see line 20 same thing here - David
                 m_climbfault = true;
                 System.err.println("****************CAN timeout***********");
             }

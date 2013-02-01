@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.templates.commands.AngleIncrease;
 import edu.wpi.first.wpilibj.templates.commands.AngleDecrease;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
+import edu.wpi.first.wpilibj.templates.commands.dumperhighscore_position;
+import edu.wpi.first.wpilibj.templates.commands.dumperlowscore_position;
+import edu.wpi.first.wpilibj.templates.commands.feed_position;
 
 
 /**
@@ -29,37 +32,51 @@ public class OI {
     
     public OI() {
        //controls the angle for the climber. When the buttons are released the climber should stop automatically - David
-        operatorButtonA.whileHeld(new AngleDecrease());
-        operatorButtonA.whenReleased(new TilterStop());
-        operatorButtonY.whileHeld(new AngleIncrease());
-        operatorButtonY.whenReleased(new TilterStop());
-        
+//        operatorButtonA.whileHeld(new AngleDecrease());
+//        operatorButtonA.whenReleased(new TilterStop());
+//        operatorButtonY.whileHeld(new AngleIncrease());
+//        operatorButtonY.whenReleased(new TilterStop());
+
         //climber up/down, also set up when buttons are released the climber SHOULD auto stop
-        operatorButtonB.whileHeld(new ClimberUp());
-        operatorButtonB.whenReleased(new ClimberStop());
-        operatorButtonX.whileHeld(new ClimberDown());
-        operatorButtonX.whenReleased(new ClimberStop());
+//        operatorButtonB.whileHeld(new ClimberUp());
+//        operatorButtonB.whenReleased(new ClimberStop());
+//        operatorButtonX.whileHeld(new ClimberDown());
+//        operatorButtonX.whenReleased(new ClimberStop());
+        
+        //these buttons, B and X, the commands for them involve closed loop stuff for another day...need fixing
+          operatorButtonB.whenPressed(new dumperhighscore_position());
+          operatorButtonX.whenPressed(new dumperlowscore_position());
+          operatorButtonY.whenPressed(new feed_position());
+          
     }
     
+    public double getOpRightVerticalAxis() {
+        return deadZoneMap(-operatorController.getRawAxis(4));
+    }     
+    public double getOpRightHorizontalAxis() {
+        return deadZoneMap(operatorController.getRawAxis(5));
+    }
+
+    
     public double getFwdLeftStick() {
-        return map(-driverController.getY());
+        return deadZoneMap(-driverController.getY());
     }     
     public double getSideStick() {
-        return map(driverController.getX());
+        return deadZoneMap(driverController.getX());
     }
 
     public double getTurnStick() {
-        return map(driverController.getRawAxis(4));
+        return deadZoneMap(driverController.getRawAxis(4));
     }
 
     public double getFwdRightStick() {
-        return map(-driverController.getRawAxis(5));
+        return deadZoneMap(-driverController.getRawAxis(5));
     }
     
     private static final double deadZone = 0.2;
     private static final double scale = 1.0/(1.0 - deadZone);
     
-    private double map(double in) {
+    private double deadZoneMap(double in) {
         double out = 0.0;
 
         if(in > deadZone) {
