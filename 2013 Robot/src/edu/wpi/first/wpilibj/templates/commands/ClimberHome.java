@@ -11,6 +11,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 public class ClimberHome extends CommandBase {
     
     private boolean movingDown = false;
+    private boolean broke = false;
     
     public ClimberHome() {
         super ("ClimberHome");
@@ -21,21 +22,34 @@ public class ClimberHome extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (climber.lowerLimitTripped()) {
-            climber.down();
-            movingDown = true;
-        }
-        else {
-            climber.up();
-            movingDown = false;
+        if (climber.upperLimitTripped() && climber.lowerLimitTripped() ) {
+            System.out.println("WIRE IS UNPLUGGED");
+            climber.stop();
+            broke = true;
+            climber.setfault();
+                    
+        } else {
+        
+            if (climber.lowerLimitTripped()){ 
+                climber.down();
+                movingDown = true;
+            }
+            
+            else {
+                climber.up();
+                movingDown = false;
+            }
         }
     }
+    
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        
         if (!climber.lowerLimitTripped() && movingDown) {
             climber.up();
         }
+       
     }
 
     // Make this return true when this Command no longer needs to run execute()

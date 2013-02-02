@@ -1,13 +1,18 @@
-
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author bradmiller
+ * @author David
  */
-public class ExampleCommand extends CommandBase {
-
-    public ExampleCommand() {
+public class TilterJoystick extends CommandBase {
+    
+    public TilterJoystick() {
+        super("TilterJoystick");
+        requires(tilter);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -18,6 +23,7 @@ public class ExampleCommand extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+           tilter.TilterOpenLoop(oi.getOpRightHorizontalAxis());
     }
 
     // Make this return true when this Command no longer needs to run execute()

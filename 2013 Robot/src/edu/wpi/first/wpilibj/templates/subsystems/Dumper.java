@@ -53,7 +53,7 @@ public class Dumper extends Subsystem {
     }
     //these commands REALLY need work because the positions are not up or down they are set positions, ask mr e
     public void high_score_position(){
-        
+    
     }
     public void low_score_positon(){
         
@@ -61,12 +61,12 @@ public class Dumper extends Subsystem {
     public void feed_position(){
         DumpOpenLoop(0.0);
     }
-    public void DumpOpenLoop(double angle) {
+    public void DumpOpenLoop(double power) {
 
         if(DumperJag != null) {
             try {
                 //play with stuff under to see if it needs to be inverted
-                DumperJag.setX(angle);
+                DumperJag.setX(power);
             } catch(CANTimeoutException ex) {
                 m_dumpfault = true;
                 System.err.println("****************CAN timeout***********");
@@ -74,14 +74,14 @@ public class Dumper extends Subsystem {
         }            
       
 }
-  public void DumpClosedLoop(double angle) {
+  public void DumpClosedLoop(double power) {
         // Really dont know what the variable should be something needs to be built for me to see.
         int variable = 100;
         if(DumperJag != null) {
             try {
                 //the formula below will need to change
                 //also play with stuff under to see if it needs to be inverted
-                DumperJag.setX(angle * variable);
+                DumperJag.setX(power * variable);
             } catch(CANTimeoutException ex) {
                 m_dumpfault = true;
                 System.err.println("****************CAN timeout***********");

@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
+import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
 
 /**
  *
- * @author 
+ * @author David + Ag
  */
 //must wait until there is a more definitive idea ie. must be built or described better - David
 public class Tilter extends Subsystem {
@@ -22,7 +23,7 @@ public class Tilter extends Subsystem {
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
-    private static final double defualtTiltMax = 1;
+    private static final double defaultTiltMax = 1;
     public static final double HomeAngle = 0;
     public static final double DownAngle = -3;
     // Tilter Dimensions, specified in inches
@@ -35,15 +36,15 @@ public class Tilter extends Subsystem {
 
     public Tilter()  {
          try {
-                TilterJag = new CANJaguar(Wiring.climberCANID);
+                TilterJag = new CANJaguar(Wiring.TilterCANID);
                 
                 //encoders and stuff needs to be determined (think it needs to set up for distance)
                 
                 // Need to determine encoder codes per rev
-                TilterJag.configEncoderCodesPerRev(360);
-                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                //TilterJag.configEncoderCodesPerRev(360);
+                //TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 //TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                TilterJag.setPID(0.005,0.02,0);
+                //TilterJag.setPID(0.005,0.02,0);
             }
         catch (CANTimeoutException ex) {
         }
@@ -74,11 +75,12 @@ public class Tilter extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new TilterJoystick());
     }
     public void TilterOpenLoop(double power){
         if(TilterJag != null) {
             try {
-                TilterJag.setX(power * defualtTiltMax);
+                TilterJag.setX(power);
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************CAN timeout***********");
@@ -86,11 +88,11 @@ public class Tilter extends Subsystem {
         }
         
     }
-    public void TilterClosedLoop(double side) {
+    public void TilterClosedLoop(double power) {
         //stuff underneath tbd
         if(TilterJag != null) {
             try {
-                TilterJag.setX(side);
+                TilterJag.setX(power * defaultTiltMax);
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************TiltCAN timeout***********");

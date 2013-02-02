@@ -51,10 +51,10 @@ public class OI {
     }
     
     public double getOpRightVerticalAxis() {
-        return deadZoneMap(-operatorController.getRawAxis(4));
-    }     
+        return deadZoneMap(-operatorController.getRawAxis(2));
+    }
     public double getOpRightHorizontalAxis() {
-        return deadZoneMap(operatorController.getRawAxis(5));
+        return deadZoneMap(operatorController.getRawAxis(1));
     }
 
     

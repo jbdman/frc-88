@@ -6,21 +6,21 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author Ag
+ * @author David
  */
-public class TilterTall extends CommandBase {
+//command wont work 2/2/12
+public class ClimberBottom extends CommandBase {
     
-    public TilterTall() {
-        super("TilterPosSetMax");
-        requires(tilter);
+    public ClimberBottom() {
+        super("ClimberBottom");
+        requires(climber);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        double distance = tilter.distanceFromAngle(0);
-        tilter.TilterClosedLoop(distance);
+        climber.ClimbClosedLoop(-6);
     }
 
     // Called repeatedly when this Command is scheduled to run

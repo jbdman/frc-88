@@ -8,11 +8,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
-public class TiltandClimbDrive extends CommandBase {
+public class ClimberJoysick extends CommandBase {
     
-    public TiltandClimbDrive() {
-        super("TiltandClimbDrive");
-        requires(tilter);
+    public ClimberJoysick() {
+        super("ClimberJoystick");
         requires(climber);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -24,8 +23,6 @@ public class TiltandClimbDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        tilter.TilterOpenLoop(oi.getOpRightHorizontalAxis());
-                       
         climber.ClimbOpenLoop(oi.getOpRightVerticalAxis());
     }
 

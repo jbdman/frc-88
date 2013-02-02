@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.templates.commands.ClimberJoysick;
 /**
  *
  * @author David
@@ -48,7 +49,7 @@ public class Climber extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-        setDefaultCommand(new ClimberStop());
+        setDefaultCommand(new ClimberJoysick());
     }
     public void stop() {
         ClimbOpenLoop(0.0);
@@ -59,6 +60,9 @@ public class Climber extends Subsystem {
     
     public void down() {
         ClimbOpenLoop(defaultDownSpeed);
+    }
+    public void setfault() {
+        m_climbfault = true;
     }
     
     public boolean lowerLimitTripped() {
