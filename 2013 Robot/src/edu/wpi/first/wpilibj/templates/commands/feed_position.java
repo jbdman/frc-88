@@ -8,6 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * Closed loop command for setting the dumper to its feed position.
+     * As of 2/3/13 wont work
+     */
 public class feed_position extends CommandBase {
     
     public feed_position() {

@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.templates.subsystems.Climber;
  *
  * @author David
  */
+
+    /**
+     * command for stopping the climber
+     */
 public class ClimberStop extends CommandBase {
     
     public ClimberStop() {
@@ -20,6 +24,10 @@ public class ClimberStop extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * stops the climber
+     */
     protected void initialize() {
         climber.stop();
     }

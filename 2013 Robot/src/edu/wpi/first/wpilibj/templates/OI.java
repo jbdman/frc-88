@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 import edu.wpi.first.wpilibj.templates.commands.dumperhighscore_position;
 import edu.wpi.first.wpilibj.templates.commands.dumperlowscore_position;
 import edu.wpi.first.wpilibj.templates.commands.feed_position;
+import edu.wpi.first.wpilibj.templates.commands.DumperDown;
+import edu.wpi.first.wpilibj.templates.commands.DumperUp;
 
 
 /**
@@ -24,11 +26,19 @@ public class OI {
     Joystick driverController = new Joystick(1);
     Joystick operatorController = new Joystick(2);
     
+    //first controller button
+    private Button driverButtonA = new JoystickButton(driverController, 1);
+    private Button driverButtonB = new JoystickButton(driverController, 2);
+    private Button driverButtonX = new JoystickButton(driverController, 3);
+    private Button driverButtonY = new JoystickButton(driverController, 4);
+    
+    //2nd controller buttons
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
     private Button operatorButtonB = new JoystickButton(operatorController, 2);
     private Button operatorButtonX = new JoystickButton(operatorController, 3);
     private Button operatorButtonY = new JoystickButton(operatorController, 4);
-    
+    private Button operatorButtonLeftBumper = new JoystickButton(operatorController, 5);
+    private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
     
     public OI() {
        //controls the angle for the climber. When the buttons are released the climber should stop automatically - David
@@ -48,12 +58,22 @@ public class OI {
           operatorButtonX.whenPressed(new dumperlowscore_position());
           operatorButtonY.whenPressed(new feed_position());
           
+          //these buttons are for the bumpers and they are the open loop commands for the dumper
+          operatorButtonLeftBumper.whileHeld(new DumperDown());
+          operatorButtonRightBumper.whileHeld(new DumperUp());
+          
     }
     
-    public double getOpRightVerticalAxis() {
+    /**
+     * operator controller's left vertical axis
+     */
+    public double getOpLeftVerticalAxis() {
         return deadZoneMap(-operatorController.getRawAxis(2));
     }
-    public double getOpRightHorizontalAxis() {
+    /**
+     * operator controller's left horizontal axis
+     */
+    public double getOpLeftHorizontalAxis() {
         return deadZoneMap(operatorController.getRawAxis(1));
     }
 
@@ -65,10 +85,16 @@ public class OI {
         return deadZoneMap(driverController.getX());
     }
 
+    /**
+     * Driver Controller's left/ right (not sure) vertical axis
+     */
     public double getTurnStick() {
         return deadZoneMap(driverController.getRawAxis(4));
     }
-
+    
+    /**
+     *  Driver Controller's left/ right (not sure) vertical axis
+     */
     public double getFwdRightStick() {
         return deadZoneMap(-driverController.getRawAxis(5));
     }
@@ -76,6 +102,9 @@ public class OI {
     private static final double deadZone = 0.2;
     private static final double scale = 1.0/(1.0 - deadZone);
     
+    /**
+     *  Dead Zone for the joysticks
+     */
     private double deadZoneMap(double in) {
         double out = 0.0;
 

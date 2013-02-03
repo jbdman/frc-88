@@ -8,6 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author Ag
  */
+
+    /**
+     * Command for the making the Tilter go to its tallest position.
+     * Making the climber closer to horizontal
+     */
 public class TilterTall extends CommandBase {
     
     public TilterTall() {

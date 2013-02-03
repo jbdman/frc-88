@@ -37,50 +37,72 @@ public class Tilter extends Subsystem {
     public Tilter()  {
          try {
                 TilterJag = new CANJaguar(Wiring.TilterCANID);
+                TilterJag.enableControl();
+                TilterJag.configEncoderCodesPerRev(360);
+                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 
-                //encoders and stuff needs to be determined (think it needs to set up for distance)
-                
-                // Need to determine encoder codes per rev
-                //TilterJag.configEncoderCodesPerRev(360);
-                //TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                //TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                //TilterJag.setPID(0.005,0.02,0);
             }
         catch (CANTimeoutException ex) {
         }
         angleAddition = (dimensionA * dimensionA) + (dimensionB * dimensionB);
         angleMultiplier = 2 * dimensionA * dimensionB;
     }
+    /**
+     * This increases the angle by a set default speed
+     */
     public void increase(){
         TilterOpenLoop(defaultDownSpeed);
     }
+    /**
+     * This decreases the angle by a set default speed
+     */
     public void decrease(){
         TilterOpenLoop(defaultUpSpeed);
     }
+    /**
+     * This stops the Tilter
+     */
     public void Tiltstop(){
         TilterOpenLoop(0.0);
+        
     }
-    
-    //I've commented this out because I'm not sure its relevant for the Titler
-    //public boolean LimitTripped() {
-      //  try {
-            // Also not sure if it returns true or false when the switch is tripped
-        //    return TilterJag.getForwardLimitOK();
-       // } catch(CANTimeoutException ex) {
-         //   m_tiltJag = true;
-           // System.err.println("****************CAN timeout***********");
-            //return true;
-       // }
-    //}
+   /**
+     * This enables closed loop on the Tilter
+     */
+    public void enableClosedLoop(){
+                try {
+                    TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                    TilterJag.setPID(0.005,0.02,0);
+                    TilterJag.enableControl();
+                }
+                catch (CANTimeoutException ex){
+                    System.err.println("****************CAN timeout*************");
+                    
+                }
+    }
+    /**
+     * This enables open loop
+     */
+    public void enableOpenLoop(){
+        try{
+            TilterJag.disableControl();
+        }
+        catch (CANTimeoutException ex){
+        }
+    }
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new TilterJoystick());
     }
+    /**
+     * This is the open loop stuff for the Tilter
+     */
     public void TilterOpenLoop(double power){
         if(TilterJag != null) {
             try {
                 TilterJag.setX(power);
+                TilterJag.disableControl();
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************CAN timeout***********");
@@ -88,19 +110,29 @@ public class Tilter extends Subsystem {
         }
         
     }
-    public void TilterClosedLoop(double power) {
-        //stuff underneath tbd
+    /**
+     * This is the closed loop stuff for the Tilter
+     */
+    public void TilterClosedLoop(double distance) {
+        //need to convert distance input (inches) to something the jag can use (rotations)
         if(TilterJag != null) {
             try {
-                TilterJag.setX(power * defaultTiltMax);
+                TilterJag.setX(distance);
+                // Need to determine encoder codes per rev
+                TilterJag.configEncoderCodesPerRev(360);
+                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                TilterJag.setPID(0.005,0.02,0);
+                TilterJag.enableControl();
             } catch(CANTimeoutException ex) {
                 m_tiltJag = true;
                 System.err.println("****************TiltCAN timeout***********");
             }
         }
-       
     }
-    
+    /**
+     * This the math for the Tilter, used in the Closed Loop
+     */
     public double distanceFromAngle(double angle) {
         double distance = 0.0;
         distance = Math.sqrt(angleAddition - (angleMultiplier * Math.cos(angle)));

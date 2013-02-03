@@ -8,6 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * Closed loop command for setting the dumper to score on the top of the pyramid.
+     * As of 2/3/13 wont work
+     */
 public class dumperhighscore_position extends CommandBase {
     
     public dumperhighscore_position() {

@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
  *
  * @author David
  */
-//req help MR. E - David
 
+    /**
+     * Command for driving the robot
+     */
 public class DrivewithController extends CommandBase {
     
     public DrivewithController() {
@@ -25,6 +27,10 @@ public class DrivewithController extends CommandBase {
     }
 
     // Called repeatedly when this Command is scheduled to run
+    
+    /**
+     * Part that drives it
+     */
     protected void execute() {
         drive.driveTankOpenLoop(oi.getFwdLeftStick(),
                                   oi.getFwdRightStick());

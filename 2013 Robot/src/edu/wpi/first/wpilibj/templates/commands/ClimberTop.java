@@ -18,6 +18,11 @@ public class ClimberTop extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * This should set the climber to its tallest position. However, as of 2/3/12
+     * has not been tested
+     */
     protected void initialize() {
         //so far I don't know how to determine the actual # so its guess and check for now
         climber.ClimbClosedLoop(6);

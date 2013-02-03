@@ -8,6 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * Command for running the Tilter off the left joystick's horizontal axis on
+     * the operator controller
+     */
 public class TilterJoystick extends CommandBase {
     
     public TilterJoystick() {
@@ -23,7 +28,7 @@ public class TilterJoystick extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-           tilter.TilterOpenLoop(oi.getOpRightHorizontalAxis());
+           tilter.TilterOpenLoop(oi.getOpLeftHorizontalAxis());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -8,6 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * Closed loop command for setting the Dumper to its low scoring position (the 1)
+     * As of 2/3/13 wont work
+     */
 public class dumperlowscore_position extends CommandBase {
     
     public dumperlowscore_position() {

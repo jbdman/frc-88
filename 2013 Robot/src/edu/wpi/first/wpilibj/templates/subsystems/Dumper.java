@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj.templates.commands.feed_position;
 public class Dumper extends Subsystem {
     CANJaguar DumperJag;
     private boolean m_dumpfault = false;
-    private static final double defaultDownSpeed = 1;
-    private static final double defaultUpSpeed = -1;
+    private static final double defaultDownSpeed = .5;
+    private static final double defaultUpSpeed = -.4;
     //^^^these numbers affect speed and can be changed
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -60,6 +60,13 @@ public class Dumper extends Subsystem {
     }
     public void feed_position(){
         DumpOpenLoop(0.0);
+    }
+    //ln 54 for stuff above
+    public void DumpUp(){
+        DumpOpenLoop(defaultUpSpeed);
+    }
+    public void DumpDown(){
+        DumpOpenLoop(defaultDownSpeed);
     }
     public void DumpOpenLoop(double power) {
 

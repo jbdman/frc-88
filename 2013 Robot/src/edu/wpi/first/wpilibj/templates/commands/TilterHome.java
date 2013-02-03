@@ -9,6 +9,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  * @author David
  */
 
+    /**
+     * Command for "homing" the tilter, starting it in the same position every time.
+     * As of 2/3/12 does not work
+     */
 //this command cant be finished until the math for the correlation for angle to screw position
 public class TilterHome extends CommandBase {
     

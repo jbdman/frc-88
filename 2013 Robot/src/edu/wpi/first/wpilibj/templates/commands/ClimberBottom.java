@@ -19,6 +19,9 @@ public class ClimberBottom extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    /**
+     * This is suppose to set the lowest position for the climber. As of 2/3/12 has not been tested.
+     */
     protected void initialize() {
         climber.ClimbClosedLoop(-6);
     }

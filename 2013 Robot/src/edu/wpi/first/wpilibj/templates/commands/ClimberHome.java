@@ -21,6 +21,11 @@ public class ClimberHome extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * This should calibrate the climber to start in relatively the same position every game
+     * As of 2/3/12 has not been tested
+     */
     protected void initialize() {
         if (climber.upperLimitTripped() && climber.lowerLimitTripped() ) {
             System.out.println("WIRE IS UNPLUGGED");

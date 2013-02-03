@@ -20,6 +20,10 @@ public class ClimberDown extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * This moves the climber down
+     */
     protected void initialize() {
         climber.down();
     }

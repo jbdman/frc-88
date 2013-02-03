@@ -51,20 +51,34 @@ public class Climber extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new ClimberJoysick());
     }
+    /**
+     * This stops the climber
+     */
     public void stop() {
         ClimbOpenLoop(0.0);
     }
+    /**
+     * This makes the climber go up
+     */
     public void up() {
         ClimbOpenLoop(defaultUpSpeed);
     }
-    
+    /**
+     * This makes the climber go down
+     */
     public void down() {
         ClimbOpenLoop(defaultDownSpeed);
     }
+    /**
+     * This sets m_climbfault to true, effectively stopping all the climb motors
+     */
     public void setfault() {
         m_climbfault = true;
     }
     
+    /**
+     * This is for the Lower LimitSwitch
+     */
     public boolean lowerLimitTripped() {
         try {
             // Not sure it this should be forward or reverse limit
@@ -77,7 +91,9 @@ public class Climber extends Subsystem {
         }
     }
     
-
+    /**
+    * This is for the upper limitswitch
+    */
     public boolean upperLimitTripped() {
         try {
             // Not sure it this should be forward or reverse limit
@@ -91,7 +107,9 @@ public class Climber extends Subsystem {
     }
     
 
-    
+    /**
+     * This is the open loop control for the climber
+     */
     public void ClimbOpenLoop(double power) {
 
         if(ClimbJag != null) {
@@ -105,6 +123,9 @@ public class Climber extends Subsystem {
         }            
       
 }
+    /**
+     * This is the closed loop control for the climber
+     */
   public void ClimbClosedLoop(double vertical) {
         // Change to distance stuff
         int distance = 100;

@@ -8,6 +8,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * This runs the climber off of the left joystick's vertical axis on the operator controller
+     */
 public class ClimberJoysick extends CommandBase {
     
     public ClimberJoysick() {
@@ -23,7 +27,7 @@ public class ClimberJoysick extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climber.ClimbOpenLoop(oi.getOpRightVerticalAxis());
+        climber.ClimbOpenLoop(oi.getOpLeftVerticalAxis());
     }
 
     // Make this return true when this Command no longer needs to run execute()

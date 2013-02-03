@@ -8,6 +8,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
+
+    /**
+     * Command for stopping the Tilter
+     */
 public class TilterStop extends CommandBase {
     
     public TilterStop() {
@@ -18,6 +22,10 @@ public class TilterStop extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * Stops the Tilter
+     */
     protected void initialize() {
         tilter.Tiltstop();
     }

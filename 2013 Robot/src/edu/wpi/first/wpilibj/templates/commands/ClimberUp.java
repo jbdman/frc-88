@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.templates.subsystems.Climber;
  *
  * @author David
  */
+
+    /**
+     * command for moving the climber up
+     */
 public class ClimberUp extends CommandBase {
     
     public ClimberUp() {
@@ -20,6 +24,10 @@ public class ClimberUp extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * This moves the climber up
+     */
     protected void initialize() {
         climber.up();
     }

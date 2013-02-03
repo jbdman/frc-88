@@ -15,5 +15,5 @@ public class Wiring {
     public static final int TilterCANID = 16; 
     public static final int climberCANID = 17;
     public static final int DumperCANID = 3;
-    //^^^this guys gotta be changed - David
+    //^^^this guys gotta be changed, atm there is no 5th Jag- David
 }

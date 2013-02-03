@@ -18,6 +18,10 @@ public class AngleDecrease extends CommandBase {
     }
 
     // Called just before this Command runs the first time
+    
+    /**
+     * This increases the angle
+     */
     protected void initialize() {
         tilter.decrease();
     }
