@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
 public class Tilter extends Subsystem {
     CANJaguar TilterJag;
     
-    private boolean m_tiltJag = false;
+    private boolean m_tiltJagFault = false;
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
@@ -37,6 +37,7 @@ public class Tilter extends Subsystem {
     public Tilter()  {
          try {
                 TilterJag = new CANJaguar(Wiring.TilterCANID);
+                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
                 TilterJag.enableControl();
                 TilterJag.configEncoderCodesPerRev(360);
                 TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
@@ -98,13 +99,25 @@ public class Tilter extends Subsystem {
     /**
      * This is the open loop stuff for the Tilter
      */
+    
+    public boolean VerticalLimitTripped() {
+        try {
+            // Not sure it this should be forward or reverse limit
+            // Also not sure if it returns true or false when the switch is tripped
+            return TilterJag.getForwardLimitOK();
+        } catch(CANTimeoutException ex) {
+            m_tiltJagFault = true;
+            System.err.println("****************CAN timeout***********");
+            return true;
+        }
+    }
     public void TilterOpenLoop(double power){
         if(TilterJag != null) {
             try {
-                TilterJag.setX(power);
+                TilterJag.setX(-power);
                 TilterJag.disableControl();
             } catch(CANTimeoutException ex) {
-                m_tiltJag = true;
+                m_tiltJagFault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }
@@ -125,7 +138,7 @@ public class Tilter extends Subsystem {
                 TilterJag.setPID(0.005,0.02,0);
                 TilterJag.enableControl();
             } catch(CANTimeoutException ex) {
-                m_tiltJag = true;
+                m_tiltJagFault = true;
                 System.err.println("****************TiltCAN timeout***********");
             }
         }

@@ -53,6 +53,7 @@ public class ClimberHome extends CommandBase {
         
         if (!climber.lowerLimitTripped() && movingDown) {
             climber.up();
+            movingDown = false;
         }
        
     }

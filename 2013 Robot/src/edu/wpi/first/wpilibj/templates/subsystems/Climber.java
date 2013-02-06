@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.templates.commands.ClimberJoysick;
+import edu.wpi.first.wpilibj.camera.AxisCamera;
+import edu.wpi.first.wpilibj.camera.AxisCameraException;
+import edu.wpi.first.wpilibj.image.ColorImage;
 /**
  *
  * @author David
@@ -24,6 +27,7 @@ public class Climber extends Subsystem {
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
     private static final double defaultMaxSpeed = 1;
+    private AxisCamera camera;
     
     
     // Put methods for controlling this subsystem
@@ -44,6 +48,7 @@ public class Climber extends Subsystem {
             }
             catch (CANTimeoutException ex) {
             }
+            camera = AxisCamera.getInstance();
     }
     
     public void initDefaultCommand() {
@@ -115,7 +120,7 @@ public class Climber extends Subsystem {
         if(ClimbJag != null) {
             try {
                 //play with stuff under to see if it needs to be inverted
-                ClimbJag.setX(-power * defaultMaxSpeed);
+                ClimbJag.setX(power * defaultMaxSpeed);
             } catch(CANTimeoutException ex) {
                 m_climbfault = true;
                 System.err.println("****************CAN timeout***********");
