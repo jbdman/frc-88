@@ -7,9 +7,11 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.feed_position;
+import edu.wpi.first.wpilibj.Encoder;
 /**
  *
  * @author David
@@ -24,6 +26,8 @@ public class Dumper extends Subsystem {
     private boolean m_dumpfault = false;
     private static final double defaultDownSpeed = .5;
     private static final double defaultUpSpeed = -.4;
+    private DigitalInput m_limitSwitch;
+    private static final int linesPerRotation = 100;
     //^^^these numbers affect speed and can be changed
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -31,7 +35,7 @@ public class Dumper extends Subsystem {
     public Dumper(){
         try {
                 DumperJag = new CANJaguar(Wiring.DumperCANID);
-                
+                m_limitSwitch = new DigitalInput(Wiring.dumperLimitSwitch);
                 //encoders and stuff needs to be determined for angle
                 //this stuff controls the close loop control, they may be subject to change
                 // Need to determine encoder codes per rev
@@ -42,6 +46,17 @@ public class Dumper extends Subsystem {
             }
             catch (CANTimeoutException ex) {
             }
+        
+        if(DumperJag != null) {
+            try {
+                DumperJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+                DumperJag.configEncoderCodesPerRev(linesPerRotation);
+            }
+            catch (CANTimeoutException ex) {
+                m_dumpfault = true;
+                System.err.println("CAN timeout");
+            }
+        }
     }
     
     
@@ -61,6 +76,9 @@ public class Dumper extends Subsystem {
     public void feed_position(){
         DumpOpenLoop(0.0);
     }
+    public void stop() {
+        DumpOpenLoop(0.0);
+    }
     //ln 54 for stuff above
     public void DumpUp(){
         DumpOpenLoop(defaultUpSpeed);
@@ -68,6 +86,22 @@ public class Dumper extends Subsystem {
     public void DumpDown(){
         DumpOpenLoop(defaultDownSpeed);
     }
+    public boolean isLimitSwitchPressed() {
+        return m_limitSwitch.get();
+    }
+    public double getPosition(){
+        double position = 0.0;
+        if(DumperJag != null) {
+            try {
+                position = DumperJag.getPosition();
+            } catch (CANTimeoutException ex) {
+                m_dumpfault = true;
+                System.err.println("CAN Timeout");
+            }
+        }
+        return position;
+    }
+        
     public void DumpOpenLoop(double power) {
 
         if(DumperJag != null) {
