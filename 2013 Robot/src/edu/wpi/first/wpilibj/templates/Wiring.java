@@ -16,4 +16,10 @@ public class Wiring {
     public static final int climberCANID = 12;
     public static final int DumperCANID = 3;
     //^^^this guys gotta be changed, atm there is no 5th Jag- David
+    
+    /*
+     * * ##limitSwitches##
+     */
+    public static final int dumperLimitSwitch = 14;
+    //^^^this guys gotta be changed, atm no limit switch wired- David
 }
