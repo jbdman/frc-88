@@ -24,9 +24,11 @@ public class Climber extends Subsystem {
     CANJaguar ClimbJag;
     //speeds can change if needed as of now full power will give you full power
     private boolean m_climbfault = false;
+    private static final double revPerInch = 0.1;
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
     private static final double defaultMaxSpeed = 1;
+    private double m_setPoint = 0.0;
     private AxisCamera camera;
     
     
@@ -133,16 +135,41 @@ public class Climber extends Subsystem {
      */
   public void ClimbClosedLoop(double vertical) {
         // Change to distance stuff
-        int distance = 100;
+      // convert from inches to revolutions
+      double revolution = vertical * revPerInch;
+      m_setPoint = revolution;
         if(ClimbJag != null) {
             try {
                 //the formula below will probably be subject to change
                 //also play with stuff under to see if it needs to be inverted
-                ClimbJag.setX(-vertical * distance);
+                ClimbJag.setX(revolution);
             } catch(CANTimeoutException ex) {
                 m_climbfault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }   
+    }
+
+  public boolean atSetpoint() {
+      return getRevolution() == m_setPoint;
+      //// THIS WILL NOT WORK!!!!
+      // SHOULD CHECK FOR WITHIN TOLERANCE
+  }
+  
+  private double getRevolution() {
+      double revolution = 0.0;
+      try {
+        //the formula below will probably be subject to change
+        //also play with stuff under to see if it needs to be inverted
+                revolution = ClimbJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_climbfault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+      return revolution;
+  }
+     
+    public double getPosition() {
+      return getRevolution() / revPerInch; 
     }
 }
