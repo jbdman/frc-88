@@ -17,23 +17,18 @@ import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.image.ColorImage;
 /**
- *
  * @author David
  */
 public class Climber extends Subsystem {
     CANJaguar ClimbJag;
     //speeds can change if needed as of now full power will give you full power
-    private boolean m_climbfault = false;
+    private boolean m_fault = false;
     private static final double revPerInch = 0.1;
     private static final double defaultDownSpeed = 1;
     private static final double defaultUpSpeed = -1;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
     private AxisCamera camera;
-    
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
     public Climber() {
         
@@ -54,37 +49,39 @@ public class Climber extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new ClimberJoysick());
     }
     /**
-     * This stops the climber
+     * Stops the climber motor.
      */
     public void stop() {
         ClimbOpenLoop(0.0);
     }
     /**
-     * This makes the climber go up
+     * Drives the climber up at the default speed.
      */
     public void up() {
         ClimbOpenLoop(defaultUpSpeed);
     }
     /**
-     * This makes the climber go down
+     * Drives the climber down at the default speed.
      */
     public void down() {
         ClimbOpenLoop(defaultDownSpeed);
     }
     /**
-     * This sets m_climbfault to true, effectively stopping all the climb motors
+     * Sets m_climbfault to true, indicating an error with the
+     * climber system.
      */
     public void setfault() {
-        m_climbfault = true;
+        m_fault = true;
     }
-    
     /**
-     * This is for the Lower LimitSwitch
+     * Gets whether or not the lower limit of the Climber mast has been tripped.
+     * This sensor is also a stop for the Jaguar.
+     * 
+     * @return  True if the Climber has tripped the sensor indicating lower
+     *          position.
      */
     public boolean lowerLimitTripped() {
         try {
@@ -92,22 +89,25 @@ public class Climber extends Subsystem {
             // Also not sure if it returns true or false when the switch is tripped
             return ClimbJag.getForwardLimitOK();
         } catch(CANTimeoutException ex) {
-            m_climbfault = true;
+            m_fault = true;
             System.err.println("****************CAN timeout***********");
             return true;
         }
     }
-    
     /**
-    * This is for the upper limitswitch
-    */
+     * Gets whether or not the upper limit of the Climber mast has been tripped.
+     * This sensor is also a stop for the Jaguar.
+     * 
+     * @return  True if the Climber has tripped the sensor indicating upper
+     *          position.
+     */
     public boolean upperLimitTripped() {
         try {
             // Not sure it this should be forward or reverse limit
             // Also not sure if it returns true or false when the switch is tripped
             return ClimbJag.getReverseLimitOK();
         } catch(CANTimeoutException ex) {
-            m_climbfault = true;
+            m_fault = true;
             System.err.println("****************CAN timeout***********");
             return true;
         }
@@ -115,7 +115,10 @@ public class Climber extends Subsystem {
     
 
     /**
-     * This is the open loop control for the climber
+     * Open loop control for the climb mast, using voltage percentage.
+     * 
+     * @param   power   The voltage of the climb motor specified
+     *                  from -1.0 to 1.0.
      */
     public void ClimbOpenLoop(double power) {
 
@@ -124,27 +127,33 @@ public class Climber extends Subsystem {
                 //play with stuff under to see if it needs to be inverted
                 ClimbJag.setX(power * defaultMaxSpeed);
             } catch(CANTimeoutException ex) {
-                m_climbfault = true;
+                m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }            
       
 }
     /**
-     * This is the closed loop control for the climber
+     * Closed loop control for the climb mast.
+     * 
+     * @param   vertical    The vertical distance to drive to.  A distance of 0
+     *                      is the lower limit of the mast.  The distance is
+     *                      specified in ??? and should always be positive.
      */
-  public void ClimbClosedLoop(double vertical) {
-        // Change to distance stuff
+    public void ClimbClosedLoop(double vertical) {
+        // Need to change vertical distance (specified in inches) to something
+        // the Jaguar can use (revs)
+        // Also ensure that vertical is positive.
       // convert from inches to revolutions
       double revolution = vertical * revPerInch;
       m_setPoint = revolution;
         if(ClimbJag != null) {
             try {
                 //the formula below will probably be subject to change
-                //also play with stuff under to see if it needs to be inverted
+                // may need to be inverted (is this inversion correct?)  2/9
                 ClimbJag.setX(revolution);
             } catch(CANTimeoutException ex) {
-                m_climbfault = true;
+                m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }   
@@ -163,7 +172,7 @@ public class Climber extends Subsystem {
         //also play with stuff under to see if it needs to be inverted
                 revolution = ClimbJag.getPosition();
             } catch(CANTimeoutException ex) {
-                m_climbfault = true;
+                m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
       return revolution;

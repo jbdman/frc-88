@@ -8,11 +8,11 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
-public class DumperUp extends CommandBase {
+public class TilterAngleDecrease extends CommandBase {
     
-    public DumperUp() {
-        super("DumperUp");
-        requires(dumper);
+    public TilterAngleDecrease() {
+        super("AngleDecrease");
+        requires (tilter);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -20,10 +20,10 @@ public class DumperUp extends CommandBase {
     // Called just before this Command runs the first time
     
     /**
-     * This is the open loop command for moving the dumper up
+     * This increases the angle
      */
     protected void initialize() {
-        dumper.DumpUp();
+        tilter.down();
     }
 
     // Called repeatedly when this Command is scheduled to run

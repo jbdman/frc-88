@@ -6,23 +6,18 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author David
+ * @author tj2
  */
-public class DumperDown extends CommandBase {
+public class DumperStop extends CommandBase {
     
-    public DumperDown() {
-        super("DumperDown");
+    public DumperStop() {
+        super("DumperStop");
         requires(dumper);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
-    /**
-     * This is the open loop command for moving the dumper down
-     */
     protected void initialize() {
-        dumper.DumpDown();
+        dumper.stop();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -27,12 +27,12 @@ public class TilterHome extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         if (tilter.VerticalLimitTripped()){ 
-                tilter.decrease();
+                tilter.up();
                 movehorizontal = true;
             }
             
             else {
-                tilter.increase();
+                tilter.down();
                 movehorizontal = false;
             }
         }
@@ -41,7 +41,7 @@ public class TilterHome extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (!tilter.VerticalLimitTripped() && movehorizontal) {
-            tilter.increase();
+            tilter.down();
             movehorizontal = false;
         }
        

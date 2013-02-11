@@ -8,9 +8,9 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
-public class AngleIncrease extends CommandBase {
+public class TilterAngleIncrease extends CommandBase {
     
-    public AngleIncrease() {
+    public TilterAngleIncrease() {
         super("AngleIncrease");
         requires (tilter);
         // Use requires() here to declare subsystem dependencies
@@ -23,7 +23,7 @@ public class AngleIncrease extends CommandBase {
      * This increases the speed by a set default speed
      */
     protected void initialize() {
-        tilter.increase();
+        tilter.up();
     }
 
     // Called repeatedly when this Command is scheduled to run

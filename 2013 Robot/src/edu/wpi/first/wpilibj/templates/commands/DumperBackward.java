@@ -8,23 +8,21 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
-
-    /**
-     * Closed loop command for setting the dumper to score on the top of the pyramid.
-     * As of 2/3/13 wont work
-     */
-public class dumperhighscore_position extends CommandBase {
+public class DumperBackward extends CommandBase {
     
-    public dumperhighscore_position() {
-        super ("dumper is in feed position");
-        requires (dumper);
+    public DumperBackward() {
+        super("DumperDown");
+        requires(dumper);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
+    /**
+     * This is the open loop command for moving the dumper down
+     */
     protected void initialize() {
-        dumper.highScorePosition();
+        dumper.backward();
     }
 
     // Called repeatedly when this Command is scheduled to run

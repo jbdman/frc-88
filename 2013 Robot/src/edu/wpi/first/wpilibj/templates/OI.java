@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.templates.commands.AngleIncrease;
-import edu.wpi.first.wpilibj.templates.commands.AngleDecrease;
+import edu.wpi.first.wpilibj.templates.commands.TilterAngleIncrease;
+import edu.wpi.first.wpilibj.templates.commands.TilterAngleDecrease;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 import edu.wpi.first.wpilibj.templates.commands.dumperhighscore_position;
 import edu.wpi.first.wpilibj.templates.commands.dumperlowscore_position;
 import edu.wpi.first.wpilibj.templates.commands.feed_position;
-import edu.wpi.first.wpilibj.templates.commands.DumperDown;
-import edu.wpi.first.wpilibj.templates.commands.DumperUp;
+import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
+import edu.wpi.first.wpilibj.templates.commands.DumperForward;
 
 
 /**
@@ -59,8 +59,8 @@ public class OI {
           operatorButtonY.whenPressed(new feed_position());
           
           //these buttons are for the bumpers and they are the open loop commands for the dumper
-          operatorButtonLeftBumper.whileHeld(new DumperDown());
-          operatorButtonRightBumper.whileHeld(new DumperUp());
+          operatorButtonLeftBumper.whileHeld(new DumperBackward());
+          operatorButtonRightBumper.whileHeld(new DumperForward());
           
     }
     

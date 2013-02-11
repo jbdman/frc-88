@@ -38,7 +38,7 @@ public class DumperHome extends CommandBase {
         else {
             startPosition = dumper.getPosition();
             desiredPosition = startPosition + increment;
-            dumper.DumpDown();
+            dumper.backward();
             state = STATE_SEEK_LEFT;
         }
     }
@@ -59,7 +59,7 @@ public class DumperHome extends CommandBase {
             case STATE_SEEK_LEFT:
                 if (dumper.getPosition() >= desiredPosition) {
                     desiredPosition = startPosition - increment;
-                    dumper.DumpUp();
+                    dumper.foward();
                     state = STATE_SEEK_RIGHT;
                 }
                 break;
@@ -67,7 +67,7 @@ public class DumperHome extends CommandBase {
                 if (dumper.getPosition() <= desiredPosition) {
                     increment += 0.05;
                     desiredPosition = startPosition + increment;
-                    dumper.DumpDown();
+                    dumper.backward();
                     state = STATE_SEEK_LEFT;
                 }
                 break;

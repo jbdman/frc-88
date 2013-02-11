@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.feed_position;
+import edu.wpi.first.wpilibj.templates.commands.DumperStop;
 import edu.wpi.first.wpilibj.Encoder;
 /**
  *
@@ -23,11 +23,13 @@ import edu.wpi.first.wpilibj.Encoder;
 // more of this must be shown to me or Ag before we can start
 public class Dumper extends Subsystem {
     CANJaguar DumperJag;
-    private boolean m_dumpfault = false;
-    private static final double defaultDownSpeed = .5;
-    private static final double defaultUpSpeed = -.4;
+    private boolean m_fault = false;
+    private static final double defaultBackwardSpeed= -.5;
+    private static final double defaultForwardSpeed = .5;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;
+    private static final double lowerScorePosition = -30;
+    private static final double upperScorePosition = 30;
     //^^^these numbers affect speed and can be changed
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -53,78 +55,146 @@ public class Dumper extends Subsystem {
                 DumperJag.configEncoderCodesPerRev(linesPerRotation);
             }
             catch (CANTimeoutException ex) {
-                m_dumpfault = true;
+                m_fault = true;
                 System.err.println("CAN timeout");
             }
         }
     }
     
-    
+    /**
+     * Set the default command to DumperStop so that when nothing else is
+     * happening, the Dumper doesn't move.
+     * 
+     * DumperStop command needs to be created.
+     */
     public void initDefaultCommand() {
-        setDefaultCommand(new feed_position());
-        //^^ this should make it so the dumper will go into feed position
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new DumperStop());
     }
-    //these commands REALLY need work because the positions are not up or down they are set positions, ask mr e
-    public void high_score_position(){
-    
+    /**
+     * Moves the dumper to dump the discs into the score area at the top
+     * of the pyramid.  Should only be used after climbing, otherwise it
+     * will likely collide with the climber mast.
+     * 
+     * Uses an internal constant position.  This constant is currently
+     * an arbitrary number.  Please change it.
+     */
+    public void highScorePosition(){
+        DumpClosedLoop(upperScorePosition);
     }
-    public void low_score_positon(){
-        
+    /**
+     * Moves the dumper to dump the discs into the 1 point score area.
+     * 
+     * Uses an internal constant position.  This constant is currently
+     * an arbitrary number.  Please change it.
+     */
+    public void lowScorePosition(){
+        DumpClosedLoop(lowerScorePosition);
     }
+    /**
+     * Moves the dumper to the starting position.
+     * 
+     * Not currently implemented.  Should this be a command instead?
+     */
     public void feed_position(){
         DumpOpenLoop(0.0);
     }
+    /**
+     * Stops the Dumper by setting the motor speed to 0.  Does not to any sort
+     * of compensation to keep the Dumper position at the same level.  However,
+     * the Dumper is powered by a window motor, so there is likely to be little
+     * if any back drive.
+     */
     public void stop() {
         DumpOpenLoop(0.0);
     }
-    //ln 54 for stuff above
-    public void DumpUp(){
-        DumpOpenLoop(defaultUpSpeed);
+    /**
+     * Moves the dumper toward the front of the robot.  That is, toward the
+     * Climber mast and the goal at the top of the pyramid once the robot
+     * has climbed.
+     */
+    public void foward(){
+        DumpOpenLoop(defaultForwardSpeed);
     }
-    public void DumpDown(){
-        DumpOpenLoop(defaultDownSpeed);
+    /**
+     * Moves the dumper toward the back of the robot.  That is, away from the
+     * Climber mast and towards the low scoring goal.
+     */
+    public void backward(){
+        DumpOpenLoop(defaultBackwardSpeed);
     }
+    /**
+     * Indicated whether the Dumper is at the home position (vertical) by
+     * reading the position sensor.
+     * 
+     * Should this be renamed to indicate that it is a position sensor
+     * and not a limit switch?  I believe we're using one of the induction
+     * sensors for this instead of a limit switch.
+     * 
+     * @return  Returns true if the position switch is tripped.  Returns
+     *          false otherwise.
+     */
     public boolean isLimitSwitchPressed() {
         return m_limitSwitch.get();
     }
+    /**
+     * Gets the position of the Dumper by reading the position of the encoder
+     * from the Jaguar.  A position of 0 is the home position (vertical).
+     * A positive position is a ??? position, and a negative position is a
+     * ??? position.  (Front or back, not actually sure which is which yet)
+     * 
+     * @return  The position of the Dumper.
+     */
     public double getPosition(){
         double position = 0.0;
         if(DumperJag != null) {
             try {
                 position = DumperJag.getPosition();
             } catch (CANTimeoutException ex) {
-                m_dumpfault = true;
+                m_fault = true;
                 System.err.println("CAN Timeout");
             }
         }
         return position;
     }
-        
+    /**
+     * Open loop control of the Dumper, using voltage percentage.
+     * 
+     * @param   power   The voltage for the motor of the Dumper.  Value
+     *                  should be specified between -1.0 and 1.0.  A positive
+     *                  value is forward motion, negative is backward.
+     */
     public void DumpOpenLoop(double power) {
-
         if(DumperJag != null) {
             try {
-                //play with stuff under to see if it needs to be inverted
+                // may need to be inverted
+                // positive should be forward, negative should be backward
                 DumperJag.setX(power);
             } catch(CANTimeoutException ex) {
-                m_dumpfault = true;
+                m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }            
       
-}
-  public void DumpClosedLoop(double power) {
-        // Really dont know what the variable should be something needs to be built for me to see.
-        int variable = 100;
+    }    
+    
+    /**
+     * Close loop control for the Dumper, using an encoder to control position.
+     * 
+     * Need to determine units position should be specified in (possibly degrees).
+     * 
+     * @param   position    The desired position for the Dumper to move to.  A
+     *                      position of 0 is the home position (vertical).  A
+     *                      positive position moves the dumper forward, and a
+     *                      negative position moves it backwards.
+     */
+    public void DumpClosedLoop(double position) {
         if(DumperJag != null) {
             try {
-                //the formula below will need to change
-                //also play with stuff under to see if it needs to be inverted
-                DumperJag.setX(power * variable);
+                // may need to be inverted
+                // positive should be forward movement, negative should be backward
+                DumperJag.setX(position);
             } catch(CANTimeoutException ex) {
-                m_dumpfault = true;
+                m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
         }   

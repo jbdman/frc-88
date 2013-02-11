@@ -15,21 +15,15 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
  *
  * @author David
  */
-// 1/24/12 drive motors may have to be inverted because they are subject to switch
 public class Drive extends Subsystem {
+    // 1/24/12 drive motors may have to be inverted because they are subject to switch
     CANJaguar leftJag;
     CANJaguar rightJag;
     RobotDrive drive;
     private boolean m_fault = false;
     
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
-    // Additional comment to test commit
-    
     /**
-     * This defines the Jag and sets up the PID stuff
+     * Initializes Jaguars and sets up PID control.
      */
     public Drive()  {
             try {
@@ -42,6 +36,7 @@ public class Drive extends Subsystem {
                 leftJag.enableControl();
             }
             catch (CANTimeoutException ex) {
+                m_fault = true;
             }
             try {
                 rightJag = new CANJaguar(Wiring.driveRightCANID);
@@ -53,17 +48,24 @@ public class Drive extends Subsystem {
                 rightJag.enableControl();
             }
             catch  (CANTimeoutException ex) {
+                m_fault = true;
             }
         }
-        
+    /**
+     * Sets the default command to DriveWithController so that when nothing
+     * else is happening with the Drive, we can use controllers to move.
+     */
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new DrivewithController());
     }
     
     /**
-     * This is the open loop control for the drive system
+     * Open loop control of the Drive, using voltage percentage.
+     * 
+     * @param   left    The voltage for the left side of the Drive.  Value
+     *                  should be specified between -1.0 and 1.0.
+     * @param   right   The voltage for the right side of the Drive. Value
+     *                  should be specified between -1.0 and 1.0.
      */
     public void driveTankOpenLoop(double left, double right) {
 
@@ -88,10 +90,16 @@ public class Drive extends Subsystem {
     }
     
     /**
-     * This is the closed loop control for the drive system
+     * Close loop control for the Drive, using encoders to control speed.
+     * 
+     * @param   left    The speed for the left side of the Drive.  Value
+     *                  should be positive and be below the Drive's max speed.
+     * @param   right   The speed for the right side of the Drive.  Value
+     *                  should be positive and be below the Drive's max speed.
      */
     public void driveTankClosedLoop(double left, double right) {
         // Change to max speed wanted
+        // Why are we multiplying by maxRPM?
         int maxRPM = 100;
         if(leftJag != null) {
             try {
