@@ -6,16 +6,13 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.templates.commands.ClimberJoysick;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
-import edu.wpi.first.wpilibj.image.ColorImage;
+
 /**
  * @author David
  */
@@ -23,9 +20,11 @@ public class Climber extends Subsystem {
     CANJaguar ClimbJag;
     //speeds can change if needed as of now full power will give you full power
     private boolean m_fault = false;
+    private boolean m_calibrated = false;
+    
     private static final double revPerInch = 0.1;
-    private static final double defaultDownSpeed = 1;
-    private static final double defaultUpSpeed = -1;
+    private static final double defaultDownSpeed = -1.0;
+    private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
     private AxisCamera camera;
@@ -35,22 +34,24 @@ public class Climber extends Subsystem {
         try {
                 ClimbJag = new CANJaguar(Wiring.climberCANID);
                 
-                //encoders and stuff needs to be determinec
-                
-                // Need to determine encoder codes per rev
-                //ClimbJag.configEncoderCodesPerRev(360);
-                //ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                //ClimbJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                //ClimbJag.setPID(0.005,0.02,0);
+                // encoder configuration
+                ClimbJag.configEncoderCodesPerRev(100);
+                ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                // default to open loop
+                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                //ClimbJag.setPID(100.0,0.10,0);
             }
             catch (CANTimeoutException ex) {
             }
-            camera = AxisCamera.getInstance();
+
+        // shouldn't this be somewhere more logical?
+        camera = AxisCamera.getInstance();
     }
     
     public void initDefaultCommand() {
         setDefaultCommand(new ClimberJoysick());
     }
+
     /**
      * Stops the climber motor.
      */
@@ -76,36 +77,65 @@ public class Climber extends Subsystem {
     public void setfault() {
         m_fault = true;
     }
+
     /**
-     * Gets whether or not the lower limit of the Climber mast has been tripped.
-     * This sensor is also a stop for the Jaguar.
+     * Sets calibration flag, which means the homing has been completed
+     */
+    public void setCalibrated() {
+        m_calibrated = true;
+    }
+
+    /**
+     * Resets calibration flag, which means the homing has not completed
+     */
+    public void unsetCalibrated() {
+        m_calibrated = false;
+    }
+
+    /**
+     * Returns the value of the calibration flag
      * 
-     * @return  True if the Climber has tripped the sensor indicating lower
-     *          position.
+     * @return  True if the Climber subsystem has been calibrated
+     */
+    public boolean isCalibrated() {
+        return m_calibrated;
+    }
+
+    /**
+     * Gets whether or not the lower limit of the Climber mast has been tripped,
+     * i.e. the mast is at it's *highest* position.
+     * This sensor is also a hard limit switch for the Jaguar.
+     * 
+     * @return  True if the Climber has tripped the sensor indicating full up position.
      */
     public boolean lowerLimitTripped() {
         try {
-            // Not sure it this should be forward or reverse limit
-            // Also not sure if it returns true or false when the switch is tripped
-            return ClimbJag.getForwardLimitOK();
+            /**
+             * The sensor is wired to the forward limit switch of the Jaguar
+             * The getForwardLimitOK() method returns false when the switch is tripped
+            **/
+            return !ClimbJag.getForwardLimitOK();
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
             return true;
         }
     }
+
     /**
-     * Gets whether or not the upper limit of the Climber mast has been tripped.
-     * This sensor is also a stop for the Jaguar.
+     * Gets whether or not the upper limit of the Climber mast has been tripped,
+     * i.e. the mast is at it's *lowest* position.
+     * This sensor is also a hard limit switch for the Jaguar.
      * 
-     * @return  True if the Climber has tripped the sensor indicating upper
-     *          position.
+     * @return  True if the Climber has tripped the sensor indicating full down position.
      */
     public boolean upperLimitTripped() {
         try {
-            // Not sure it this should be forward or reverse limit
-            // Also not sure if it returns true or false when the switch is tripped
-            return ClimbJag.getReverseLimitOK();
+            /**
+             * The sensor is wired to the reverse limit switch of the Jaguar
+             * The getReverseLimitOK() method returns false when the switch is tripped
+            **/
+            return !ClimbJag.getReverseLimitOK();
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
