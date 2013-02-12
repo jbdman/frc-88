@@ -10,12 +10,12 @@ public class Wiring {
     /*
      * ### CAN Motors ###
      */
-    public static final int driveLeftCANID    = 16; 
-    public static final int driveRightCANID   = 17;
-    public static final int TilterCANID = 5; 
+    // Added real CAN IDs from the practice robot
+    public static final int driveLeftCANID    = 2; 
+    public static final int driveRightCANID   = 4;
+    public static final int TilterCANID = 10; 
     public static final int climberCANID = 12;
-    public static final int DumperCANID = 3;
-    //^^^this guys gotta be changed, atm there is no 5th Jag- David
+    public static final int DumperCANID = 8;
     
     /* ### Pneumatics ###
      * 
@@ -25,6 +25,5 @@ public class Wiring {
     /*
      * * ##limitSwitches##
      */
-    public static final int dumperLimitSwitch = 14;
-    //^^^this guys gotta be changed, atm no limit switch wired- David
+    public static final int dumperLimitSwitch = 1;
 }
