@@ -41,14 +41,10 @@ public class Tilter extends Subsystem {
         // Initialize the Jaguar and its PID control
         try {
             TilterJag = new CANJaguar(Wiring.TilterCANID);
-            
-            if (TilterJag != null){
-                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                TilterJag.enableControl();
-                TilterJag.configEncoderCodesPerRev(360);
-                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                TilterJag = new CANJaguar(Wiring.TilterCANID);
-            }
+//            TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+//            TilterJag.enableControl();
+//            TilterJag.configEncoderCodesPerRev(360);
+//            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
         } catch (CANTimeoutException ex) {
             System.out.println("***CAN ERROR***");
             m_fault = true;
@@ -137,7 +133,7 @@ public class Tilter extends Subsystem {
                 // Is this inversion correct?  I may have broken everything. 2/9
                 TilterJag.setX(-power);
                 // Do we need to be disabling control every time we drive?  2/9
-                TilterJag.disableControl();
+//                TilterJag.disableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

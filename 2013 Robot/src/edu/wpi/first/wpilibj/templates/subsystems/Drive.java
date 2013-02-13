@@ -26,31 +26,42 @@ public class Drive extends Subsystem {
      * Initializes Jaguars and sets up PID control.
      */
     public Drive()  {
-            try {
-                leftJag = new CANJaguar(Wiring.driveLeftCANID);
-                if(leftJag !=null) {
-                    // Need to determine encoder codes per rev
-                    leftJag.configEncoderCodesPerRev(360);
-                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                    leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                    leftJag.setPID(0.005,0.02,0);
-                    leftJag.enableControl();
-                }
+        System.out.println("*** Drive constuctor start ***");
+
+        System.out.println("*** Left drive CAN ***");
+        
+        try {
                 
+                leftJag = new CANJaguar(Wiring.driveLeftCANID);
+                
+                // Fix this to cope with failure to create leftJag
+                if (leftJag != null) {
+                // Need to determine encoder codes per rev
+//                    leftJag.configEncoderCodesPerRev(360);
+//                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                    leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+//                    leftJag.setPID(0.005,0.02,0);
+//                    leftJag.enableControl();
+                }
             }
             catch (CANTimeoutException ex) {
                 System.out.println("***CAN ERROR***");
                 m_fault = true;
+                System.out.println("*** CAN ERROR ***");
             }
-            try {
+        
+        System.out.println("*** Right drive CAN ***");
+
+        
+        try {
                 rightJag = new CANJaguar(Wiring.driveRightCANID);
                 if (rightJag != null) {
                  //Need to determine encoder codes per rev
-                rightJag.configEncoderCodesPerRev(360);
-                rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                rightJag.setPID(0.005,0.02,0);
-                rightJag.enableControl();
+//                rightJag.configEncoderCodesPerRev(360);
+//                rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+//                rightJag.setPID(0.005,0.02,0);
+//                rightJag.enableControl();
                 rightJag = new CANJaguar(Wiring.driveRightCANID);
                 }
             }
@@ -58,7 +69,9 @@ public class Drive extends Subsystem {
                 System.out.println("***CAN ERROR***");
                 m_fault = true;
             }
-        }
+        System.out.println("*** Drive constuctor end ***");
+
+    }
     /**
      * Sets the default command to DriveWithController so that when nothing
      * else is happening with the Drive, we can use controllers to move.
@@ -80,7 +93,7 @@ public class Drive extends Subsystem {
         if(leftJag != null) {
             try {
                 leftJag.setX(left);
-                leftJag.disableControl();
+//                leftJag.disableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -89,7 +102,7 @@ public class Drive extends Subsystem {
         if(rightJag != null) {
             try {
                 rightJag.setX(-right);
-                rightJag.disableControl();
+//                rightJag.disableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

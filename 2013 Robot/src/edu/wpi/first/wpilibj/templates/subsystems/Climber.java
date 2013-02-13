@@ -27,30 +27,28 @@ public class Climber extends Subsystem {
     private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
-    private AxisCamera camera;
+//    private AxisCamera camera;
 
     public Climber() {
         
         try {
-                ClimbJag = new CANJaguar(Wiring.climberCANID);
-                if (ClimbJag != null) {
+            ClimbJag = new CANJaguar(Wiring.climberCANID);
+
+            if(ClimbJag != null) {
                 // encoder configuration
                 ClimbJag.configEncoderCodesPerRev(100);
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 // default to open loop
                 ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
                 //ClimbJag.setPID(100.0,0.10,0);
-                ClimbJag = new CANJaguar(Wiring.climberCANID);
             }
+        } catch (CANTimeoutException ex) {
+            m_fault = true;
+            System.out.println("*** Climber CAN Error ***");
         }
-            catch (CANTimeoutException ex) {
-                System.out.println("***CAN ERROR***");
-                m_fault = true;
-                
-            }
-
+        
         // shouldn't this be somewhere more logical?
-        camera = AxisCamera.getInstance();
+//        camera = AxisCamera.getInstance();
     }
     
     public void initDefaultCommand() {

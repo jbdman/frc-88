@@ -54,10 +54,10 @@ public class OI {
 //        operatorButtonX.whenReleased(new ClimberStop());
         
         //these buttons, B and X, the commands for them involve closed loop stuff for another day...need fixing
-          operatorButtonB.whenPressed(new dumperhighscore_position());
-          operatorButtonX.whenPressed(new dumperlowscore_position());
-          operatorButtonY.whenPressed(new feed_position());
-          
+//          operatorButtonB.whenPressed(new dumperhighscore_position());
+//          operatorButtonX.whenPressed(new dumperlowscore_position());
+//          operatorButtonY.whenPressed(new feed_position());
+//          
           //these buttons are for the bumpers and they are the open loop commands for the dumper
           operatorButtonLeftBumper.whileHeld(new DumperBackward());
           operatorButtonRightBumper.whileHeld(new DumperForward());
