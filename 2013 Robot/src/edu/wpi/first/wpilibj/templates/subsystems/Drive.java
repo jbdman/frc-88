@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
  */
 public class Drive extends Subsystem {
     // 1/24/12 drive motors may have to be inverted because they are subject to switch
-    CANJaguar leftJag;
-    CANJaguar rightJag;
+    CANJaguar leftJag = null;
+    CANJaguar rightJag = null;
     RobotDrive drive;
     private boolean m_fault = false;
     
@@ -28,26 +28,34 @@ public class Drive extends Subsystem {
     public Drive()  {
             try {
                 leftJag = new CANJaguar(Wiring.driveLeftCANID);
-                // Need to determine encoder codes per rev
-                leftJag.configEncoderCodesPerRev(360);
-                leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                leftJag.setPID(0.005,0.02,0);
-                leftJag.enableControl();
+                if(leftJag !=null) {
+                    // Need to determine encoder codes per rev
+                    leftJag.configEncoderCodesPerRev(360);
+                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                    leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                    leftJag.setPID(0.005,0.02,0);
+                    leftJag.enableControl();
+                }
+                
             }
             catch (CANTimeoutException ex) {
+                System.out.println("***CAN ERROR***");
                 m_fault = true;
             }
             try {
                 rightJag = new CANJaguar(Wiring.driveRightCANID);
+                if (rightJag != null) {
                  //Need to determine encoder codes per rev
                 rightJag.configEncoderCodesPerRev(360);
                 rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
                 rightJag.setPID(0.005,0.02,0);
                 rightJag.enableControl();
+                rightJag = new CANJaguar(Wiring.driveRightCANID);
+                }
             }
             catch  (CANTimeoutException ex) {
+                System.out.println("***CAN ERROR***");
                 m_fault = true;
             }
         }

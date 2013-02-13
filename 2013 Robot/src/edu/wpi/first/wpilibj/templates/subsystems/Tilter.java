@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
  */
 //must wait until there is a more definitive idea ie. must be built or described better - David
 public class Tilter extends Subsystem {
-    CANJaguar TilterJag;
+    CANJaguar TilterJag = null;
     
     private boolean m_fault = false;
     //these numbers will have to be changed depending on the speed of the motors
@@ -41,11 +41,16 @@ public class Tilter extends Subsystem {
         // Initialize the Jaguar and its PID control
         try {
             TilterJag = new CANJaguar(Wiring.TilterCANID);
-            TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-            TilterJag.enableControl();
-            TilterJag.configEncoderCodesPerRev(360);
-            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
+            
+            if (TilterJag != null){
+                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                TilterJag.enableControl();
+                TilterJag.configEncoderCodesPerRev(360);
+                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                TilterJag = new CANJaguar(Wiring.TilterCANID);
+            }
         } catch (CANTimeoutException ex) {
+            System.out.println("***CAN ERROR***");
             m_fault = true;
         }
         // Calculate the values used in the angle-to-distance conversion

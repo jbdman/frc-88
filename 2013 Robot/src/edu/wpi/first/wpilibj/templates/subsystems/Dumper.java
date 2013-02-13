@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.Encoder;
      *************************************************************/
 // more of this must be shown to me or Ag before we can start
 public class Dumper extends Subsystem {
-    CANJaguar DumperJag;
+    CANJaguar DumperJag = null;
     private boolean m_fault = false;
     private static final double defaultBackwardSpeed= -.5;
     private static final double defaultForwardSpeed = .5;
@@ -36,8 +36,13 @@ public class Dumper extends Subsystem {
 
     public Dumper(){
         try {
-                DumperJag = new CANJaguar(Wiring.DumperCANID);
+            
+            //we got some got conflicts with this bit and line 60. They were done by different people and we need to
+            //decide which is right. ATM one is commented out
+            
                 m_limitSwitch = new DigitalInput(Wiring.dumperLimitSwitch);
+                DumperJag = new CANJaguar(Wiring.DumperCANID);
+                if (DumperJag != null) {
                 //encoders and stuff needs to be determined for angle
                 //this stuff controls the close loop control, they may be subject to change
                 // Need to determine encoder codes per rev
@@ -46,9 +51,12 @@ public class Dumper extends Subsystem {
                 //DumperJag.changeControlMode(CANJaguar.ControlMode.kPosition);
                 //DumperJag.setPID(0.005,0.02,0);
             }
+        }
             catch (CANTimeoutException ex) {
+                System.out.println("***CAN ERROR***");
+                m_fault = true;
             }
-        
+        // this and stuff above need to be combined or replaced or something
         if(DumperJag != null) {
             try {
                 DumperJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);

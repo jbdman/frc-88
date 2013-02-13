@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.camera.AxisCameraException;
  * @author David
  */
 public class Climber extends Subsystem {
-    CANJaguar ClimbJag;
+    CANJaguar ClimbJag = null;
     //speeds can change if needed as of now full power will give you full power
     private boolean m_fault = false;
     private boolean m_calibrated = false;
@@ -33,15 +33,20 @@ public class Climber extends Subsystem {
         
         try {
                 ClimbJag = new CANJaguar(Wiring.climberCANID);
-                
+                if (ClimbJag != null) {
                 // encoder configuration
                 ClimbJag.configEncoderCodesPerRev(100);
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 // default to open loop
                 ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
                 //ClimbJag.setPID(100.0,0.10,0);
+                ClimbJag = new CANJaguar(Wiring.climberCANID);
             }
+        }
             catch (CANTimeoutException ex) {
+                System.out.println("***CAN ERROR***");
+                m_fault = true;
+                
             }
 
         // shouldn't this be somewhere more logical?
