@@ -67,6 +67,13 @@ public class Climber extends Subsystem {
     public void up() {
         ClimbOpenLoop(defaultUpSpeed);
     }
+    
+    public void tall() {
+        ClimbClosedLoop(6);
+    }
+    public void bottom() {
+        ClimbClosedLoop(-6);
+    }
     /**
      * Drives the climber down at the default speed.
      */

@@ -11,6 +11,11 @@ package edu.wpi.first.wpilibj.templates.commands;
 //command wont work 2/2/12
 public class ClimberBottom extends CommandBase {
     
+    private double upperlimit = -6.05;
+    private double lowerlimit = -5.95;
+    private double count = 0;
+    private static final int COUNTSTOP = 5;
+    
     public ClimberBottom() {
         super("ClimberBottom");
         requires(climber);
@@ -23,7 +28,7 @@ public class ClimberBottom extends CommandBase {
      * This is suppose to set the lowest position for the climber. As of 2/3/12 has not been tested.
      */
     protected void initialize() {
-        climber.ClimbClosedLoop(-6);
+        climber.bottom();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,6 +37,15 @@ public class ClimberBottom extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if ((climber.getPosition() > upperlimit) && (climber.getPosition() < lowerlimit)) {
+            count ++;
+        }
+        else {
+            count = 0;
+        }
+        if (count==COUNTSTOP) {
+         return true;   
+        }
         return false;
     }
 

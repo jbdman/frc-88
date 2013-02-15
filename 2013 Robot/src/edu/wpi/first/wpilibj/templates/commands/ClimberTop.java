@@ -10,6 +10,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class ClimberTop extends CommandBase {
     
+    private double upperlimit = 6.05;
+    private double lowerlimit = 5.95;
+    private double count = 0;
+    private static final int COUNTSTOP = 5;
     public ClimberTop() {
         super("ClimberTop");
         requires(climber);
@@ -25,7 +29,7 @@ public class ClimberTop extends CommandBase {
      */
     protected void initialize() {
         //so far I don't know how to determine the actual # so its guess and check for now
-        climber.ClimbClosedLoop(6);
+        climber.tall();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,6 +38,15 @@ public class ClimberTop extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if ((climber.getPosition() > upperlimit) && (climber.getPosition() < lowerlimit)) {
+            count ++;
+        }
+        else {
+            count = 0;
+        }
+        if (count==COUNTSTOP) {
+         return true;   
+        }
         return false;
     }
 
