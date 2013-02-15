@@ -15,6 +15,11 @@ package edu.wpi.first.wpilibj.templates.commands;
      */
 public class TilterShort extends CommandBase {
     
+    private double upperlimit = -7.05;
+    private double lowerlimit = -6.95;
+    private double count = 0;
+    private static final int COUNTSTOP = 5;
+    
     public TilterShort() {
         super("TilterShortestPosition");
         requires(tilter);
@@ -24,8 +29,7 @@ public class TilterShort extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        double distance = tilter.distanceFromAngle(0);
-        tilter.TilterClosedLoop(distance);
+        tilter.small();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,6 +38,15 @@ public class TilterShort extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+         if ((tilter.getPosition() > upperlimit) && (tilter.getPosition() < lowerlimit)) {
+            count ++;
+        }
+        else {
+            count = 0;
+        }
+        if (count==COUNTSTOP) {
+         return true;   
+        }
         return false;
     }
 

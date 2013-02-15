@@ -69,6 +69,14 @@ public class Tilter extends Subsystem {
     public void up(){
         TilterOpenLoop(defaultUpSpeed);
     }
+    public void tall() {
+        TilterClosedLoop(7);
+    }
+    public void small () {
+        TilterClosedLoop(-7);
+    }
+    
+    
     /**
      * Stop the Tilter by setting the motor speed to 0.  Does not do any sort of
      * compensation to keep the Tilter at its current position.  However, the
@@ -182,5 +190,17 @@ public class Tilter extends Subsystem {
         distance = Math.sqrt(angleAddition - (angleMultiplier * Math.cos(angle)));
         return distance;
     }
+    public double getPosition() {
+      double revolution = 0.0;
+      try {
+        //the formula below will probably be subject to change
+        //also play with stuff under to see if it needs to be inverted
+                revolution = TilterJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+      return revolution;
+}
 }
 

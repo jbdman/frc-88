@@ -28,9 +28,12 @@ public class Dumper extends Subsystem {
     private static final double defaultForwardSpeed = .5;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;
-    private static final double lowerScorePosition = -30;
-    private static final double upperScorePosition = 30;
+    private static final double lowerScorePosition = -3;
+    private static final double upperScorePosition = 3;
+    private static final double feedPosition = 1;
     //^^^these numbers affect speed and can be changed
+    private static final double revPerInch = 0.1;
+    //this # i am almost 100% sure has to be changed
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -104,7 +107,7 @@ public class Dumper extends Subsystem {
      * Not currently implemented.  Should this be a command instead?
      */
     public void feed_position(){
-        DumpOpenLoop(0.0);
+        DumpClosedLoop(feedPosition);
     }
     /**
      * Stops the Dumper by setting the motor speed to 0.  Does not to any sort
@@ -152,18 +155,7 @@ public class Dumper extends Subsystem {
      * 
      * @return  The position of the Dumper.
      */
-    public double getPosition(){
-        double position = 0.0;
-        if(DumperJag != null) {
-            try {
-                position = DumperJag.getPosition();
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN Timeout");
-            }
-        }
-        return position;
-    }
+    
     /**
      * Open loop control of the Dumper, using voltage percentage.
      * 
@@ -185,16 +177,7 @@ public class Dumper extends Subsystem {
       
     }    
     
-    /**
-     * Close loop control for the Dumper, using an encoder to control position.
-     * 
-     * Need to determine units position should be specified in (possibly degrees).
-     * 
-     * @param   position    The desired position for the Dumper to move to.  A
-     *                      position of 0 is the home position (vertical).  A
-     *                      positive position moves the dumper forward, and a
-     *                      negative position moves it backwards.
-     */
+    
     public void DumpClosedLoop(double position) {
         if(DumperJag != null) {
             try {
@@ -207,4 +190,25 @@ public class Dumper extends Subsystem {
             }
         }   
     }
+    /**
+     * Gets the position of the Dumper by reading the position of the encoder
+     * from the Jaguar.  A position of 0 is the home position (vertical).
+     * A positive position is a ??? position, and a negative position is a
+     * ??? position.  (Front or back, not actually sure which is which yet)
+     * 
+     * @return  The position of the Dumper.
+     */
+    
+    public double getPosition() {
+      double position = 0.0;
+      try {
+        //the formula below will probably be subject to change
+        //also play with stuff under to see if it needs to be inverted
+                position = DumperJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
+      return position;
+  }
 }

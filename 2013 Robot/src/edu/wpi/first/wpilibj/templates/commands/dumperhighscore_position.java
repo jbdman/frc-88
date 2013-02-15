@@ -15,6 +15,11 @@ package edu.wpi.first.wpilibj.templates.commands;
      */
 public class dumperhighscore_position extends CommandBase {
     
+    private double upperlimit = 3.05;
+    private double lowerlimit = 2.95;
+    private double count = 0;
+    private static final int COUNTSTOP = 5;
+    
     public dumperhighscore_position() {
         super ("dumper is in feed position");
         requires (dumper);
@@ -33,6 +38,15 @@ public class dumperhighscore_position extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+         if ((dumper.getPosition() > upperlimit) && (dumper.getPosition() < lowerlimit)) {
+            count ++;
+        }
+        else {
+            count = 0;
+        }
+        if (count==COUNTSTOP) {
+         return true;   
+        }
         return false;
     }
 
