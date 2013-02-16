@@ -27,7 +27,8 @@ public class Climber extends Subsystem {
     private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
-//    private AxisCamera camera;
+    private AxisCamera m_camera = null;
+
 
     public Climber() {
         
@@ -47,8 +48,8 @@ public class Climber extends Subsystem {
             System.out.println("*** Climber CAN Error ***");
         }
         
-        // shouldn't this be somewhere more logical?
-//        camera = AxisCamera.getInstance();
+        // camera should follow mast
+        m_camera = AxisCamera.getInstance();
     }
     
     public void initDefaultCommand() {
@@ -221,4 +222,13 @@ public class Climber extends Subsystem {
     public double getPosition() {
       return getRevolution() / revPerInch; 
     }
+    
+    /**
+     * Returns the value of the fault flag
+     *
+     */
+    public boolean getFault() {
+        return m_fault;
+    }
+
 }

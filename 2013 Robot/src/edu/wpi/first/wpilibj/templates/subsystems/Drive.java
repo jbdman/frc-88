@@ -141,4 +141,13 @@ public class Drive extends Subsystem {
             }
         }
     }
+
+    /**
+     * Returns the value of the fault flag
+     *
+     */
+    public boolean getFault() {
+        return m_fault;
+    }
+
 }

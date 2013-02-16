@@ -190,6 +190,7 @@ public class Dumper extends Subsystem {
             }
         }   
     }
+    
     /**
      * Gets the position of the Dumper by reading the position of the encoder
      * from the Jaguar.  A position of 0 is the home position (vertical).
@@ -211,4 +212,13 @@ public class Dumper extends Subsystem {
             }
       return position;
   }
+
+    /**
+     * Returns the value of the fault flag
+     *
+     */
+    public boolean getFault() {
+        return m_fault;
+    }
+    
 }

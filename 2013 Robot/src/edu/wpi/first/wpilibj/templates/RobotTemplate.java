@@ -44,10 +44,19 @@ public class RobotTemplate extends IterativeRobot {
     }
 
     /**
+     * This function is called periodically during disabled
+     */
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+        CommandBase.updateDashboard();
+    }
+
+    /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        CommandBase.updateDashboard();
     }
 
     public void teleopInit() {
@@ -63,6 +72,7 @@ public class RobotTemplate extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        CommandBase.updateDashboard();
     }
     
     /**

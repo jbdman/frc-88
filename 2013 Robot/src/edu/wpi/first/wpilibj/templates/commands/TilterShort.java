@@ -38,7 +38,7 @@ public class TilterShort extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-         if ((tilter.getPosition() > upperlimit) && (tilter.getPosition() < lowerlimit)) {
+         if ((tilter.getAngle() > upperlimit) && (tilter.getAngle() < lowerlimit)) {
             count ++;
         }
         else {

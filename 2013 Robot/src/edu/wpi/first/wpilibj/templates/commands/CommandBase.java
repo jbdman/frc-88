@@ -32,8 +32,12 @@ public abstract class CommandBase extends Command {
         // news. Don't move it.
         oi = new OI();
 
-        // Show what command your subsystem is running on the SmartDashboard
-       // SmartDashboard.putData(exampleSubsystem);
+       // Show what command your subsystem is running on the SmartDashboard
+        SmartDashboard.putData(tilter);
+        SmartDashboard.putData(climber);
+        SmartDashboard.putData(dumper);
+        SmartDashboard.putData(drive);
+        
     }
 
     public CommandBase(String name) {
@@ -43,4 +47,27 @@ public abstract class CommandBase extends Command {
     public CommandBase() {
         super();
     }
+
+    private static int iterator = 0;
+    public static void updateDashboard() {
+
+        // put data on dashboard every 10th call
+        if(iterator % 10 == 0) {
+            // Subsystem faults lights
+            SmartDashboard.putBoolean("Climber ", !climber.getFault());
+            SmartDashboard.putBoolean("Shooter ", !tilter.getFault());
+            SmartDashboard.putBoolean("Dumper ", !dumper.getFault());
+            SmartDashboard.putBoolean("Drive ", !drive.getFault());
+        }
+
+       // put data on dashboard every 10th call
+        if(iterator % 10 == 5) {
+            // Various indicators
+            SmartDashboard.putNumber("Climber position ", climber.getPosition());
+            SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
+        }
+
+        iterator++;
+    }
+
 }

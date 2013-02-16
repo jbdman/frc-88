@@ -23,7 +23,7 @@ public class Tilter extends Subsystem {
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = -1;
     private static final double defaultUpSpeed = 1;
-    private static final double defaultTiltMaxSpeed = 1;
+    private static final double defaultTiltMaxSpeed = 0.7;
     // These angles are currently arbitrary and should be changed to be useful
     public static final double HomeAngle = 0;
     public static final double DownAngle = -3;
@@ -43,8 +43,9 @@ public class Tilter extends Subsystem {
             TilterJag = new CANJaguar(Wiring.TilterCANID);
 //            TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
 //            TilterJag.enableControl();
-//            TilterJag.configEncoderCodesPerRev(360);
-//            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
+            TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+            TilterJag.configEncoderCodesPerRev(100);
+            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
         } catch (CANTimeoutException ex) {
             System.out.println("***CAN ERROR***");
             m_fault = true;
@@ -184,23 +185,36 @@ public class Tilter extends Subsystem {
      * @return  The distance that the Tilter should be set to in order to
      *          get to the angle.
      */
-    public double distanceFromAngle(double angle) {
+    private double distanceFromAngle(double angle) {
         double distance = 0.0;
         // Law of cosines, in case you're wondering.
         distance = Math.sqrt(angleAddition - (angleMultiplier * Math.cos(angle)));
         return distance;
     }
-    public double getPosition() {
-      double revolution = 0.0;
-      try {
-        //the formula below will probably be subject to change
-        //also play with stuff under to see if it needs to be inverted
-                revolution = TilterJag.getPosition();
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
+
+    private double getRevolution() {
+        double revolution = 0.0;
+        try {
+            revolution = TilterJag.getPosition();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
       return revolution;
-}
+    }
+        
+    public double getAngle() {
+        // THIS NEEDS TO ACTUALLY CONVERT TO ANGLE!
+        return getRevolution(); 
+    }
+
+    /**
+     * Returns the value of the fault flag
+     *
+     */
+    public boolean getFault() {
+        return m_fault;
+    }
+
 }
 
