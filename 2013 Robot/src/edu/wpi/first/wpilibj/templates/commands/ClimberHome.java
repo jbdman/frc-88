@@ -9,7 +9,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  * @author Ag
  */
 public class ClimberHome extends CommandBase {
-    
+    //For David- the lowerlimit is mounted higher on the robot...lower limit is when it is at the highest point
     private boolean movingDown = false;
     private boolean broke = false;
     
