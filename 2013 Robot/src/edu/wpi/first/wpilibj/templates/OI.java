@@ -65,6 +65,12 @@ public class OI {
           operatorButtonLeftBumper.whileHeld(new DumperBackward());
           operatorButtonRightBumper.whileHeld(new DumperForward());
 
+          operatorButtonY.whenPressed(new ClimberHome());
+
+          // Add some commands to run from the dashboard
+          SmartDashboard.putData("ClimberHome ", new ClimberHome());
+          SmartDashboard.putData("ClimberHome ", new TilterHome());
+          
     }
     
     /**
@@ -98,7 +104,7 @@ public class OI {
      * @return value of stick position
      */
     public double getRightVerticalAxis() {
-        return deadZoneMap(-operatorController.getRawAxis(4));
+        return deadZoneMap(-operatorController.getRawAxis(5));
     }
     
     public double getFwdLeftStick() {

@@ -59,7 +59,7 @@ public abstract class CommandBase extends Command {
         if(iterator % 10 == 0) {
             // Subsystem faults lights
             SmartDashboard.putBoolean("Climber ", !climber.getFault());
-            SmartDashboard.putBoolean("Shooter ", !tilter.getFault());
+            SmartDashboard.putBoolean("Tilter ", !tilter.getFault());
             SmartDashboard.putBoolean("Dumper ", !dumper.getFault());
             SmartDashboard.putBoolean("Drive ", !drive.getFault());
         }

@@ -18,8 +18,8 @@ public class Wiring {
     public static final int DumperCANID = 8;
     
     //servo ids
-    public static final int Servo1ID = 18;
-    public static final int Servo2ID = 19;
+    public static final int Servo1ID = 1;
+    public static final int Servo2ID = 2;
     
     /* ### Pneumatics ###
      * 
