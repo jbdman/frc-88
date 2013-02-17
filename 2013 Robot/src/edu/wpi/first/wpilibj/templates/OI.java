@@ -47,7 +47,10 @@ public class OI {
 //        operatorButtonY.whileHeld(new AngleIncrease());
 //        operatorButtonY.whenReleased(new TilterStop());
 
-        //climber up/down, also set up when buttons are released the climber SHOULD auto stop
+//        operatorButtonA.whileHeld(new ClimberBottom());
+//        operatorButtonA.whileHeld(new ClimberStop());
+//        operatorButtonY.whileHeld(new ClimberTop());
+//        operatorButtonY.whenReleased(new ClimberStop());
 //        operatorButtonB.whileHeld(new ClimberUp());
 //        operatorButtonB.whenReleased(new ClimberStop());
 //        operatorButtonX.whileHeld(new ClimberDown());
@@ -58,10 +61,10 @@ public class OI {
 //          operatorButtonX.whenPressed(new dumperlowscore_position());
 //          operatorButtonY.whenPressed(new feed_position());
 //          
-          //these buttons are for the bumpers and they are the open loop commands for the dumper
+        //these buttons are for the bumpers and they are the open loop commands for the dumper
           operatorButtonLeftBumper.whileHeld(new DumperBackward());
           operatorButtonRightBumper.whileHeld(new DumperForward());
-          
+
     }
     
     /**

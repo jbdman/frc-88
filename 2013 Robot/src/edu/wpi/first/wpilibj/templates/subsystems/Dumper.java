@@ -20,12 +20,12 @@ import edu.wpi.first.wpilibj.Encoder;
      * NOTE: The commands need work. Please fix them. Someone. Also
      * this is a cool box, is it not?
      *************************************************************/
-// more of this must be shown to me or Ag before we can start
+
 public class Dumper extends Subsystem {
     CANJaguar DumperJag = null;
     private boolean m_fault = false;
-    private static final double defaultBackwardSpeed= -.5;
-    private static final double defaultForwardSpeed = .5;
+    private static final double defaultBackwardSpeed= -.35;
+    private static final double defaultForwardSpeed = .35;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;
     private static final double lowerScorePosition = -3;

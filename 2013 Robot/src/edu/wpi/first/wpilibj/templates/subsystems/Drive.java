@@ -143,13 +143,13 @@ public class Drive extends Subsystem {
      * @param   right   The speed for the right side of the Drive.  Value
      *                  should be positive and be below the Drive's max speed.
      */
-    public void driveTankClosedLoop(double left, double right) {
+    public void driveTankClosedLoop(double speedLeft, double speedRight) {
         // Change to max speed wanted
         // Why are we multiplying by maxRPM?
         int maxRPM = 100;
         if(leftJag != null) {
             try {
-                leftJag.setX(left * maxRPM);
+                leftJag.setX(speedLeft * maxRPM);
                 leftJag.enableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
@@ -158,7 +158,7 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null) {
             try {
-                rightJag.setX(-right * maxRPM);
+                rightJag.setX(-speedRight * maxRPM);
                 rightJag.enableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
