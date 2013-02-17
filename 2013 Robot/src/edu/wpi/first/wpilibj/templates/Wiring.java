@@ -17,6 +17,10 @@ public class Wiring {
     public static final int climberCANID = 12;
     public static final int DumperCANID = 8;
     
+    //servo ids
+    public static final int Servo1ID = 18;
+    public static final int Servo2ID = 19;
+    
     /* ### Pneumatics ###
      * 
      */

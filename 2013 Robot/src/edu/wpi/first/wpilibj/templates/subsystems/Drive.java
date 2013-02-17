@@ -6,9 +6,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
 /**
@@ -19,10 +17,14 @@ public class Drive extends Subsystem {
     // 1/24/12 drive motors may have to be inverted because they are subject to switch
     CANJaguar leftJag = null;
     CANJaguar rightJag = null;
-    RobotDrive drive;
+//    RobotDrive drive;
     private boolean m_fault = false;
+    /* Set the maximum change in voltage in 1 sec
+     * Smaller values prevent the robot from rocking backwards under acceleration
+     */
+    private static final double MOTOR_RAMP_RATE = 15;
     
-    /**
+    /** 
      * Initializes Jaguars and sets up PID control.
      */
     public Drive()  {
@@ -37,11 +39,13 @@ public class Drive extends Subsystem {
                 // Fix this to cope with failure to create leftJag
                 if (leftJag != null) {
                 // Need to determine encoder codes per rev
-//                    leftJag.configEncoderCodesPerRev(360);
-//                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                    leftJag.configEncoderCodesPerRev(250);
+                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 //                    leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
 //                    leftJag.setPID(0.005,0.02,0);
 //                    leftJag.enableControl();
+                    leftJag.setVoltageRampRate(MOTOR_RAMP_RATE);
+                    leftJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 }
             }
             catch (CANTimeoutException ex) {
@@ -56,13 +60,13 @@ public class Drive extends Subsystem {
         try {
                 rightJag = new CANJaguar(Wiring.driveRightCANID);
                 if (rightJag != null) {
-                 //Need to determine encoder codes per rev
-//                rightJag.configEncoderCodesPerRev(360);
-//                rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                    rightJag.configEncoderCodesPerRev(250);
+                    rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 //                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
 //                rightJag.setPID(0.005,0.02,0);
 //                rightJag.enableControl();
-                rightJag = new CANJaguar(Wiring.driveRightCANID);
+                    rightJag.setVoltageRampRate(MOTOR_RAMP_RATE);
+                    rightJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 }
             }
             catch  (CANTimeoutException ex) {
@@ -78,6 +82,27 @@ public class Drive extends Subsystem {
      */
     public void initDefaultCommand() {
         setDefaultCommand(new DrivewithController());
+    }
+ 
+    /**
+     * Set the neutral mode to brake or coast for *both* drive motors
+     * 
+     * @param brake True for brake, false for coast
+     * 
+     */
+    public void setBrake(boolean brake) {
+        CANJaguar.NeutralMode mode = CANJaguar.NeutralMode.kCoast;
+        
+        if(brake) {
+            mode = CANJaguar.NeutralMode.kBrake;
+        }
+        try {
+            leftJag.configNeutralMode(mode);
+            rightJag.configNeutralMode(mode);
+        } catch  (CANTimeoutException ex) {
+            System.out.println("***CAN ERROR***");
+            m_fault = true;
+        }
     }
     
     /**
@@ -142,6 +167,74 @@ public class Drive extends Subsystem {
         }
     }
 
+    /**
+     * The distance traveled by the left wheel since Jag powered on
+     * 
+     * @return Total distance traveled by left wheel in units TBD 
+     */
+    public double getLeftDistance() {
+
+        double position = 0.0;
+        try {
+            position = leftJag.getPosition();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
+        return position;
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in units TBD 
+     */
+    public double getRightDistance() {
+
+        double position = 0.0;
+        try {
+            position = rightJag.getPosition();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
+        return position;
+    }
+    
+    /**
+     * Current speed of left drive gearbox output? shaft in rpm
+     * 
+     * @return speed of left drive gearbox output in rpm
+     */
+    public double getLeftSpeed() {
+
+        double speed = 0.0;
+        try {
+            speed = leftJag.getSpeed();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
+        return speed;
+    }
+    
+    /**
+     * Current speed of right drive gearbox output? shaft in rpm
+     * 
+     * @return speed of right drive gearbox output in rpm
+     */
+    public double getRightSpeed() {
+
+        double speed = 0.0;
+        try {
+            speed = rightJag.getSpeed();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
+        return speed;
+    }
+    
     /**
      * Returns the value of the fault flag
      *

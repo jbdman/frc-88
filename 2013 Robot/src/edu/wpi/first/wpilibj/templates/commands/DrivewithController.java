@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
      */
 public class DrivewithController extends CommandBase {
     
+    private static final double BRAKE_THRESH = 0.5;
+    private boolean m_brake = false;
+    
     public DrivewithController() {
         super("DriveWithController");
         requires(drive);
@@ -24,6 +27,7 @@ public class DrivewithController extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        drive.setBrake(m_brake);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,6 +36,21 @@ public class DrivewithController extends CommandBase {
      * Part that drives it
      */
     protected void execute() {
+        
+        boolean nextBrake = false;
+        
+        // read driver buttons/triggers to determine if breaking
+        if(Math.abs(oi.getDriveTrigger())> BRAKE_THRESH) {
+            nextBrake = true;
+        }
+        
+        // change braking state only if necessary
+        if(m_brake != nextBrake) {
+            m_brake = nextBrake;
+            drive.setBrake(m_brake);
+        }
+        
+        // drive the robot based on driver sticks
         drive.driveTankOpenLoop(oi.getFwdLeftStick(),
                                   oi.getFwdRightStick());
     }

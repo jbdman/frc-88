@@ -77,6 +77,26 @@ public class OI {
         return deadZoneMap(operatorController.getRawAxis(1));
     }
 
+    /**
+     * Position of the driver controller triggers.
+     * Note that we can't read the values individually, and only get the sum
+     * of the left [0, 1] and right [0, -1] positions. In effect we get a difference
+     * between positions, so both pressed reads the same as neither pressed!
+     * 
+     * @return single value sum of trigger positions
+     */
+    public double getDriveTrigger() {
+        return driverController.getRawAxis(3);
+    }
+
+    /**
+     * Position of the operator controller right stick Y axis (normalized)
+     * 
+     * @return value of stick position
+     */
+    public double getRightVerticalAxis() {
+        return deadZoneMap(-operatorController.getRawAxis(4));
+    }
     
     public double getFwdLeftStick() {
         return deadZoneMap(-driverController.getY());

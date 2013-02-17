@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
 import edu.wpi.first.wpilibj.templates.subsystems.Climber;
 import edu.wpi.first.wpilibj.templates.subsystems.Tilter;
 import edu.wpi.first.wpilibj.templates.subsystems.Dumper;
+import edu.wpi.first.wpilibj.templates.subsystems.CameraControl;
+
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -23,6 +25,7 @@ public abstract class CommandBase extends Command {
     public static Climber climber = new Climber();
     public static Tilter tilter = new Tilter();
     public static Dumper dumper = new Dumper();
+    public static CameraControl cameraControl = new CameraControl();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -37,6 +40,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(climber);
         SmartDashboard.putData(dumper);
         SmartDashboard.putData(drive);
+        SmartDashboard.putData(cameraControl);
         
     }
 
@@ -65,6 +69,9 @@ public abstract class CommandBase extends Command {
             // Various indicators
             SmartDashboard.putNumber("Climber position ", climber.getPosition());
             SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
+            SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
+            SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
+            SmartDashboard.putNumber("Drive Trigger ", oi.getDriveTrigger());
         }
 
         iterator++;

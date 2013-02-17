@@ -8,10 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
 import edu.wpi.first.wpilibj.templates.commands.ClimberJoysick;
-import edu.wpi.first.wpilibj.camera.AxisCamera;
-import edu.wpi.first.wpilibj.camera.AxisCameraException;
 
 /**
  * @author David
@@ -27,8 +24,6 @@ public class Climber extends Subsystem {
     private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
-    private AxisCamera m_camera = null;
-
 
     public Climber() {
         
@@ -48,8 +43,6 @@ public class Climber extends Subsystem {
             System.out.println("*** Climber CAN Error ***");
         }
         
-        // camera should follow mast
-        m_camera = AxisCamera.getInstance();
     }
     
     public void initDefaultCommand() {
