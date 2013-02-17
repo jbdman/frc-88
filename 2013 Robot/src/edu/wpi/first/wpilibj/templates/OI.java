@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
 import edu.wpi.first.wpilibj.templates.commands.TilterAngleIncrease;
 import edu.wpi.first.wpilibj.templates.commands.TilterAngleDecrease;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.templates.commands.dumperlowscore_position;
 import edu.wpi.first.wpilibj.templates.commands.feed_position;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
 import edu.wpi.first.wpilibj.templates.commands.DumperForward;
+import edu.wpi.first.wpilibj.templates.commands.TilterHome;
 
 
 /**
