@@ -28,8 +28,11 @@ public class Tilter extends Subsystem {
     public static final double HomeAngle = 0;
     public static final double DownAngle = -3;
     // Tilter Dimensions, specified in inches
-    private static final double dimensionA = 5.0;
-    private static final double dimensionB = 5.0;
+    private static final double dimensionA = 8.25;
+    private static final double dimensionB = 8.5;
+    
+    private static final double LEADSCREW_PITCH = 2.0;
+    
     // Values used in angle-to-distance conversion, precomputed in the
     // constructor to make the calculations faster.
     private double angleAddition;
@@ -191,7 +194,13 @@ public class Tilter extends Subsystem {
         distance = Math.sqrt(angleAddition - (angleMultiplier * Math.cos(angle)));
         return distance;
     }
-
+    
+    private double angleFromDistance(double distance) {
+        double cosAngle = 0.0;
+        cosAngle = (angleAddition - distance * distance) / angleMultiplier;
+        return cosAngle;
+    }
+    
     private double getRevolution() {
         double revolution = 0.0;
         try {
@@ -204,8 +213,8 @@ public class Tilter extends Subsystem {
     }
         
     public double getAngle() {
-        // THIS NEEDS TO ACTUALLY CONVERT TO ANGLE!
-        return getRevolution(); 
+        // distance is simply rotations times the pitch of the leadscrew
+        return angleFromDistance(LEADSCREW_PITCH * getRevolution()); 
     }
 
     /**

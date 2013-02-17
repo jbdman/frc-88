@@ -24,6 +24,8 @@ public class Climber extends Subsystem {
     private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
+    
+    private static final int ENCODER_LINES = 100;
 
     public Climber() {
         
@@ -32,9 +34,10 @@ public class Climber extends Subsystem {
 
             if(ClimbJag != null) {
                 // encoder configuration
-                ClimbJag.configEncoderCodesPerRev(100);
+                ClimbJag.configEncoderCodesPerRev(ENCODER_LINES);
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                // default to open loop
+                // We need this ramp rate. Without it rapid reversal causes transients
+                ClimbJag.setVoltageRampRate(20);
                 ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
                 //ClimbJag.setPID(100.0,0.10,0);
             }

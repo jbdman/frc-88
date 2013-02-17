@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.CameraJoystick;
 /**
  *
  * @author TJ2
@@ -26,10 +27,11 @@ public class CameraControl extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
+        setDefaultCommand(new CameraJoystick());
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
-    
+
     /**
      * Angle to set both cameras
      * 
@@ -42,8 +44,7 @@ public class CameraControl extends Subsystem {
         if(Servo2 != null) {
                 Servo2.setAngle(angle);
         }    
-                    
-      
+
     }
 }
  
