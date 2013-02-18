@@ -26,6 +26,7 @@ public class Climber extends Subsystem {
     private double m_setPoint = 0.0;
     
     private static final int ENCODER_LINES = 100;
+    private double revolutionHome = 0.0;
 
     public Climber() {
         
@@ -86,17 +87,12 @@ public class Climber extends Subsystem {
     }
 
     /**
-     * Sets calibration flag, which means the homing has been completed
+     * Sets calibration flag, which means the homing has been completed, 
+     * and also resets the home position for the climber mast.
      */
-    public void setCalibrated() {
+    public void calibrateEncoder() {
         m_calibrated = true;
-    }
-
-    /**
-     * Resets calibration flag, which means the homing has not completed
-     */
-    public void unsetCalibrated() {
-        m_calibrated = false;
+        revolutionHome = getRevolution();
     }
 
     /**
@@ -212,7 +208,7 @@ public class Climber extends Subsystem {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
-      return revolution;
+      return revolution - revolutionHome;
   }
      
     public double getPosition() {
