@@ -31,7 +31,7 @@ public class Tilter extends Subsystem {
     private static final double dimensionA = 8.25;
     private static final double dimensionB = 8.5;
     
-    private static final double LEADSCREW_PITCH = 2.0;
+    private static final double INCHES_PER_REV = 0.5;
     
     // Values used in angle-to-distance conversion, precomputed in the
     // constructor to make the calculations faster.
@@ -214,7 +214,8 @@ public class Tilter extends Subsystem {
         
     public double getAngle() {
         // distance is simply rotations times the pitch of the leadscrew
-        return angleFromDistance(LEADSCREW_PITCH * getRevolution()); 
+//        return angleFromDistance(LEADSCREW_PITCH * getRevolution()); 
+        return (INCHES_PER_REV * getRevolution()); 
     }
 
     /**

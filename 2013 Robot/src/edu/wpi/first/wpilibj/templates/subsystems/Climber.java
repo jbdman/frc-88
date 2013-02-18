@@ -18,8 +18,10 @@ public class Climber extends Subsystem {
     //speeds can change if needed as of now full power will give you full power
     private boolean m_fault = false;
     private boolean m_calibrated = false;
+
+    // By measurement, the distances are highest (0.0) and lowest (-35.75)
     
-    private static final double revPerInch = 0.1;
+    private static final double distPerRev = 3.75;
     private static final double defaultDownSpeed = -1.0;
     private static final double defaultUpSpeed = 1.0;
     private static final double defaultMaxSpeed = 1;
@@ -178,7 +180,7 @@ public class Climber extends Subsystem {
         // the Jaguar can use (revs)
         // Also ensure that vertical is positive.
       // convert from inches to revolutions
-      double revolution = vertical * revPerInch;
+      double revolution = vertical / distPerRev;
       m_setPoint = revolution;
         if(ClimbJag != null) {
             try {
@@ -208,11 +210,11 @@ public class Climber extends Subsystem {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
             }
-      return revolution - revolutionHome;
+      return revolution;
   }
      
     public double getPosition() {
-      return getRevolution() / revPerInch; 
+      return (getRevolution() - revolutionHome) * distPerRev; 
     }
     
     /**
