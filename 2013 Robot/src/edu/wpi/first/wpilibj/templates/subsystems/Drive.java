@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerClosed;
 import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
 /**
  *
@@ -41,9 +42,6 @@ public class Drive extends Subsystem {
                     leftJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
                     leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                     leftJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-//                    leftJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-//                    leftJag.setPID(0.005,0.02,0);
-//                    leftJag.enableControl();
                     leftJag.setVoltageRampRate(MOTOR_RAMP_RATE);
                     leftJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 }
@@ -59,9 +57,6 @@ public class Drive extends Subsystem {
                     rightJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
                     rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                     rightJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-//                rightJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-//                rightJag.setPID(0.005,0.02,0);
-//                rightJag.enableControl();
                     rightJag.setVoltageRampRate(MOTOR_RAMP_RATE);
                     rightJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
                 }
@@ -71,12 +66,53 @@ public class Drive extends Subsystem {
                 m_fault = true;
             }
     }
+    public void enableClosedLoop() {
+         if(rightJag != null) {
+            try {
+                rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                rightJag.setPID(0.80, 0.005, 0.0);
+                rightJag.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+          if(leftJag != null) {
+            try {
+                leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+                leftJag.setPID(0.8, 0.005, 0.0);
+                leftJag.enableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+    }
+    
+    public void disableClosedLoop() {
+        if(rightJag != null) {
+            try {
+                rightJag.disableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+        if(leftJag != null) {
+            try {
+                leftJag.disableControl();
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+    }
     /**
      * Sets the default command to DriveWithController so that when nothing
      * else is happening with the Drive, we can use controllers to move.
      */
     public void initDefaultCommand() {
-        setDefaultCommand(new DrivewithController());
+        setDefaultCommand(new DriveWithControllerClosed());
     }
  
     /**
@@ -139,13 +175,11 @@ public class Drive extends Subsystem {
      *                  should be positive and be below the Drive's max speed.
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-        // Change to max speed wanted
-        // Why are we multiplying by maxRPM?
-        int maxRPM = 100;
+        double scaleToRPM = 60.0 / DISTANCE_PER_REVOLUTION;
+        
         if(leftJag != null) {
             try {
-                leftJag.setX(speedLeft * maxRPM);
-                leftJag.enableControl();
+                leftJag.setX(speedLeft * scaleToRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -153,8 +187,7 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null) {
             try {
-                rightJag.setX(-speedRight * maxRPM);
-                rightJag.enableControl();
+                rightJag.setX(-speedRight * scaleToRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

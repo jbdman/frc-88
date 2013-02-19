@@ -14,7 +14,7 @@ public class Wiring {
     public static final int driveLeftCANID    = 2; 
     public static final int driveRightCANID   = 4;
     public static final int TilterCANID = 10; 
-    public static final int climberCANID = 12;
+    public static final int climberCANID = 5;
     public static final int DumperCANID = 8;
     
     //servo ids

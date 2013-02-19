@@ -5,24 +5,22 @@
 package edu.wpi.first.wpilibj.templates.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
+import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
+import edu.wpi.first.wpilibj.templates.commands.TilterHome;
 /**
  *
  * @author David
  */
-public class Autonomous extends CommandGroup {
+public class HomeGroup extends CommandGroup {
     
-    public Autonomous() {
+    public HomeGroup() {
+        addParallel(new ClimberHome());
+        addSequential(new TilterHome());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-        addSequential(new DriveClosed(10.0, 10.0, 1));
-        addSequential(new DumperForward());
-        addSequential(new DriveClosed(30.0, 20.0, 2));
-        addSequential(new DriveClosed(0.0, 0.0, 10));
-        
-        
+
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());

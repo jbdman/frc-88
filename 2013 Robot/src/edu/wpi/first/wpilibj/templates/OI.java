@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.templates.commands.feed_position;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
 import edu.wpi.first.wpilibj.templates.commands.DumperForward;
 import edu.wpi.first.wpilibj.templates.commands.TilterHome;
+import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
 
 
 /**
@@ -68,8 +69,11 @@ public class OI {
           operatorButtonLeftBumper.whileHeld(new DumperBackward());
           operatorButtonRightBumper.whileHeld(new DumperForward());
 
-          operatorButtonY.whenPressed(new ClimberHome());
-
+          operatorButtonY.whenPressed(new HomeGroup());
+          operatorButtonB.whenPressed(new ClimberHome());
+          operatorButtonX.whenPressed(new TilterHome());
+          operatorButtonA.whenPressed(new TilterAngleIncrease());
+          operatorButtonA.whenReleased(new TilterStop());
           // Add some commands to run from the dashboard
           SmartDashboard.putData("ClimberHome ", new ClimberHome());
           SmartDashboard.putData("ClimberHome ", new TilterHome());

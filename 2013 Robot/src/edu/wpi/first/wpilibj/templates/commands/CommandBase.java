@@ -69,9 +69,8 @@ public abstract class CommandBase extends Command {
             // Various indicators
             SmartDashboard.putNumber("Climber position ", climber.getPosition());
             SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
-            SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
-            SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
-            SmartDashboard.putNumber("Drive Trigger ", oi.getDriveTrigger());
+            SmartDashboard.putNumber("Drive (left) ", drive.getLeftDistance());
+            SmartDashboard.putNumber("Drive (right) ", drive.getRightDistance());
         }
 
         iterator++;

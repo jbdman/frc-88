@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj.Encoder;
 public class Dumper extends Subsystem {
     CANJaguar DumperJag = null;
     private boolean m_fault = false;
-    private static final double defaultBackwardSpeed= -.35;
-    private static final double defaultForwardSpeed = .35;
+    private static final double defaultBackwardSpeed= 0.35;
+    private static final double defaultForwardSpeed = -0.35;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;
     private static final double lowerScorePosition = -3;

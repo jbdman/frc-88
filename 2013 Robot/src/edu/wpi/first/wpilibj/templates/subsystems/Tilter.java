@@ -19,10 +19,12 @@ import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
 public class Tilter extends Subsystem {
     CANJaguar TilterJag = null;
     
+    private boolean m_calibrated = false;
     private boolean m_fault = false;
+    private double encoderHome = 0.0;
     //these numbers will have to be changed depending on the speed of the motors
-    private static final double defaultDownSpeed = -1;
-    private static final double defaultUpSpeed = 1;
+    private static final double defaultDownSpeed = -0.7;
+    private static final double defaultUpSpeed = 0.7;
     private static final double defaultTiltMaxSpeed = 0.7;
     // These angles are currently arbitrary and should be changed to be useful
     public static final double HomeAngle = 0;
@@ -31,8 +33,10 @@ public class Tilter extends Subsystem {
     private static final double dimensionA = 8.25;
     private static final double dimensionB = 8.5;
     
-    private static final double INCHES_PER_REV = 0.5;
-    
+    private static final double INCHES_PER_REV = 0.25;
+    private static final double FORWARD_SOFT_LIMIT_INCHES  = 4.0;
+    private static final int ENCODER_LINES = 100;
+
     // Values used in angle-to-distance conversion, precomputed in the
     // constructor to make the calculations faster.
     private double angleAddition;
@@ -47,8 +51,9 @@ public class Tilter extends Subsystem {
 //            TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
 //            TilterJag.enableControl();
             TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-            TilterJag.configEncoderCodesPerRev(100);
+            TilterJag.configEncoderCodesPerRev(ENCODER_LINES);
             TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
+            TilterJag.setVoltageRampRate(20.0);      
         } catch (CANTimeoutException ex) {
             System.out.println("***CAN ERROR***");
             m_fault = true;
@@ -90,6 +95,24 @@ public class Tilter extends Subsystem {
     public void Tiltstop(){
         TilterOpenLoop(0.0);
     }
+      public void calibrateEncoder() {
+        m_calibrated = true;
+        encoderHome = getRevolution();
+        try {
+            TilterJag.configSoftPositionLimits(encoderHome - 1, encoderHome + FORWARD_SOFT_LIMIT_INCHES / INCHES_PER_REV);
+        }
+        catch (CANTimeoutException ex) {
+            m_fault = true;
+        }
+    }
+      /**
+     * Returns the value of the calibration flag
+     * 
+     * @return  True if the Climber subsystem has been calibrated
+     */
+    public boolean isCalibrated() {
+        return m_calibrated;
+    }
    /**
      * Enables closed loop control of the Tilter.
      */
@@ -121,17 +144,16 @@ public class Tilter extends Subsystem {
      * @return  True if the Tilter has tripped the sensor indicating vertical
      *          position.
      */
-    public boolean VerticalLimitTripped() {
+    public boolean LimitTripped() {
         try {
-            // Not sure it this should be forward or reverse limit
-            // Also not sure if it returns true or false when the switch is tripped
-            return TilterJag.getForwardLimitOK();
+            return !TilterJag.getForwardLimitOK();
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
             return true;
         }
     }
+
     /**
      * Open loop control of the Tilter, using voltage percentage.
      * 
@@ -143,7 +165,7 @@ public class Tilter extends Subsystem {
         if(TilterJag != null) {
             try {
                 // Is this inversion correct?  I may have broken everything. 2/9
-                TilterJag.setX(-power);
+                TilterJag.setX(power);
                 // Do we need to be disabling control every time we drive?  2/9
 //                TilterJag.disableControl();
             } catch(CANTimeoutException ex) {

@@ -26,13 +26,15 @@ public class TilterHome extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (tilter.VerticalLimitTripped()){ 
-                tilter.up();
+        boolean flag = tilter.LimitTripped();
+        
+        if (flag){ 
+                tilter.down();
                 movehorizontal = true;
             }
             
             else {
-                tilter.down();
+                tilter.up();
                 movehorizontal = false;
             }
         }
@@ -40,8 +42,8 @@ public class TilterHome extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!tilter.VerticalLimitTripped() && movehorizontal) {
-            tilter.down();
+        if (!tilter.LimitTripped() && movehorizontal) {
+            tilter.up();
             movehorizontal = false;
         }
        
@@ -49,7 +51,7 @@ public class TilterHome extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (tilter.VerticalLimitTripped() && !movehorizontal) {
+        if (tilter.LimitTripped() && !movehorizontal) {
             return true;
         }
         return false;
@@ -58,10 +60,12 @@ public class TilterHome extends CommandBase {
     // Called once after isFinished returns true
     protected void end() {
         tilter.Tiltstop();
+        tilter.calibrateEncoder();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        tilter.Tiltstop();
     }
 }

@@ -41,8 +41,9 @@ public class Climber extends Subsystem {
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 // We need this ramp rate. Without it rapid reversal causes transients
                 ClimbJag.setVoltageRampRate(20);
-                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-                //ClimbJag.setPID(100.0,0.10,0);
+//                ClimbJag.enableControl();
+//                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+//                ClimbJag.setPID(150.0,0,0);
             }
         } catch (CANTimeoutException ex) {
             m_fault = true;
@@ -69,10 +70,10 @@ public class Climber extends Subsystem {
     }
     
     public void tall() {
-        ClimbClosedLoop(6);
+        ClimbClosedLoop(0);
     }
     public void bottom() {
-        ClimbClosedLoop(-6);
+        ClimbClosedLoop(-35);
     }
     /**
      * Drives the climber down at the default speed.
