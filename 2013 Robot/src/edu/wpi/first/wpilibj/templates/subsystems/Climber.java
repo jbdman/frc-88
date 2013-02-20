@@ -18,6 +18,7 @@ public class Climber extends Subsystem {
     //speeds can change if needed as of now full power will give you full power
     private boolean m_fault = false;
     private boolean m_calibrated = false;
+    private boolean m_closedLoop = false;
 
     // By measurement, the distances are highest (0.0) and lowest (-35.75)
     
@@ -41,9 +42,6 @@ public class Climber extends Subsystem {
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
                 // We need this ramp rate. Without it rapid reversal causes transients
                 ClimbJag.setVoltageRampRate(20);
-//                ClimbJag.enableControl();
-//                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-//                ClimbJag.setPID(150.0,0,0);
             }
         } catch (CANTimeoutException ex) {
             m_fault = true;
@@ -56,6 +54,38 @@ public class Climber extends Subsystem {
         setDefaultCommand(new ClimberJoysick());
     }
 
+    public void enableClosedLoop() {
+         if(ClimbJag != null) {
+            try {
+                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                ClimbJag.setPID(150.0, 0.0, 0.0);
+                double position = ClimbJag.getPosition();
+                ClimbJag.enableControl(position);
+                m_closedLoop = true;
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+    }
+    
+    public void disableClosedLoop() {
+        if(ClimbJag != null) {
+            try {
+                ClimbJag.disableControl();
+                ClimbJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                m_closedLoop = false;
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
+    }
+    
+    public boolean isClosedLoop() {
+        return m_closedLoop;
+    }
+    
     /**
      * Stops the climber motor.
      */
@@ -70,10 +100,10 @@ public class Climber extends Subsystem {
     }
     
     public void tall() {
-        ClimbClosedLoop(0);
+        ClimbClosedLoop(35);
     }
     public void bottom() {
-        ClimbClosedLoop(-35);
+        ClimbClosedLoop(-35.75);
     }
     /**
      * Drives the climber down at the default speed.
@@ -182,12 +212,12 @@ public class Climber extends Subsystem {
         // Also ensure that vertical is positive.
       // convert from inches to revolutions
       double revolution = vertical / distPerRev;
-      m_setPoint = revolution;
+      m_setPoint = revolution + revolutionHome;
         if(ClimbJag != null) {
             try {
                 //the formula below will probably be subject to change
                 // may need to be inverted (is this inversion correct?)  2/9
-                ClimbJag.setX(revolution);
+                ClimbJag.setX(m_setPoint);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

@@ -23,8 +23,8 @@ public class Tilter extends Subsystem {
     private boolean m_fault = false;
     private double encoderHome = 0.0;
     //these numbers will have to be changed depending on the speed of the motors
-    private static final double defaultDownSpeed = -0.7;
-    private static final double defaultUpSpeed = 0.7;
+    private static final double defaultDownSpeed = -1.0;
+    private static final double defaultUpSpeed = 1.0;
     private static final double defaultTiltMaxSpeed = 0.7;
     // These angles are currently arbitrary and should be changed to be useful
     public static final double HomeAngle = 0;
@@ -34,7 +34,7 @@ public class Tilter extends Subsystem {
     private static final double dimensionB = 8.5;
     
     private static final double INCHES_PER_REV = 0.25;
-    private static final double FORWARD_SOFT_LIMIT_INCHES  = 4.0;
+    private static final double FORWARD_SOFT_LIMIT_INCHES  = 4.5;
     private static final int ENCODER_LINES = 100;
 
     // Values used in angle-to-distance conversion, precomputed in the
@@ -78,11 +78,11 @@ public class Tilter extends Subsystem {
     public void up(){
         TilterOpenLoop(defaultUpSpeed);
     }
-    public void tall() {
-        TilterClosedLoop(7);
+    public void climb() {
+        TilterClosedLoop(4);
     }
-    public void small () {
-        TilterClosedLoop(-7);
+    public void clear () {
+        TilterClosedLoop(3);
     }
     
     
@@ -95,7 +95,9 @@ public class Tilter extends Subsystem {
     public void Tiltstop(){
         TilterOpenLoop(0.0);
     }
-      public void calibrateEncoder() {
+
+    
+    public void calibrateEncoder() {
         m_calibrated = true;
         encoderHome = getRevolution();
         try {
@@ -237,7 +239,7 @@ public class Tilter extends Subsystem {
     public double getAngle() {
         // distance is simply rotations times the pitch of the leadscrew
 //        return angleFromDistance(LEADSCREW_PITCH * getRevolution()); 
-        return (INCHES_PER_REV * getRevolution()); 
+        return (INCHES_PER_REV * (getRevolution() - encoderHome)); 
     }
 
     /**

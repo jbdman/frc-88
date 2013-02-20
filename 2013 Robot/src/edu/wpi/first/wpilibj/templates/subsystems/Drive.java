@@ -19,6 +19,7 @@ public class Drive extends Subsystem {
     CANJaguar leftJag = null;
     CANJaguar rightJag = null;
     private boolean m_fault = false;
+    private boolean m_closedLoop = false;
 
     /* Set the maximum change in voltage in 1 sec
      * Smaller values prevent the robot from rocking backwards under acceleration
@@ -26,6 +27,7 @@ public class Drive extends Subsystem {
     private static final double MOTOR_RAMP_RATE = 15.0;
     private static final int DRIVE_ENCODER_LINES = 250;
     private static final double DISTANCE_PER_REVOLUTION = 15.423;
+    //sprockets on the comp robot are ratio of 15:23 on practice it is 16 : 23
     
     /** 
      * Initializes Jaguars and sets up PID control.
@@ -66,22 +68,24 @@ public class Drive extends Subsystem {
                 m_fault = true;
             }
     }
+    
+    
     public void enableClosedLoop() {
-         if(rightJag != null) {
+        double position;
+
+        if(rightJag != null && leftJag != null) {
             try {
+                // set the right motor to closed loop
                 rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 rightJag.setPID(0.80, 0.005, 0.0);
-                rightJag.enableControl();
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN timeout");
-            }
-        }
-          if(leftJag != null) {
-            try {
+                position = rightJag.getPosition();
+                rightJag.enableControl(position);
+                // now the left motor
                 leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 leftJag.setPID(0.8, 0.005, 0.0);
-                leftJag.enableControl();
+                position = leftJag.getPosition();
+                leftJag.enableControl(position);
+                m_closedLoop = true;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN timeout");
@@ -90,23 +94,26 @@ public class Drive extends Subsystem {
     }
     
     public void disableClosedLoop() {
-        if(rightJag != null) {
+        if(rightJag != null && leftJag != null) {
             try {
+                // set the right motor to open loop
                 rightJag.disableControl();
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN timeout");
-            }
-        }
-        if(leftJag != null) {
-            try {
+                rightJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                // now the left motor
                 leftJag.disableControl();
+                leftJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                m_closedLoop = false;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN timeout");
             }
         }
     }
+
+    public boolean isClosedLoop() {
+        return m_closedLoop;
+    }
+
     /**
      * Sets the default command to DriveWithController so that when nothing
      * else is happening with the Drive, we can use controllers to move.

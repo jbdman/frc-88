@@ -10,8 +10,8 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class ClimberTop extends CommandBase {
     
-    private double upperlimit = 6.05;
-    private double lowerlimit = 5.95;
+    private double upperlimit = 35.05;
+    private double lowerlimit = 34.95;
     private double count = 0;
     private static final int COUNTSTOP = 5;
     public ClimberTop() {

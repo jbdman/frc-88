@@ -28,7 +28,9 @@ public class DriveWithControllerClosed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drive.enableClosedLoop();
+        if(drive.isClosedLoop()) {
+            drive.enableClosedLoop();
+        }
         drive.setBrake(m_brake);
     }
 

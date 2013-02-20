@@ -11,8 +11,8 @@ package edu.wpi.first.wpilibj.templates.commands;
 //command wont work 2/2/12
 public class ClimberBottom extends CommandBase {
     
-    private double upperlimit = -6.05;
-    private double lowerlimit = -5.95;
+    private double upperlimit = -35.05;
+    private double lowerlimit = -34.95;
     private double count = 0;
     private static final int COUNTSTOP = 5;
     

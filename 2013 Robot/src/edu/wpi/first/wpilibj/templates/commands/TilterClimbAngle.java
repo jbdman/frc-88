@@ -13,14 +13,14 @@ package edu.wpi.first.wpilibj.templates.commands;
      * Command for the making the Tilter go to its tallest position.
      * Making the climber closer to horizontal
      */
-public class TilterTall extends CommandBase {
+public class TilterClimbAngle extends CommandBase {
     
-    private double upperlimit = 7.05;
-    private double lowerlimit = 6.95;
+    private double upperlimit = 4.05;
+    private double lowerlimit = 3.95;
     private double count = 0;
     private static final int COUNTSTOP = 5;
     
-    public TilterTall() {
+    public TilterClimbAngle() {
         super("TilterPosSetMax");
         requires(tilter);
         // Use requires() here to declare subsystem dependencies
@@ -29,7 +29,7 @@ public class TilterTall extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        tilter.tall();
+        tilter.climb();
     }
 
     // Called repeatedly when this Command is scheduled to run

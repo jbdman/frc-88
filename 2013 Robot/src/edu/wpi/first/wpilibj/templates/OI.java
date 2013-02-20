@@ -1,9 +1,6 @@
 
 package edu.wpi.first.wpilibj.templates;
 
-import edu.wpi.first.wpilibj.templates.commands.ClimberDown;
-import edu.wpi.first.wpilibj.templates.commands.ClimberUp;
-import edu.wpi.first.wpilibj.templates.commands.ClimberStop;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -20,6 +17,9 @@ import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
 import edu.wpi.first.wpilibj.templates.commands.DumperForward;
 import edu.wpi.first.wpilibj.templates.commands.TilterHome;
 import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
+import edu.wpi.first.wpilibj.templates.commands.ClimberPosition;
+import edu.wpi.first.wpilibj.templates.commands.TilterClearAngle;
+import edu.wpi.first.wpilibj.templates.commands.TilterClimbAngle;
 
 
 /**
@@ -50,15 +50,6 @@ public class OI {
 //        operatorButtonA.whenReleased(new TilterStop());
 //        operatorButtonY.whileHeld(new AngleIncrease());
 //        operatorButtonY.whenReleased(new TilterStop());
-
-//        operatorButtonA.whileHeld(new ClimberBottom());
-//        operatorButtonA.whileHeld(new ClimberStop());
-//        operatorButtonY.whileHeld(new ClimberTop());
-//        operatorButtonY.whenReleased(new ClimberStop());
-//        operatorButtonB.whileHeld(new ClimberUp());
-//        operatorButtonB.whenReleased(new ClimberStop());
-//        operatorButtonX.whileHeld(new ClimberDown());
-//        operatorButtonX.whenReleased(new ClimberStop());
         
         //these buttons, B and X, the commands for them involve closed loop stuff for another day...need fixing
 //          operatorButtonB.whenPressed(new dumperhighscore_position());
@@ -70,13 +61,15 @@ public class OI {
           operatorButtonRightBumper.whileHeld(new DumperForward());
 
           operatorButtonY.whenPressed(new HomeGroup());
-          operatorButtonB.whenPressed(new ClimberHome());
-          operatorButtonX.whenPressed(new TilterHome());
-          operatorButtonA.whenPressed(new TilterAngleIncrease());
-          operatorButtonA.whenReleased(new TilterStop());
+          operatorButtonB.whenPressed(new ClimberPosition(-10.0));
+          operatorButtonX.whenPressed(new ClimberPosition(-20.0));
+//          operatorButtonA.whenPressed(new TilterAngleIncrease());
+//          operatorButtonA.whenReleased(new TilterStop());
+          
+//          driverButtonB.whenPressed(new TilterClimbAngle());
+//          driverButtonX.whenPressed(new TilterClearAngle());
+          
           // Add some commands to run from the dashboard
-          SmartDashboard.putData("ClimberHome ", new ClimberHome());
-          SmartDashboard.putData("ClimberHome ", new TilterHome());
           
     }
     

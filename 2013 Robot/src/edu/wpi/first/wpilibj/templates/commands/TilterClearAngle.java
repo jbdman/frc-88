@@ -13,14 +13,14 @@ package edu.wpi.first.wpilibj.templates.commands;
      * Command for setting the Tilter to it's shortest setting. Making the climber more
      * vertical
      */
-public class TilterShort extends CommandBase {
+public class TilterClearAngle extends CommandBase {
     
-    private double upperlimit = -7.05;
-    private double lowerlimit = -6.95;
+    private double upperlimit = 3.05;
+    private double lowerlimit = 2.95;
     private double count = 0;
     private static final int COUNTSTOP = 5;
     
-    public TilterShort() {
+    public TilterClearAngle() {
         super("TilterShortestPosition");
         requires(tilter);
         // Use requires() here to declare subsystem dependencies
@@ -29,7 +29,7 @@ public class TilterShort extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        tilter.small();
+        tilter.clear();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -28,7 +28,9 @@ public class DriveClosed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drive.enableClosedLoop();
+        if(drive.isClosedLoop()) {
+            drive.enableClosedLoop();
+        }
         setTimeout(m_timeout);
         drive.driveTankClosedLoop(m_speedLeft, m_speedRight);
     }
