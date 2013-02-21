@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Climber;
 import edu.wpi.first.wpilibj.templates.subsystems.Tilter;
 import edu.wpi.first.wpilibj.templates.subsystems.Dumper;
 import edu.wpi.first.wpilibj.templates.subsystems.CameraControl;
+import com.ni.rio.NiFpga;
 
 
 /**
@@ -41,7 +42,8 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(dumper);
         SmartDashboard.putData(drive);
         SmartDashboard.putData(cameraControl);
-        
+        SmartDashboard.putNumber("DeviceNum", NiFpga.kRioDeviceNum);
+        SmartDashboard.putNumber("ChassisNum", NiFpga.kRioChassisNum);
     }
 
     public CommandBase(String name) {
