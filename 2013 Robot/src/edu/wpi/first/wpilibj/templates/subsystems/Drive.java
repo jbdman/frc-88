@@ -68,8 +68,9 @@ public class Drive extends Subsystem {
                 m_fault = true;
             }
     }
-    
-    
+    /**
+     * Enables ClosedLoop control Driving. It sets it to speed.
+     */
     public void enableClosedLoop() {
         double position;
 
@@ -92,7 +93,9 @@ public class Drive extends Subsystem {
             }
         }
     }
-    
+    /**
+     * Disables the Drive closed loop and puts it into open loop.
+     */
     public void disableClosedLoop() {
         if(rightJag != null && leftJag != null) {
             try {
@@ -109,7 +112,10 @@ public class Drive extends Subsystem {
             }
         }
     }
-
+    /**
+     * Returns whether or not Drive is in ClosedLoop. If it is it will return true and if it is not
+     * it will return false.
+     */
     public boolean isClosedLoop() {
         return m_closedLoop;
     }

@@ -53,7 +53,9 @@ public class Climber extends Subsystem {
     public void initDefaultCommand() {
         setDefaultCommand(new ClimberJoysick());
     }
-
+    /**
+     * Sets up the climber closed loop and puts it in Position mode.
+     */
     public void enableClosedLoop() {
          if(ClimbJag != null) {
             try {
@@ -68,7 +70,9 @@ public class Climber extends Subsystem {
             }
         }
     }
-    
+     /**
+     * Disables the climber closed loop puts it into open loop.
+     */
     public void disableClosedLoop() {
         if(ClimbJag != null) {
             try {
@@ -81,7 +85,9 @@ public class Climber extends Subsystem {
             }
         }
     }
-    
+    /**
+     * Reads the boolean (m_closedLoop) to tell if the climber is in closed loop or not.
+     */
     public boolean isClosedLoop() {
         return m_closedLoop;
     }
@@ -91,19 +97,12 @@ public class Climber extends Subsystem {
      */
     public void stop() {
         ClimbOpenLoop(0.0);
-    }
+    }  
     /**
      * Drives the climber up at the default speed.
      */
     public void up() {
         ClimbOpenLoop(defaultUpSpeed);
-    }
-    
-    public void tall() {
-        ClimbClosedLoop(35);
-    }
-    public void bottom() {
-        ClimbClosedLoop(-35.75);
     }
     /**
      * Drives the climber down at the default speed.
@@ -112,13 +111,12 @@ public class Climber extends Subsystem {
         ClimbOpenLoop(defaultDownSpeed);
     }
     /**
-     * Sets m_climbfault to true, indicating an error with the
+     * Sets m_fault to true, indicating an error with the
      * climber system.
      */
     public void setfault() {
         m_fault = true;
     }
-
     /**
      * Sets calibration flag, which means the homing has been completed, 
      * and also resets the home position for the climber mast.

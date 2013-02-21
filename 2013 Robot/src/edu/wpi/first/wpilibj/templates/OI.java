@@ -7,23 +7,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
-import edu.wpi.first.wpilibj.templates.commands.TilterAngleIncrease;
-import edu.wpi.first.wpilibj.templates.commands.TilterAngleDecrease;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
-import edu.wpi.first.wpilibj.templates.commands.dumperhighscore_position;
-import edu.wpi.first.wpilibj.templates.commands.dumperlowscore_position;
-import edu.wpi.first.wpilibj.templates.commands.feed_position;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
 import edu.wpi.first.wpilibj.templates.commands.DumperForward;
 import edu.wpi.first.wpilibj.templates.commands.TilterHome;
 import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
 import edu.wpi.first.wpilibj.templates.commands.ClimberPosition;
-import edu.wpi.first.wpilibj.templates.commands.TilterClearAngle;
-import edu.wpi.first.wpilibj.templates.commands.TilterClimbAngle;
+import edu.wpi.first.wpilibj.templates.commands.ClimbLevelOne;
+import edu.wpi.first.wpilibj.templates.commands.ClimbLevelTwo;
 
 
 /**
- * This class is the glue that binds the controls on the physical operator
+ * This class binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
@@ -45,32 +40,13 @@ public class OI {
     private Button operatorButtonRightBumper = new JoystickButton(operatorController, 6);
     
     public OI() {
-       //controls the angle for the climber. When the buttons are released the climber should stop automatically - David
-//        operatorButtonA.whileHeld(new AngleDecrease());
-//        operatorButtonA.whenReleased(new TilterStop());
-//        operatorButtonY.whileHeld(new AngleIncrease());
-//        operatorButtonY.whenReleased(new TilterStop());
-        
-        //these buttons, B and X, the commands for them involve closed loop stuff for another day...need fixing
-//          operatorButtonB.whenPressed(new dumperhighscore_position());
-//          operatorButtonX.whenPressed(new dumperlowscore_position());
-//          operatorButtonY.whenPressed(new feed_position());
-//          
         //these buttons are for the bumpers and they are the open loop commands for the dumper
           operatorButtonLeftBumper.whileHeld(new DumperBackward());
           operatorButtonRightBumper.whileHeld(new DumperForward());
 
           operatorButtonY.whenPressed(new HomeGroup());
-          operatorButtonB.whenPressed(new ClimberPosition(-10.0));
-          operatorButtonX.whenPressed(new ClimberPosition(-20.0));
-//          operatorButtonA.whenPressed(new TilterAngleIncrease());
-//          operatorButtonA.whenReleased(new TilterStop());
-          
-//          driverButtonB.whenPressed(new TilterClimbAngle());
-//          driverButtonX.whenPressed(new TilterClearAngle());
-          
-          // Add some commands to run from the dashboard
-          
+          operatorButtonB.whenPressed(new ClimbLevelOne());
+//          operatorButtonX.whenPressed(new ClimbLevelTwo());
     }
     
     /**

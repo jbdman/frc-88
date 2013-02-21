@@ -22,13 +22,11 @@ public class Tilter extends Subsystem {
     private boolean m_calibrated = false;
     private boolean m_fault = false;
     private double encoderHome = 0.0;
+    private boolean m_closedLoop = false;
     //these numbers will have to be changed depending on the speed of the motors
     private static final double defaultDownSpeed = -1.0;
     private static final double defaultUpSpeed = 1.0;
-    private static final double defaultTiltMaxSpeed = 0.7;
-    // These angles are currently arbitrary and should be changed to be useful
-    public static final double HomeAngle = 0;
-    public static final double DownAngle = -3;
+    private static final double tiltMaxSpeed = 1.0;
     // Tilter Dimensions, specified in inches
     private static final double dimensionA = 8.25;
     private static final double dimensionB = 8.5;
@@ -48,9 +46,6 @@ public class Tilter extends Subsystem {
         // Initialize the Jaguar and its PID control
         try {
             TilterJag = new CANJaguar(Wiring.TilterCANID);
-//            TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-//            TilterJag.enableControl();
-            TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
             TilterJag.configEncoderCodesPerRev(ENCODER_LINES);
             TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
             TilterJag.setVoltageRampRate(20.0);      
@@ -78,12 +73,6 @@ public class Tilter extends Subsystem {
     public void up(){
         TilterOpenLoop(defaultUpSpeed);
     }
-    public void climb() {
-        TilterClosedLoop(4);
-    }
-    public void clear () {
-        TilterClosedLoop(3);
-    }
     
     
     /**
@@ -96,7 +85,10 @@ public class Tilter extends Subsystem {
         TilterOpenLoop(0.0);
     }
 
-    
+    /**
+     * Basically, what this does is when you home the Tilter it will tell the Jaguar that once it has hit the limit switch
+     * it is at 0, regardless of what the encoder is actually reading.
+     */
     public void calibrateEncoder() {
         m_calibrated = true;
         encoderHome = getRevolution();
@@ -115,29 +107,44 @@ public class Tilter extends Subsystem {
     public boolean isCalibrated() {
         return m_calibrated;
     }
+    
    /**
      * Enables closed loop control of the Tilter.
      */
     public void enableClosedLoop(){
-                try {
-                    TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                    TilterJag.setPID(0.005,0.02,0);
-                    TilterJag.enableControl();
-                }
-                catch (CANTimeoutException ex){
-                    System.err.println("****************CAN timeout*************");
-                    
-                }
+        if(TilterJag != null) {
+              try {
+                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
+                TilterJag.setPID(-150.0, 0.0, 0.0);
+                double position = TilterJag.getPosition();
+                TilterJag.enableControl(position);
+                m_closedLoop = true;
+            } catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("CAN timeout");
+            }
+        }
     }
     /**
-     * Enabled open loop control of the Tilter.
+     * Disables closed loop control on the Tilter and enables open loop control of the Tilter.
      */
-    public void enableOpenLoop(){
+    public void disableClosedLoop(){
         try{
             TilterJag.disableControl();
+            TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+            m_closedLoop = false;
         }
         catch (CANTimeoutException ex){
+            m_fault = true;
+            System.err.println("CAN ERROR");
         }
+    }
+    /**
+     * Returns whether or not the Tilter is in ClosedLoop. If it is it will return true
+     * and if it is not it will return false.
+     */
+    public boolean isClosed() {
+        return m_closedLoop;
     }
     /**
      * Gets whether or not the vertical limit of the Tilter has been tripped.
@@ -167,9 +174,7 @@ public class Tilter extends Subsystem {
         if(TilterJag != null) {
             try {
                 // Is this inversion correct?  I may have broken everything. 2/9
-                TilterJag.setX(power);
-                // Do we need to be disabling control every time we drive?  2/9
-//                TilterJag.disableControl();
+                TilterJag.setX(power * tiltMaxSpeed);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -188,16 +193,11 @@ public class Tilter extends Subsystem {
     public void TilterClosedLoop(double distance) {
         // need to convert distance input (inches) to something the jag can use (rotations)
         // check to make sure distance input is positive
+        double revolution = distance / INCHES_PER_REV;
         if(TilterJag != null) {
             try {
-                TilterJag.setX(distance);
+                TilterJag.setX(revolution);
                 // Need to determine encoder codes per rev
-                // Should we be doing all of this every time we move under closed loop?
-                TilterJag.configEncoderCodesPerRev(360);
-                TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                TilterJag.changeControlMode(CANJaguar.ControlMode.kPosition);
-                TilterJag.setPID(0.005,0.02,0);
-                TilterJag.enableControl();
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

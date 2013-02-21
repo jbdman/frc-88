@@ -28,7 +28,7 @@ public class DriveClosed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(drive.isClosedLoop()) {
+        if(!drive.isClosedLoop()) {
             drive.enableClosedLoop();
         }
         setTimeout(m_timeout);
