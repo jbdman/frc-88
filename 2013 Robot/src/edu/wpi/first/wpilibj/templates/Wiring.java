@@ -11,11 +11,11 @@ public class Wiring {
      * ### CAN Motors ###
      */
     // Added real CAN IDs from the practice robot
-    public static final int driveLeftCANID    = 2; 
-    public static final int driveRightCANID   = 4;
-    public static final int TilterCANID = 10; 
-    public static final int climberCANID = 5;
-    public static final int DumperCANID = 8;
+    public static final int driveLeftCANID    = 5; 
+    public static final int driveRightCANID   = 2;
+    public static final int TilterCANID = 3; 
+    public static final int climberCANID = 4;
+    public static final int DumperCANID = 6;
     
     //servo ids
     public static final int Servo1ID = 1;
