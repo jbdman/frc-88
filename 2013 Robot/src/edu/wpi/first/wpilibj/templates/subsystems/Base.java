@@ -46,8 +46,18 @@ public class Base extends Subsystem {
                 cameraServoLeft.setAngle(angle);
         }
         if(cameraServoRight != null) {
-                cameraServoLeft.setAngle(angle);
+                cameraServoRight.setAngle(angle);
         }
+    }
+    public double getCameraAngle() {
+        double angle = 0;
+        double angle1 = 0;
+        double angle2 = 0;
+        angle1 = cameraServoLeft.getAngle();
+        angle2=cameraServoRight.getAngle();
+        
+        angle = angle1 + angle2 /2;
+        return angle;
     }
 }
  
