@@ -42,7 +42,6 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(dumper);
         SmartDashboard.putData(drive);
         SmartDashboard.putData(base);
-        SmartDashboard.putNumber("cRIO Serial Num", NiFpga.kRioSerialNum);
     }
     
     public CommandBase(String name) {
@@ -72,6 +71,8 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
             SmartDashboard.putNumber("Drive (left) ", drive.getLeftDistance());
             SmartDashboard.putNumber("Drive (right) ", drive.getRightDistance());
+            SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
+            
         }
 
         iterator++;

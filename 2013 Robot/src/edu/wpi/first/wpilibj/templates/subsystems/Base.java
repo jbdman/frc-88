@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.CameraJoystick;
+
 /**
  *
  * @author TJ2
@@ -26,7 +27,9 @@ public class Base extends Subsystem {
           cameraServoRight = new Servo(Wiring.CameraServoRight);
 
           rangeFinder = new Ultrasonic(Wiring.RangeFinderPing, Wiring.RangeFinderEcho);
+          rangeFinder.setAutomaticMode(true);
     }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -49,15 +52,62 @@ public class Base extends Subsystem {
                 cameraServoRight.setAngle(angle);
         }
     }
+
+    /**
+     * Get the camera angle
+     * 
+     * @return average angle of both cameras 
+     */
     public double getCameraAngle() {
-        double angle = 0;
-        double angle1 = 0;
-        double angle2 = 0;
-        angle1 = cameraServoLeft.getAngle();
-        angle2=cameraServoRight.getAngle();
+
+        double angle = 0.0;
         
-        angle = angle1 + angle2 /2;
+        angle += cameraServoLeft.getAngle();
+        angle += cameraServoRight.getAngle();
+        
+        angle /= 2.0;
+
         return angle;
     }
-}
- 
+
+    /**
+     * Get the angle of the left camera
+     * 
+     * @return angle of the left camera
+     */
+    public double getLeftCameraAngle() {
+        double angle = 0.0;
+        if(cameraServoLeft != null) {
+            angle = cameraServoLeft.getAngle();
+        }
+        return angle;
+    }
+    
+    /**
+     * Get the angle of the right camera
+     * 
+     * @return angle of the right camera in degrees
+     */
+    public double getRightCameraAngle() {
+        double angle = 0.0;
+        if(cameraServoRight != null) {
+            angle = cameraServoRight.getAngle();
+        }
+        return angle;
+    }
+
+    /**
+     * Get the distance from the rangefinder, or -1 for no distance
+     * 
+     * @return rangefinder distance in inches
+     */
+    public double getRangeFinderDist() {
+        double dist = -1.0;
+
+        if(rangeFinder.isRangeValid()) {
+            dist = rangeFinder.getRangeInches();
+        }
+        return dist;
+    }
+
+} 
