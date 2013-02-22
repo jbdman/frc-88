@@ -26,8 +26,10 @@ public class Drive extends Subsystem {
      */
     private static final double MOTOR_RAMP_RATE = 15.0;
     private static final int DRIVE_ENCODER_LINES = 250;
-    private static final double DISTANCE_PER_REVOLUTION = 15.423;
-    //sprockets on the comp robot are ratio of 15:23 on practice it is 16 : 23
+    private static final double DISTANCE_PER_REVOLUTION = 12.293;
+//    private static final double DISTANCE_PER_REVOLUTION = 15.423;
+    //sprockets on the comp & practice robot are 15:23 from final drive to wheel
+    // wheel is 6 inches
     
     /** 
      * Initializes Jaguars and sets up PID control.

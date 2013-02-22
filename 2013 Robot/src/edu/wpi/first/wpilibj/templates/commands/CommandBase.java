@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
 import edu.wpi.first.wpilibj.templates.subsystems.Climber;
 import edu.wpi.first.wpilibj.templates.subsystems.Tilter;
 import edu.wpi.first.wpilibj.templates.subsystems.Dumper;
-import edu.wpi.first.wpilibj.templates.subsystems.CameraControl;
+import edu.wpi.first.wpilibj.templates.subsystems.Base;
 import com.ni.rio.NiFpga;
 
 
@@ -26,7 +26,7 @@ public abstract class CommandBase extends Command {
     public static Climber climber = new Climber();
     public static Tilter tilter = new Tilter();
     public static Dumper dumper = new Dumper();
-    public static CameraControl cameraControl = new CameraControl();
+    public static Base base = new Base();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -41,11 +41,10 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(climber);
         SmartDashboard.putData(dumper);
         SmartDashboard.putData(drive);
-        SmartDashboard.putData(cameraControl);
-        SmartDashboard.putNumber("DeviceNum", NiFpga.kRioDeviceNum);
-        SmartDashboard.putNumber("ChassisNum", NiFpga.kRioChassisNum);
+        SmartDashboard.putData(base);
+        SmartDashboard.putNumber("cRIO Serial Num", NiFpga.kRioSerialNum);
     }
-
+    
     public CommandBase(String name) {
         super(name);
     }

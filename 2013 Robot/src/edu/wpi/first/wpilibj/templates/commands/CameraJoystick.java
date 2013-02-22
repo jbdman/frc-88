@@ -12,7 +12,7 @@ public class CameraJoystick extends CommandBase {
     
     public CameraJoystick() {
         super("CameraJoystick");
-        requires(cameraControl);
+        requires(base);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -28,8 +28,8 @@ public class CameraJoystick extends CommandBase {
         position = -oi.getRightVerticalAxis();
         
         // some calculation on position...
-        position = -30 + 90.0 * (position + 1);
-        cameraControl.setAngle(position);
+        position = 90.0 * (position + 1);
+        base.setCameraAngle(position);
     }
 
     // Make this return true when this Command no longer needs to run execute()

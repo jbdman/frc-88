@@ -6,22 +6,26 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Ultrasonic;
+
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.CameraJoystick;
 /**
  *
  * @author TJ2
  */
-public class CameraControl extends Subsystem {
+public class Base extends Subsystem {
     
-    Servo Servo1 = null;
-    Servo Servo2 = null;
+    Servo cameraServoLeft = null;
+    Servo cameraServoRight = null;
+    Ultrasonic rangeFinder = null;
     private boolean m_fault = false;
     
-    public CameraControl() {
-          Servo1 = new Servo(Wiring.Servo1ID);
-          Servo2 = new Servo(Wiring.Servo2ID);
+    public Base() {
+          cameraServoLeft = new Servo(Wiring.CameraServoLeft);
+          cameraServoRight = new Servo(Wiring.CameraServoRight);
 
+          rangeFinder = new Ultrasonic(Wiring.RangeFinderPing, Wiring.RangeFinderEcho);
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -37,14 +41,13 @@ public class CameraControl extends Subsystem {
      * 
      * @param angle new angle in degrees  
      */
-    public void setAngle(double angle) {
-        if(Servo1 != null) {
-                Servo1.setAngle(angle);
+    public void setCameraAngle(double angle) {
+        if(cameraServoLeft != null) {
+                cameraServoLeft.setAngle(angle);
         }
-        if(Servo2 != null) {
-                Servo2.setAngle(angle);
-        }    
-
+        if(cameraServoRight != null) {
+                cameraServoLeft.setAngle(angle);
+        }
     }
 }
  
