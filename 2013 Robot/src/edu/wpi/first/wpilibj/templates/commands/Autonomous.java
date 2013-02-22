@@ -17,9 +17,10 @@ public class Autonomous extends CommandGroup {
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-        addParallel(new HomeGroup());
+//        addSequential(new HomeGroup());
+//        addSequential(new DumperBackward());
         addSequential(new DriveClosed(10.0, 10.0, 1));
-        addSequential(new DumperForward());
+//        addSequential(new DumperForward());
         addSequential(new DriveClosed(30.0, 20.0, 2));
         addSequential(new DriveClosed(0.0, 0.0, 10));
         

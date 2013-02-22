@@ -2,7 +2,6 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +9,6 @@ import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
 import edu.wpi.first.wpilibj.templates.commands.DumperForward;
-import edu.wpi.first.wpilibj.templates.commands.TilterHome;
 import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
 import edu.wpi.first.wpilibj.templates.commands.ClimberPosition;
 import edu.wpi.first.wpilibj.templates.commands.ClimbLevelOne;
@@ -41,8 +39,8 @@ public class OI {
     
     public OI() {
         //these buttons are for the bumpers and they are the open loop commands for the dumper
-          operatorButtonLeftBumper.whileHeld(new DumperBackward());
-          operatorButtonRightBumper.whileHeld(new DumperForward());
+        operatorButtonLeftBumper.whileHeld(new DumperBackward());
+        operatorButtonRightBumper.whileHeld(new DumperForward());
 
           operatorButtonY.whenPressed(new HomeGroup());
           operatorButtonB.whenPressed(new ClimbLevelOne());
@@ -104,7 +102,7 @@ public class OI {
         return deadZoneMap(-driverController.getRawAxis(5));
     }
     
-    private static final double deadZone = 0.2;
+    private static final double deadZone = 0.1;
     private static final double scale = 1.0/(1.0 - deadZone);
     
     /**
@@ -120,6 +118,7 @@ public class OI {
         }
         return out;
     }
+
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
