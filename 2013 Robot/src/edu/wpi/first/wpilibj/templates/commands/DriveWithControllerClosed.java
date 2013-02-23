@@ -17,7 +17,12 @@ public class DriveWithControllerClosed extends CommandBase {
     
 //    private static final double BRAKE_THRESH = 0.5;
     private static final double MAX_SPEED = 80.0;
+    private static final double RAMP_RATE = 20.0;
+
     private boolean m_brake = false;
+    
+    private double last_left = 0.0;
+    private double last_right = 0.0;
     
     public DriveWithControllerClosed() {
         super("DriveWithControllerClosed");
@@ -60,7 +65,22 @@ public class DriveWithControllerClosed extends CommandBase {
         left = MAX_SPEED * left;
         right = MAX_SPEED * right;
 
-        drive.driveTankClosedLoop(left, right);
+        if(left - last_left > RAMP_RATE) {
+            left = last_left + RAMP_RATE;
+        } else if(left - last_left < -RAMP_RATE) {
+            left = last_left - RAMP_RATE;
+        }
+        
+        if(right - last_right > RAMP_RATE) {
+            right = last_right + RAMP_RATE;
+        } else if(right - last_right < -RAMP_RATE) {
+            right = last_right - RAMP_RATE;
+        }
+
+        drive.driveTankClosedLoop((left + last_left)/2, (right+last_right)/2);
+        last_left = left;
+        last_right = right;
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -52,6 +52,11 @@ public abstract class CommandBase extends Command {
         super();
     }
 
+    public static void reportCANError(int CANId, String str) {
+        
+        SmartDashboard.putString("CAN Error ", "ID " + CANId + ": " + str);
+    }
+    
     private static int iterator = 0;
     public static void updateDashboard() {
 
@@ -71,6 +76,8 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
             SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
             SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
+            SmartDashboard.putNumber("DriveDist (left) ", drive.getLeftDistance());
+            SmartDashboard.putNumber("DriveDist (right) ", drive.getRightDistance());
             SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
             
         }
