@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.DumperStop;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  * @author David
@@ -71,7 +72,21 @@ public class Dumper extends Subsystem {
             }
         }
     }
-    
+    /**
+     * Returns current of the dumper motor and puts it on smartdashboard.
+     * @return current 
+     */
+    public double getCurrent() {
+        double current = 999.9;
+        try{
+        current = DumperJag.getOutputCurrent();
+        }
+        catch (CANTimeoutException ex) {
+        m_fault = true;
+        System.out.println("CAN timeout");
+        }
+        return current;
+    }  
     /**
      * Set the default command to DumperStop so that when nothing else is
      * happening, the Dumper doesn't move.

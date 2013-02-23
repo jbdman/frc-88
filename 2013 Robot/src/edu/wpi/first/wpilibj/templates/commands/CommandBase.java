@@ -72,7 +72,10 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putNumber("Drive (left) ", drive.getLeftDistance());
             SmartDashboard.putNumber("Drive (right) ", drive.getRightDistance());
             SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
+            
         }
+        
+            SmartDashboard.putNumber("DumperJag Current", dumper.getCurrent());
 
         iterator++;
     }

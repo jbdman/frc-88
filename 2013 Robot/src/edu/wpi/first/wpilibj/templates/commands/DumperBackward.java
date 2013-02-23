@@ -10,6 +10,8 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class DumperBackward extends CommandBase {
     
+    private static final double CURRENT_LIMIT = 3.5;
+    
     public DumperBackward() {
         super("DumperDown");
         requires(dumper);
@@ -31,15 +33,17 @@ public class DumperBackward extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+       return dumper.getCurrent() > CURRENT_LIMIT;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        dumper.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        dumper.stop();
     }
 }

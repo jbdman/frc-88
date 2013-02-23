@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
 import edu.wpi.first.wpilibj.templates.commands.ClimberPosition;
 import edu.wpi.first.wpilibj.templates.commands.ClimbLevelOne;
 import edu.wpi.first.wpilibj.templates.commands.ClimbLevelTwo;
+import edu.wpi.first.wpilibj.templates.commands.DumperStop;
 
 
 /**
@@ -39,11 +40,13 @@ public class OI {
     
     public OI() {
         //these buttons are for the bumpers and they are the open loop commands for the dumper
-        operatorButtonLeftBumper.whileHeld(new DumperBackward());
-        operatorButtonRightBumper.whileHeld(new DumperForward());
+        operatorButtonLeftBumper.whenPressed(new DumperBackward());
+        operatorButtonLeftBumper.whenReleased(new DumperStop());
+        operatorButtonRightBumper.whenPressed(new DumperForward());
+        operatorButtonRightBumper.whenReleased(new DumperStop());
 
-          operatorButtonY.whenPressed(new HomeGroup());
-          operatorButtonB.whenPressed(new ClimbLevelOne());
+        operatorButtonY.whenPressed(new HomeGroup());
+        operatorButtonB.whenPressed(new ClimbLevelOne());
 //          operatorButtonX.whenPressed(new ClimbLevelTwo());
     }
     
