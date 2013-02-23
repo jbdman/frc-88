@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerClosed;
 import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
@@ -85,13 +86,14 @@ public class Drive extends Subsystem {
                 rightJag.enableControl(position);
                 // now the left motor
                 leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                leftJag.setPID(0.8, 0.005, 0.0);
+                leftJag.setPID(0.80, 0.005, 0.0);
                 position = leftJag.getPosition();
                 leftJag.enableControl(position);
                 m_closedLoop = true;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN timeout");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
     }
@@ -111,6 +113,7 @@ public class Drive extends Subsystem {
             } catch (CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("CAN timeout");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
     }
@@ -147,6 +150,7 @@ public class Drive extends Subsystem {
             rightJag.configNeutralMode(mode);
         } catch  (CANTimeoutException ex) {
             System.out.println("***CAN ERROR***");
+            SmartDashboard.putString("Drive Fault", ex.getMessage());
             m_fault = true;
         }
     }
@@ -168,6 +172,7 @@ public class Drive extends Subsystem {
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
         if(rightJag != null) {
@@ -177,6 +182,7 @@ public class Drive extends Subsystem {
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
     }
@@ -195,9 +201,11 @@ public class Drive extends Subsystem {
         if(leftJag != null) {
             try {
                 leftJag.setX(speedLeft * scaleToRPM);
+                SmartDashboard.putNumber("Left Drive setpoint ", speedLeft * scaleToRPM);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
         if(rightJag != null) {
@@ -206,6 +214,7 @@ public class Drive extends Subsystem {
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.getMessage());
             }
         }
     }
@@ -237,6 +246,7 @@ public class Drive extends Subsystem {
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
+            SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
         return encoderToDistance(position);
     }
@@ -254,6 +264,7 @@ public class Drive extends Subsystem {
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
+            SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
         return encoderToDistance(position);
     }
@@ -271,6 +282,7 @@ public class Drive extends Subsystem {
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
+            SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
         // convert rpm to inches per second
         return encoderToDistance(speed)/60.0;
@@ -289,6 +301,7 @@ public class Drive extends Subsystem {
         } catch(CANTimeoutException ex) {
             m_fault = true;
             System.err.println("****************CAN timeout***********");
+            SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
         return encoderToDistance(speed)/60.0;
     }

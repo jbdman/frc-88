@@ -32,7 +32,7 @@ public class Tilter extends Subsystem {
     private static final double dimensionB = 8.5;
     
     private static final double INCHES_PER_REV = 0.25;
-    private static final double FORWARD_SOFT_LIMIT_INCHES  = 4.5;
+    private static final double FORWARD_SOFT_LIMIT_INCHES  = 5.5;
     private static final int ENCODER_LINES = 100;
 
     // Values used in angle-to-distance conversion, precomputed in the

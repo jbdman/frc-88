@@ -28,7 +28,7 @@ public class TilterJoystick extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-           tilter.TilterOpenLoop(oi.getOpLeftHorizontalAxis());
+           tilter.TilterOpenLoop(oi.getOperatorRightHorizontalAxis());
     }
 
     // Make this return true when this Command no longer needs to run execute()

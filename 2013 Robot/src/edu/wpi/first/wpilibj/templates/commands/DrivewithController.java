@@ -40,10 +40,10 @@ public class DrivewithController extends CommandBase {
      */
     protected void execute() {
         
-        boolean nextBrake = false;
+       boolean nextBrake = false;
         
         // read driver buttons/triggers to determine if breaking
-        if(Math.abs(oi.getDriveTrigger())> BRAKE_THRESH) {
+        if(oi.getDriveLeftBumper()) {
             nextBrake = true;
         }
         
@@ -54,8 +54,11 @@ public class DrivewithController extends CommandBase {
         }
         
         // drive the robot based on driver sticks
-        drive.driveTankOpenLoop(oi.getFwdLeftStick(),
-                                  oi.getFwdRightStick());
+        double left = oi.getDriveLeftVerticalAxis();
+        double right = oi.getDriveRightVerticalAxis();
+
+        drive.driveTankOpenLoop(left, right);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.ClimberJoysick;
+import edu.wpi.first.wpilibj.templates.commands.ClimberJoystick;
 
 /**
  * @author David
@@ -51,7 +51,7 @@ public class Climber extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new ClimberJoysick());
+        setDefaultCommand(new ClimberJoystick());
     }
     /**
      * Sets up the climber closed loop and puts it in Position mode.

@@ -21,14 +21,22 @@ import edu.wpi.first.wpilibj.templates.commands.DumperStop;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-    Joystick driverController = new Joystick(1);
-    Joystick operatorController = new Joystick(2);
+    private Joystick driverController = new Joystick(1);
+    private Joystick operatorController = new Joystick(2);
+    
+    private static final int LEFT_HORIZ_AXIS = 1;
+    private static final int LEFT_VERT_AXIS = 2;
+    private static final int TRIGGER_AXIS = 3;
+    private static final int RIGHT_HORIZ_AXIS = 4;
+    private static final int RIGHT_VERT_AXIS = 5;
     
     //first controller button
     private Button driverButtonA = new JoystickButton(driverController, 1);
     private Button driverButtonB = new JoystickButton(driverController, 2);
     private Button driverButtonX = new JoystickButton(driverController, 3);
     private Button driverButtonY = new JoystickButton(driverController, 4);
+    private Button driverButtonLeftBumper = new JoystickButton(driverController, 5);
+    private Button driverButtonRightBumper = new JoystickButton(driverController, 6);
     
     //2nd controller buttons
     private Button operatorButtonA = new JoystickButton(operatorController, 1);
@@ -40,9 +48,9 @@ public class OI {
     
     public OI() {
         //these buttons are for the bumpers and they are the open loop commands for the dumper
-        operatorButtonLeftBumper.whenPressed(new DumperBackward());
+        operatorButtonLeftBumper.whenPressed(new DumperForward());
         operatorButtonLeftBumper.whenReleased(new DumperStop());
-        operatorButtonRightBumper.whenPressed(new DumperForward());
+        operatorButtonRightBumper.whenPressed(new DumperBackward());
         operatorButtonRightBumper.whenReleased(new DumperStop());
 
         operatorButtonY.whenPressed(new HomeGroup());
@@ -53,14 +61,14 @@ public class OI {
     /**
      * operator controller's left vertical axis
      */
-    public double getOpLeftVerticalAxis() {
+    public double getOperatorLeftVerticalAxis() {
         return deadZoneMap(-operatorController.getRawAxis(2));
     }
     /**
      * operator controller's left horizontal axis
      */
-    public double getOpLeftHorizontalAxis() {
-        return deadZoneMap(operatorController.getRawAxis(1));
+    public double getOperatorRightVerticalAxis() {
+        return deadZoneMap(operatorController.getRawAxis(5));
     }
 
     /**
@@ -75,36 +83,42 @@ public class OI {
         return driverController.getRawAxis(3);
     }
 
+    public double getOperatorTrigger() {
+        return operatorController.getRawAxis(3);
+    }
+
+    public boolean getDriveLeftBumper() {
+        return driverController.getRawButton(5);
+    }
+
+    public boolean getDriveRightBumper() {
+        return driverController.getRawButton(6);
+    }
+
     /**
      * Position of the operator controller right stick Y axis (normalized)
      * 
      * @return value of stick position
      */
-    public double getRightVerticalAxis() {
-        return deadZoneMap(-operatorController.getRawAxis(5));
+    public double getOperatorRightHorizontalAxis() {
+        return deadZoneMap(-operatorController.getRawAxis(4));
     }
     
-    public double getFwdLeftStick() {
-        return deadZoneMap(-driverController.getY());
-    }     
-    public double getSideStick() {
-        return deadZoneMap(driverController.getX());
-    }
-
-    /**
-     * Driver Controller's left/ right (not sure) vertical axis
-     */
-    public double getTurnStick() {
-        return deadZoneMap(driverController.getRawAxis(4));
-    }
-    
-    /**
-     *  Driver Controller's left/ right (not sure) vertical axis
-     */
-    public double getFwdRightStick() {
+    public double getDriveRightVerticalAxis() {
         return deadZoneMap(-driverController.getRawAxis(5));
     }
     
+    public double getDriveRightHorizontalAxis() {
+        return deadZoneMap(-driverController.getRawAxis(4));
+    }
+    
+    public double getDriveLeftVerticalAxis() {
+        return deadZoneMap(-driverController.getRawAxis(2));
+    }     
+    public double getDriveLeftHorizontalAxis() {
+        return deadZoneMap(driverController.getRawAxis(1));
+    }
+
     private static final double deadZone = 0.1;
     private static final double scale = 1.0/(1.0 - deadZone);
     

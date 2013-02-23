@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
      */
 public class DriveWithControllerClosed extends CommandBase {
     
-    private static final double BRAKE_THRESH = 0.5;
-    private static final double MAX_SPEED = 100.0;
+//    private static final double BRAKE_THRESH = 0.5;
+    private static final double MAX_SPEED = 80.0;
     private boolean m_brake = false;
     
     public DriveWithControllerClosed() {
@@ -28,7 +28,7 @@ public class DriveWithControllerClosed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(drive.isClosedLoop()) {
+        if(!drive.isClosedLoop()) {
             drive.enableClosedLoop();
         }
         drive.setBrake(m_brake);
@@ -44,7 +44,7 @@ public class DriveWithControllerClosed extends CommandBase {
         boolean nextBrake = false;
         
         // read driver buttons/triggers to determine if breaking
-        if(Math.abs(oi.getDriveTrigger())> BRAKE_THRESH) {
+        if(oi.getDriveLeftBumper()) {
             nextBrake = true;
         }
         
@@ -55,8 +55,12 @@ public class DriveWithControllerClosed extends CommandBase {
         }
         
         // drive the robot based on driver sticks
-        drive.driveTankClosedLoop(MAX_SPEED * oi.getFwdLeftStick(),
-                                  MAX_SPEED * oi.getFwdRightStick());
+        double left = oi.getDriveLeftVerticalAxis();
+        double right = oi.getDriveRightVerticalAxis();
+        left = MAX_SPEED * left;
+        right = MAX_SPEED * right;
+
+        drive.driveTankClosedLoop(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()

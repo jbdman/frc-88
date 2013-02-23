@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.CameraJoystick;
+import edu.wpi.first.wpilibj.templates.commands.CameraController;
 
 /**
  *
@@ -43,7 +43,7 @@ public class Base extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-        setDefaultCommand(new CameraJoystick());
+        setDefaultCommand(new CameraController());
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }

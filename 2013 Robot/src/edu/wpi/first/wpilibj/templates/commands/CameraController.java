@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  * @author TJ2
  */
-public class CameraJoystick extends CommandBase {
+public class CameraController extends CommandBase {
     
     private double m_angle;
-    private static final double JOYSTICK_SCALE = 10.0;
+    private static final double JOYSTICK_SCALE = 3.0;
     
-    public CameraJoystick() {
-        super("CameraJoystick");
+    public CameraController() {
+        super("CameraController");
         requires(base);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -30,12 +30,16 @@ public class CameraJoystick extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double change;
+        double change = 0.0;
         
-        change = -oi.getRightVerticalAxis();
-        change = JOYSTICK_SCALE * change * Math.abs(change);
+        if(oi.getDriveTrigger() < 0) {
+                change = 1.0;
+        } else if(oi.getDriveRightBumper()) {
+            change = -1.0;
+        }
+        change = JOYSTICK_SCALE * change;
         
-        if((change > 0 && m_angle < 255) || (change < 0 && m_angle > 0)) {
+        if((change > 0.0 && m_angle < 255) || (change < 0.0 && m_angle > 0)) {
             m_angle += change;
             base.setCameraAngle(m_angle);
             SmartDashboard.putNumber("CameraAngle", base.getCameraAngle());
