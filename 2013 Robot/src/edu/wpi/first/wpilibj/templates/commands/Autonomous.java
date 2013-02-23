@@ -18,13 +18,10 @@ public class Autonomous extends CommandGroup {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
-        // these will run in order.
-        Command drive1 = new DriveClosed(-20.0, -25.0, 3);
-        Command drive2 = new DriveClosed(-10.0, -10.0, 2);
-        
+        // these will run in order.        
         addParallel(new HomeGroup());
-        addSequential(drive1);
-        addSequential(drive2);
+        addSequential(new DriveClosed(-20.0, -25.0, 3));
+        addSequential(new DriveClosed(-10.0, -10.0, 2));
         /*
          * PROBLEM: instance 'drive2' overwrites the parameters of 'drive1'
          * behavior of autonomous is same as (-10, -10, 4):

@@ -10,10 +10,10 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class DriveClosed extends CommandBase {
     
-    private static double m_speedLeft;
-    private static double m_speedRight;
-    private static double m_timeout;
-//    private static double m_distance;
+    private double m_speedLeft;
+    private double m_speedRight;
+    private double m_timeout;
+//    private double m_distance;
     
     public DriveClosed(double leftSpeed, double rightSpeed, double time) {
         
