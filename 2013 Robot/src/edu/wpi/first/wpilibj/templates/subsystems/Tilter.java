@@ -45,7 +45,7 @@ public class Tilter extends Subsystem {
     public Tilter()  {
         // Initialize the Jaguar and its PID control
         try {
-            TilterJag = new CANJaguar(Wiring.TilterCANID);
+            TilterJag = new CANJaguar(Wiring.tilterCANID);
             TilterJag.configEncoderCodesPerRev(ENCODER_LINES);
             TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
             TilterJag.setVoltageRampRate(20.0);      

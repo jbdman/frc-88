@@ -13,19 +13,23 @@ public class Wiring {
     // Added real CAN IDs from the practice robot
     public static final int driveLeftCANID    = 5; 
     public static final int driveRightCANID   = 2;
-    public static final int TilterCANID = 3; 
+    public static final int tilterCANID = 3; 
     public static final int climberCANID = 4;
-    public static final int DumperCANID = 6;
+    public static final int dumperCANID = 6;
 
     // ### PWM / Servos ###
     //servo ids
-    public static final int CameraServoLeft = 1;
-    public static final int CameraServoRight = 2;
+    public static final int cameraServoLeft = 1;
+    public static final int cameraServoRight = 2;
 
     // ### Digital Input/Outputs ###
     public static final int dumperLimitSwitch = 1;
-    public static final int RangeFinderPing = 2;
-    public static final int RangeFinderEcho = 3;
+    public static final int rangeFinderPing = 2;
+    public static final int rangeFinderEcho = 3;
+    
+    public static final int leftTalonSensor = 7;
+    public static final int rightTalonSensor = 8;
+    
 
     /* ### Pneumatics ###
      * 

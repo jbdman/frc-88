@@ -44,7 +44,7 @@ public class Dumper extends Subsystem {
             //decide which is right. ATM one is commented out
             
                 m_limitSwitch = new DigitalInput(Wiring.dumperLimitSwitch);
-                DumperJag = new CANJaguar(Wiring.DumperCANID);
+                DumperJag = new CANJaguar(Wiring.dumperCANID);
                 if (DumperJag != null) {
                 //encoders and stuff needs to be determined for angle
                 //this stuff controls the close loop control, they may be subject to change

@@ -8,23 +8,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
- * @author David
+ * @author Michael_Edgington
  */
 public class Autonomous extends CommandGroup {
-    
+
     public Autonomous() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-//        addSequential(new HomeGroup());
-//        addSequential(new DumperBackward());
-        addSequential(new DriveClosed(10.0, 10.0, 1));
-//        addSequential(new DumperForward());
-        addSequential(new DriveClosed(30.0, 20.0, 2));
-        addSequential(new DriveClosed(0.0, 0.0, 10));
-        
-        
+        addParallel(new HomeGroup());
+        addSequential(new DriveClosed(-15.0, -15.0, 1));
+
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());

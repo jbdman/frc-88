@@ -4,6 +4,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -17,17 +18,25 @@ import edu.wpi.first.wpilibj.templates.commands.CameraJoystick;
  */
 public class Base extends Subsystem {
     
-    Servo cameraServoLeft = null;
-    Servo cameraServoRight = null;
-    Ultrasonic rangeFinder = null;
+    Servo m_cameraServoLeft = null;
+    Servo m_cameraServoRight = null;
+    Ultrasonic m_rangeFinder = null;
+    DigitalInput m_leftTalon = null;
+    DigitalInput m_rightTalon = null;    
     private boolean m_fault = false;
     
     public Base() {
-          cameraServoLeft = new Servo(Wiring.CameraServoLeft);
-          cameraServoRight = new Servo(Wiring.CameraServoRight);
+        // camera servos
+        m_cameraServoLeft = new Servo(Wiring.cameraServoLeft);
+        m_cameraServoRight = new Servo(Wiring.cameraServoRight);
 
-          rangeFinder = new Ultrasonic(Wiring.RangeFinderPing, Wiring.RangeFinderEcho);
-          rangeFinder.setAutomaticMode(true);
+        // talon sensors
+        m_leftTalon = new DigitalInput(Wiring.leftTalonSensor);
+        m_rightTalon = new DigitalInput(Wiring.rightTalonSensor);
+        
+        // ultrasonic range finder(s)
+        m_rangeFinder = new Ultrasonic(Wiring.rangeFinderPing, Wiring.rangeFinderEcho);
+        m_rangeFinder.setAutomaticMode(true);
     }
 
     // Put methods for controlling this subsystem
@@ -45,11 +54,11 @@ public class Base extends Subsystem {
      * @param angle new angle in degrees  
      */
     public void setCameraAngle(double angle) {
-        if(cameraServoLeft != null) {
-                cameraServoLeft.setAngle(angle);
+        if(m_cameraServoLeft != null) {
+            m_cameraServoLeft.setAngle(angle);
         }
-        if(cameraServoRight != null) {
-                cameraServoRight.setAngle(angle);
+        if(m_cameraServoRight != null) {
+            m_cameraServoRight.setAngle(angle);
         }
     }
 
@@ -62,8 +71,8 @@ public class Base extends Subsystem {
 
         double angle = 0.0;
         
-        angle += cameraServoLeft.getAngle();
-        angle += cameraServoRight.getAngle();
+        angle += m_cameraServoLeft.getAngle();
+        angle += m_cameraServoRight.getAngle();
         
         angle /= 2.0;
 
@@ -77,8 +86,8 @@ public class Base extends Subsystem {
      */
     public double getLeftCameraAngle() {
         double angle = 0.0;
-        if(cameraServoLeft != null) {
-            angle = cameraServoLeft.getAngle();
+        if(m_cameraServoLeft != null) {
+            angle = m_cameraServoLeft.getAngle();
         }
         return angle;
     }
@@ -90,8 +99,8 @@ public class Base extends Subsystem {
      */
     public double getRightCameraAngle() {
         double angle = 0.0;
-        if(cameraServoRight != null) {
-            angle = cameraServoRight.getAngle();
+        if(m_cameraServoRight != null) {
+            angle = m_cameraServoRight.getAngle();
         }
         return angle;
     }
@@ -104,10 +113,36 @@ public class Base extends Subsystem {
     public double getRangeFinderDist() {
         double dist = -1.0;
 
-        if(rangeFinder.isRangeValid()) {
-            dist = rangeFinder.getRangeInches();
+        if(m_rangeFinder.isRangeValid()) {
+            dist = m_rangeFinder.getRangeInches();
         }
         return dist;
     }
 
+    /**
+     * Status of left talon sensor
+     * 
+     * @return true if talon closed/engaged 
+     */
+    public boolean getLeftTalon() {
+        return m_leftTalon.get();
+    }
+
+    /**
+     * Status of right talon sensor
+     * 
+     * @return true if talon closed/engaged 
+     */
+    public boolean getRightTalon() {
+        return m_rightTalon.get();
+    }
+    
+    /**
+     * Returns the fault status of the subsystem
+     * 
+     * @return subsystem fault status
+     */
+    public boolean getFault() {
+        return m_fault;
+    }
 } 
