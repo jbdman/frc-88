@@ -27,8 +27,8 @@ public class Wiring {
     public static final int rangeFinderPing = 2;
     public static final int rangeFinderEcho = 3;
     
-    public static final int leftTalonSensor = 7;
-    public static final int rightTalonSensor = 8;
+    public static final int leftTalonSensor = 8;
+    public static final int rightTalonSensor = 9;
     
 
     /* ### Pneumatics ###
@@ -45,6 +45,6 @@ public class Wiring {
     public static final int lightDigitalOutPin2 = 5;
     public static final int lightDigitalOutPin3 = 6;
     public static final int lightDigitalOutPin4 = 7;
-    public static final int lightAnalogOutPin1 = 3;
-    public static final int lightAnalogOutPin2 = 4;
+    public static final int lightPwmOutPin1 = 3;
+    public static final int lightPwmOutPin2 = 4;
 }

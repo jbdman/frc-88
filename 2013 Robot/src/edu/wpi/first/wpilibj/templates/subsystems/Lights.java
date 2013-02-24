@@ -6,6 +6,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.LightsDefault;
@@ -19,12 +20,17 @@ public class Lights extends Subsystem {
     private double leftAnalogOutput = 0.0;
     private double rightAnalogOutput = 0.0;
     
+    private static final double ANALOG_LOWER_THRESHHOLD = 0.0;
+    private static final double ANALOG_UPPER_THRESHHOLD = 5.0;
+    
     private DigitalOutput digitalOut1;
     private DigitalOutput digitalOut2;
     private DigitalOutput digitalOut3;
     private DigitalOutput digitalOut4;
-    private AnalogChannel analogOut1;
-    private AnalogChannel analogOut2;
+    // We aren't actually using Victors, but this gives us an easy way
+    // to control PWM outputs.
+    private Victor pwmOut1;
+    private Victor pwmOut2;
     
     public static final int MODE_RAINBOW_FILL = 0;
     public static final int MODE_BLUE_ALLIANCE = 1;
@@ -42,8 +48,8 @@ public class Lights extends Subsystem {
         digitalOut2 = new DigitalOutput(Wiring.lightDigitalOutPin2);
         digitalOut3 = new DigitalOutput(Wiring.lightDigitalOutPin3);
         digitalOut4 = new DigitalOutput(Wiring.lightDigitalOutPin4);
-        analogOut1 = new AnalogChannel(Wiring.lightAnalogOutPin1);
-        analogOut2 = new AnalogChannel(Wiring.lightAnalogOutPin2);
+        pwmOut1 = new Victor(Wiring.lightPwmOutPin1);
+        pwmOut2 = new Victor(Wiring.lightPwmOutPin2);
     }
     
     public void initDefaultCommand() {
@@ -54,7 +60,6 @@ public class Lights extends Subsystem {
         // Set each of the digital outputs to a bit of the mode value
         // Currently mode is only supported as 4 bits, even though it's actually
         // a 32 bit int in this subsystem.  We shouldn't need more than 4 bits.
-        // Will this work to seperate the 1st 4 bits of the int?
         digitalOut1.set((activeMode & 1) == 1);
         digitalOut2.set(((activeMode >> 1) & 1) == 1);
         digitalOut3.set(((activeMode >> 2) & 1) == 1);
@@ -64,6 +69,8 @@ public class Lights extends Subsystem {
         // OH GOD I THINK WE CAN ONLY DO ANALOG INPUTS OH GOD NO
         // MikeE: we can use the PWM output and pass it through a simple RC filter to give us an analog signal
         // I checked the rules and there's nothing to say that PWM can only go to servo/motor controller
+        pwmOut1.set(leftAnalogOutput);
+        pwmOut2.set(rightAnalogOutput);
     }
     
     public void setMode(int mode) {
@@ -72,6 +79,15 @@ public class Lights extends Subsystem {
     }
     
     public void setAnalog(int channel, double value) {
+        // Value should never go out of the range of 0.0 and 1.0, so we limit it
+        value = Math.abs(value);
+        if (value > ANALOG_UPPER_THRESHHOLD) {
+            value = ANALOG_UPPER_THRESHHOLD;
+        } else if (value < ANALOG_LOWER_THRESHHOLD) {
+            value = ANALOG_LOWER_THRESHHOLD;
+        }
+        
+        // Set the value to the approriate output channel
         if (channel == ANALOG_CHANNEL_LEFT) {
             leftAnalogOutput = value;
         } else if (channel == ANALOG_CHANNEL_RIGHT) {
