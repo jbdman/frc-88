@@ -34,5 +34,17 @@ public class Wiring {
     /* ### Pneumatics ###
      * 
      */
-    // There are no pneumatics this year!
+    // There are no pneumatics this year!/*
+    
+    /*
+     * ### Lights ###
+     */
+    // These pins are currently all just made up and placeholders and 
+    // should be updated when the lights are actually connected.
+    public static final int lightDigitalOutPin1 = 4;
+    public static final int lightDigitalOutPin2 = 5;
+    public static final int lightDigitalOutPin3 = 6;
+    public static final int lightDigitalOutPin4 = 7;
+    public static final int lightAnalogOutPin1 = 3;
+    public static final int lightAnalogOutPin2 = 4;
 }

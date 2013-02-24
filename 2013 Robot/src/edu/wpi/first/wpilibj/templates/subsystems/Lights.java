@@ -1,0 +1,80 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package edu.wpi.first.wpilibj.templates.subsystems;
+
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.LightsDefault;
+
+/**
+ *
+ * @author Ag
+ */
+public class Lights extends Subsystem {
+    private int activeMode = 0;
+    private double leftAnalogOutput = 0.0;
+    private double rightAnalogOutput = 0.0;
+    
+    private DigitalOutput digitalOut1;
+    private DigitalOutput digitalOut2;
+    private DigitalOutput digitalOut3;
+    private DigitalOutput digitalOut4;
+    private AnalogChannel analogOut1;
+    private AnalogChannel analogOut2;
+    
+    public static final int MODE_RAINBOW_FILL = 0;
+    public static final int MODE_BLUE_ALLIANCE = 1;
+    public static final int MODE_RED_ALLIANCE = 2;
+    public static final int MODE_DRIVE_FILL = 3;
+    public static final int MODE_CLIMB_FILL = 4;
+    public static final int MODE_BLINKY = 5;
+    public static final int MODE_FLASH_GREEN = 6;
+    
+    public static final int ANALOG_CHANNEL_LEFT = 0;
+    public static final int ANALOG_CHANNEL_RIGHT = 1;
+    
+    public Lights() {
+        digitalOut1 = new DigitalOutput(Wiring.lightDigitalOutPin1);
+        digitalOut2 = new DigitalOutput(Wiring.lightDigitalOutPin2);
+        digitalOut3 = new DigitalOutput(Wiring.lightDigitalOutPin3);
+        digitalOut4 = new DigitalOutput(Wiring.lightDigitalOutPin4);
+        analogOut1 = new AnalogChannel(Wiring.lightAnalogOutPin1);
+        analogOut2 = new AnalogChannel(Wiring.lightAnalogOutPin2);
+    }
+    
+    public void initDefaultCommand() {
+        setDefaultCommand(new LightsDefault());
+    }
+    
+    private void updateOutput() {
+        // Set each of the digital outputs to a bit of the mode value
+        // Currently mode is only supported as 4 bits, even though it's actually
+        // a 32 bit int in this subsystem.  We shouldn't need more than 4 bits.
+        // Will this work to seperate the 1st 4 bits of the int?
+        digitalOut1.set((activeMode & 1) == 1);
+        digitalOut2.set(((activeMode >> 1) & 1) == 1);
+        digitalOut3.set(((activeMode >> 2) & 1) == 1);
+        digitalOut4.set(((activeMode >> 3) & 1) == 1);
+        
+        // Also need to set the analog outputs
+        // OH GOD I THINK WE CAN ONLY DO ANALOG INPUTS OH GOD NO
+    }
+    
+    public void setMode(int mode) {
+        activeMode = mode;
+        updateOutput();
+    }
+    
+    public void setAnalog(int channel, double value) {
+        if (channel == ANALOG_CHANNEL_LEFT) {
+            leftAnalogOutput = value;
+        } else if (channel == ANALOG_CHANNEL_RIGHT) {
+            rightAnalogOutput = value;
+        }
+        updateOutput();
+    }
+}

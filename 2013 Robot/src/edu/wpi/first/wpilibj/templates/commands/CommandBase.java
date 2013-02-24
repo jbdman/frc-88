@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Climber;
 import edu.wpi.first.wpilibj.templates.subsystems.Tilter;
 import edu.wpi.first.wpilibj.templates.subsystems.Dumper;
 import edu.wpi.first.wpilibj.templates.subsystems.Base;
+import edu.wpi.first.wpilibj.templates.subsystems.Lights;
 import com.ni.rio.NiFpga;
 
 
@@ -27,6 +28,7 @@ public abstract class CommandBase extends Command {
     public static Tilter tilter = new Tilter();
     public static Dumper dumper = new Dumper();
     public static Base base = new Base();
+    public static Lights lights = new Lights();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
