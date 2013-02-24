@@ -62,6 +62,8 @@ public class Lights extends Subsystem {
         
         // Also need to set the analog outputs
         // OH GOD I THINK WE CAN ONLY DO ANALOG INPUTS OH GOD NO
+        // MikeE: we can use the PWM output and pass it through a simple RC filter to give us an analog signal
+        // I checked the rules and there's nothing to say that PWM can only go to servo/motor controller
     }
     
     public void setMode(int mode) {
