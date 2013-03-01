@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
 import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
 
@@ -25,8 +26,8 @@ public class Tilter extends Subsystem {
     private double encoderHome = 0.0;
     private boolean m_closedLoop = false;
     //these numbers will have to be changed depending on the speed of the motors
-    private static final double defaultDownSpeed = -1.0;
-    private static final double defaultUpSpeed = 1.0;
+    private static final double defaultDownSpeed = 0.5;
+    private static final double defaultUpSpeed = -0.5;
     private static final double tiltMaxSpeed = 1.0;
     // Tilter Dimensions, specified in inches
     private static final double dimensionA = 8.25;
@@ -48,7 +49,8 @@ public class Tilter extends Subsystem {
         try {
             TilterJag = new CANJaguar(Wiring.tilterCANID);
             TilterJag.configEncoderCodesPerRev(ENCODER_LINES);
-            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);      
+            TilterJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            TilterJag.configNeutralMode(CANJaguar.NeutralMode.kBrake);            
             TilterJag.setVoltageRampRate(20.0);      
         } catch (CANTimeoutException ex) {
             m_fault = true;
@@ -101,6 +103,7 @@ public class Tilter extends Subsystem {
             m_fault = true;
         }
     }
+    
       /**
      * Returns the value of the calibration flag
      * 
@@ -158,7 +161,7 @@ public class Tilter extends Subsystem {
     public boolean LimitTripped() {
         boolean tripped = true;
         try {
-            tripped = !TilterJag.getForwardLimitOK();
+            tripped = !TilterJag.getReverseLimitOK();
         } catch(CANTimeoutException ex) {
             m_fault = true;
             CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.getMessage());
@@ -166,6 +169,28 @@ public class Tilter extends Subsystem {
         return tripped;
     }
 
+    public void checkLimits() {
+        boolean bool;
+        short num;
+        double value;
+        try {
+            bool = TilterJag.getForwardLimitOK();
+            SmartDashboard.putBoolean("T-forwardLimit ", bool);
+            bool = TilterJag.getReverseLimitOK();
+            SmartDashboard.putBoolean("T-backwardLimit ", bool);
+            value = TilterJag.getOutputCurrent();
+            SmartDashboard.putNumber("T-current ", value);
+            value = TilterJag.getOutputVoltage();
+            SmartDashboard.putNumber("T-voltage ", value);
+            num = TilterJag.getFaults();
+            SmartDashboard.putNumber("T-faults ", num);
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.getMessage());
+        }
+        
+    }
+    
     /**
      * Open loop control of the Tilter, using voltage percentage.
      * 

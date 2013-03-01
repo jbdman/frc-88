@@ -23,8 +23,8 @@ public class Climber extends Subsystem {
     // By measurement, the distances are highest (0.0) and lowest (-35.75)
     
     private static final double distPerRev = 3.75;
-    private static final double defaultDownSpeed = -1.0;
-    private static final double defaultUpSpeed = 1.0;
+    private static final double defaultDownSpeed = -0.3;
+    private static final double defaultUpSpeed = 0.2;
     private static final double defaultMaxSpeed = 1;
     private double m_setPoint = 0.0;
     
@@ -40,6 +40,7 @@ public class Climber extends Subsystem {
                 // encoder configuration
                 ClimbJag.configEncoderCodesPerRev(ENCODER_LINES);
                 ClimbJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+                ClimbJag.configNeutralMode(CANJaguar.NeutralMode.kBrake);
                 // We need this ramp rate. Without it rapid reversal causes transients
                 ClimbJag.setVoltageRampRate(20);
             }
