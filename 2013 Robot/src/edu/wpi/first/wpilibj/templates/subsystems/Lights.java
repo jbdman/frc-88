@@ -6,6 +6,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.Wiring;
@@ -29,8 +30,8 @@ public class Lights extends Subsystem {
     private DigitalOutput digitalOut4;
     // We aren't actually using Victors, but this gives us an easy way
     // to control PWM outputs.
-    private Victor pwmOut1;
-    private Victor pwmOut2;
+    private Jaguar pwmOut1;
+    private Jaguar pwmOut2;
     
     public static final int MODE_RAINBOW_FILL = 0;
     public static final int MODE_BLUE_ALLIANCE = 1;
@@ -48,8 +49,8 @@ public class Lights extends Subsystem {
         digitalOut2 = new DigitalOutput(Wiring.lightDigitalOutPin2);
         digitalOut3 = new DigitalOutput(Wiring.lightDigitalOutPin3);
         digitalOut4 = new DigitalOutput(Wiring.lightDigitalOutPin4);
-        pwmOut1 = new Victor(Wiring.lightPwmOutPin1);
-        pwmOut2 = new Victor(Wiring.lightPwmOutPin2);
+        pwmOut1 = new Jaguar(Wiring.lightPwmOutPin1);
+        pwmOut2 = new Jaguar(Wiring.lightPwmOutPin2);
     }
     
     public void initDefaultCommand() {
@@ -80,7 +81,7 @@ public class Lights extends Subsystem {
     
     public void setAnalog(int channel, double value) {
         // Value should never go out of the range of 0.0 and 1.0, so we limit it
-        value = Math.abs(value);
+        //value = Math.abs(value);
         if (value > ANALOG_UPPER_THRESHHOLD) {
             value = ANALOG_UPPER_THRESHHOLD;
         } else if (value < ANALOG_LOWER_THRESHHOLD) {

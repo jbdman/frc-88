@@ -83,8 +83,13 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
             
         }
+        
+        if(iterator % 10 == 3) {
+            // Which way is up?
+            SmartDashboard.putNumber("Gravity ", base.getGravity());
+        }
 
-            SmartDashboard.putNumber("DumperJag Current", dumper.getCurrent());
+//            SmartDashboard.putNumber("DumperJag Current", dumper.getCurrent());
 
         iterator++;
     }

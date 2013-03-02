@@ -4,6 +4,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Servo;
@@ -18,12 +19,14 @@ import edu.wpi.first.wpilibj.templates.commands.CameraController;
  */
 public class Base extends Subsystem {
     
-    Servo m_cameraServoLeft = null;
-    Servo m_cameraServoRight = null;
-    Ultrasonic m_rangeFinder = null;
-    DigitalInput m_leftTalon = null;
-    DigitalInput m_rightTalon = null;    
+    private Servo m_cameraServoLeft = null;
+    private Servo m_cameraServoRight = null;
+    private Ultrasonic m_rangeFinder = null;
+    private DigitalInput m_leftTalon = null;
+    private DigitalInput m_rightTalon = null;    
     private boolean m_fault = false;
+    
+    private ADXL345_I2C m_accelerometer;
     
     public Base() {
         // camera servos
@@ -37,6 +40,9 @@ public class Base extends Subsystem {
         // ultrasonic range finder(s)
         m_rangeFinder = new Ultrasonic(Wiring.rangeFinderPing, Wiring.rangeFinderEcho);
         m_rangeFinder.setAutomaticMode(true);
+        
+        // add accelerometer
+        m_accelerometer = new ADXL345_I2C(1, ADXL345_I2C.DataFormat_Range.k2G);
     }
 
     // Put methods for controlling this subsystem
@@ -135,6 +141,10 @@ public class Base extends Subsystem {
      */
     public boolean getRightTalon() {
         return m_rightTalon.get();
+    }
+    
+    public double getGravity() {
+        return m_accelerometer.getAcceleration(ADXL345_I2C.Axes.kZ);
     }
     
     /**

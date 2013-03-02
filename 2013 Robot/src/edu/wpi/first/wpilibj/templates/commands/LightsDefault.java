@@ -36,9 +36,10 @@ public class LightsDefault extends CommandBase {
         } else if (DriverStation.getInstance().isOperatorControl()) {
             // We're in teleop
             // Need to set getting values for the analog input from drive motors
-            lights.setMode(lights.MODE_BLINKY);
-            lights.setAnalog(lights.ANALOG_CHANNEL_LEFT, 0.5);
-            lights.setAnalog(lights.ANALOG_CHANNEL_RIGHT, 0.5);
+            lights.setMode(lights.MODE_DRIVE_FILL);
+            // Should do something better than the "80.0" magic number
+            lights.setAnalog(lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/80.0);
+            lights.setAnalog(lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/80.0);
         } else if (DriverStation.getInstance().isDisabled()) {
             // We're disabled.  This should trigger at the end of the match.
             lights.setMode(lights.MODE_FLASH_GREEN);
