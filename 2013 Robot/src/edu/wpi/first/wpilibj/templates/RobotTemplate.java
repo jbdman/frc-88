@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.templates.commands.HomeGroup;
 public class RobotTemplate extends IterativeRobot {
 
     Command autonomousCommand;
-    Command teleopCommand;
+//    Command teleopCommand;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -36,7 +36,7 @@ public class RobotTemplate extends IterativeRobot {
     public void robotInit() {
         // instantiate the command used for the autonomous period
         autonomousCommand = new Autonomous();
-        teleopCommand = new HomeGroup();
+//        teleopCommand = new HomeGroup();
         
         // Initialize all subsystems
         CommandBase.init();
@@ -69,7 +69,7 @@ public class RobotTemplate extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         autonomousCommand.cancel();
-        teleopCommand.start();
+//        teleopCommand.start();
     }
 
     /**

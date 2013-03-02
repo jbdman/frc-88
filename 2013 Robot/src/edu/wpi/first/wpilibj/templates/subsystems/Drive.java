@@ -22,6 +22,11 @@ public class Drive extends Subsystem {
     private boolean m_fault = false;
     private boolean m_closedLoop = false;
 
+    // used in closed loop to implement ramp rate limit
+    private double m_lastLeft = 0.0;
+    private double m_lastRight = 0.0;
+    private static final double CLOSED_LOOP_RAMPRATE = 10.0;
+    
     /* Set the maximum change in voltage in 1 sec
      * Smaller values prevent the robot from rocking backwards under acceleration
      */
@@ -89,6 +94,8 @@ public class Drive extends Subsystem {
                 leftJag.setPID(0.80, 0.005, 0.0);
                 position = leftJag.getPosition();
                 leftJag.enableControl(position);
+                m_lastLeft = 0.0;
+                m_lastRight = 0.0;
                 m_closedLoop = true;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -197,11 +204,24 @@ public class Drive extends Subsystem {
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
         double scaleToRPM = 60.0 / DISTANCE_PER_REVOLUTION;
-        
+
+        // limit the change in setpoint between calls
+        // this is not a true ramp rate since we don't correct for the rate of update
+        if(speedLeft - m_lastLeft > CLOSED_LOOP_RAMPRATE) {
+            speedLeft = m_lastLeft + CLOSED_LOOP_RAMPRATE;
+        } else if(speedLeft - m_lastLeft < -CLOSED_LOOP_RAMPRATE) {
+            speedLeft = m_lastLeft - CLOSED_LOOP_RAMPRATE;
+        }
+        if(speedRight - m_lastRight > CLOSED_LOOP_RAMPRATE) {
+            speedRight = m_lastRight + CLOSED_LOOP_RAMPRATE;
+        } else if(speedRight - m_lastRight < -CLOSED_LOOP_RAMPRATE) {
+            speedRight = m_lastRight - CLOSED_LOOP_RAMPRATE;
+        }
+
         if(leftJag != null) {
             try {
                 leftJag.setX(speedLeft * scaleToRPM);
-                SmartDashboard.putNumber("Left Drive setpoint ", speedLeft * scaleToRPM);
+                m_lastLeft = speedLeft;
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -211,6 +231,7 @@ public class Drive extends Subsystem {
         if(rightJag != null) {
             try {
                 rightJag.setX(-speedRight * scaleToRPM);
+                m_lastRight = speedRight;
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");

@@ -48,9 +48,9 @@ public class OI {
     
     public OI() {
         //these buttons are for the bumpers and they are the open loop commands for the dumper
-        operatorButtonLeftBumper.whenPressed(new DumperForward());
+        operatorButtonLeftBumper.whenPressed(new DumperBackward());
         operatorButtonLeftBumper.whenReleased(new DumperStop());
-        operatorButtonRightBumper.whenPressed(new DumperBackward());
+        operatorButtonRightBumper.whenPressed(new DumperForward());
         operatorButtonRightBumper.whenReleased(new DumperStop());
 
         operatorButtonY.whenPressed(new HomeGroup());

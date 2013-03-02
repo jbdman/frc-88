@@ -15,6 +15,8 @@ package edu.wpi.first.wpilibj.templates.commands;
      */
 //this command cant be finished until the math for the correlation for angle to screw position
 public class TilterHome extends CommandBase {
+
+    private static final double TIMEOUT = 5.0;
     
     private boolean movehorizontal = false;
     public TilterHome() {
@@ -26,6 +28,7 @@ public class TilterHome extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        setTimeout(TIMEOUT);
         boolean flag = tilter.LimitTripped();
         
         if (flag){ 
@@ -51,10 +54,11 @@ public class TilterHome extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        boolean flag = isTimedOut();
         if (tilter.LimitTripped() && !movehorizontal) {
-            return true;
+            flag=true;
         }
-        return false;
+        return flag;
     }
 
     // Called once after isFinished returns true

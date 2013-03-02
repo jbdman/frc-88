@@ -19,7 +19,7 @@ public class DriveClosed extends CommandBase {
         
         super("DriveClosed(" + leftSpeed + ", " + rightSpeed + ", " + time + ")");
 
-        setInterruptible(false); // this may work, but doesn't solve our problem
+//        setInterruptible(false); // this may work, but doesn't solve our problem
 
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -37,8 +37,6 @@ public class DriveClosed extends CommandBase {
     
     // Called just before this Command runs the first time
     protected void initialize() {
-
-        System.out.println(this.getName() + " Init @ " + System.currentTimeMillis());
 
         if(!drive.isClosedLoop()) {
             drive.enableClosedLoop();
@@ -59,12 +57,10 @@ public class DriveClosed extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-        System.out.println(this.getName() + " Ended @ " + System.currentTimeMillis());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        System.out.println(this.getName() + " Interrupted @ " + System.currentTimeMillis());
     }
 }

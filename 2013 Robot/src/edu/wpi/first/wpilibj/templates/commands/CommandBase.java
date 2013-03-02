@@ -83,7 +83,7 @@ public abstract class CommandBase extends Command {
             SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
             
         }
-        
+
             SmartDashboard.putNumber("DumperJag Current", dumper.getCurrent());
 
         iterator++;

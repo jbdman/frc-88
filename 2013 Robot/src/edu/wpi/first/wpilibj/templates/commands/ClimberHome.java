@@ -12,6 +12,7 @@ public class ClimberHome extends CommandBase {
     //For David- the lowerlimit is mounted higher on the robot...lower limit is when it is at the highest point
     private boolean movingDown = false;
     private boolean broken = false;
+    private static final double TIMEOUT = 5.0;
     
     public ClimberHome() {
         super ("ClimberHome");
@@ -24,9 +25,9 @@ public class ClimberHome extends CommandBase {
     
     /**
      * This should calibrate the climber to start in relatively the same position every game
-     * As of 2/3/12 has not been tested
      */
     protected void initialize() {
+        setTimeout(TIMEOUT);
         if (climber.upperLimitTripped() && climber.lowerLimitTripped() ) {
             // If both the upper and lower sensors are tripped, something is wrong
             // So we print out the error and stop the climber.
@@ -62,11 +63,13 @@ public class ClimberHome extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        boolean flag = isTimedOut();
+        
         if (climber.lowerLimitTripped() && !movingDown) {
             // If we're moving up to trip the sensor and we did trip it, we're done
-            return true;
+            flag = true;
         }
-        return false;
+        return flag;
     }
 
     // Called once after isFinished returns true
