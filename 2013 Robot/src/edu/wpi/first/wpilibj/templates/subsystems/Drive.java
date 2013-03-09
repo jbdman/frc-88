@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
  */
 public class Drive extends Subsystem {
     // 1/24/12 drive motors may have to be inverted because they are subject to switch
-    CANJaguar leftJag = null;
-    CANJaguar rightJag = null;
+    private CANJaguar leftJag = null;
+    private CANJaguar rightJag = null;
     private boolean m_fault = false;
     private boolean m_closedLoop = false;
-
+    private double m_leftResetPosn = 0.0;
+    private double m_rightResetPosn = 0.0;
+    
     // used in closed loop to implement ramp rate limit
     private double m_lastLeft = 0.0;
     private double m_lastRight = 0.0;
@@ -257,9 +259,9 @@ public class Drive extends Subsystem {
     /**
      * The distance traveled by the left wheel since Jag powered on
      * 
-     * @return Total distance traveled by left wheel in inches 
+     * @return Total distance traveled by right wheel in inches 
      */
-    public double getLeftDistance() {
+    private double getLDist() {
 
         double position = 0.0;
         try {
@@ -269,7 +271,7 @@ public class Drive extends Subsystem {
             System.err.println("****************CAN timeout***********");
             SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
-        return encoderToDistance(position);
+        return position;
     }
     
     /**
@@ -277,7 +279,17 @@ public class Drive extends Subsystem {
      * 
      * @return Total distance traveled by right wheel in inches 
      */
-    public double getRightDistance() {
+    public double getLeftDistance() {
+
+        return encoderToDistance(getLDist()-m_leftResetPosn);
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    private double getRDist() {
 
         double position = 0.0;
         try {
@@ -287,7 +299,26 @@ public class Drive extends Subsystem {
             System.err.println("****************CAN timeout***********");
             SmartDashboard.putString("Drive Fault", ex.getMessage());
         }
-        return encoderToDistance(position);
+        return position;
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    public double getRightDistance() {
+
+        return encoderToDistance(getRDist()-m_rightResetPosn);
+    }
+    
+    public double getAverageDistance() {
+        return (getLeftDistance() + getRightDistance()) / 2.0;
+    }
+
+    public void resetDistance() {
+        m_leftResetPosn = getLDist();
+        m_rightResetPosn = getRDist();
     }
     
     /**
