@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.commands.BaseTalonHook;
+import edu.wpi.first.wpilibj.templates.commands.BaseTalonRelease;
 import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
@@ -52,6 +54,11 @@ public class OI {
         operatorButtonLeftBumper.whenReleased(new DumperStop());
         operatorButtonRightBumper.whenPressed(new DumperForward());
         operatorButtonRightBumper.whenReleased(new DumperStop());
+        
+        // Buttons to control the base talons.  Currently assigned to the
+        // driver's bumpers.
+        driverButtonLeftBumper.whenPressed(new BaseTalonRelease());
+        driverButtonRightBumper.whenPressed(new BaseTalonHook());
 
         operatorButtonY.whenPressed(new HomeGroup());
         operatorButtonB.whenPressed(new ClimbLevelOne());

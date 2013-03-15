@@ -34,7 +34,7 @@ public class Wiring {
     /* ### Pneumatics ###
      * 
      */
-    // There are no pneumatics this year!/*
+    public static final int talonSolenoid = 1;
     
     /*
      * ### Lights ###

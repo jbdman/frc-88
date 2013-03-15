@@ -21,14 +21,14 @@ public class Lights extends Subsystem {
     private double leftAnalogOutput = 0.0;
     private double rightAnalogOutput = 0.0;
     
-    private static final double ANALOG_LOWER_THRESHHOLD = 0.0;
-    private static final double ANALOG_UPPER_THRESHHOLD = 5.0;
+    private static final double ANALOG_LOWER_THRESHHOLD = -1.0;
+    private static final double ANALOG_UPPER_THRESHHOLD = 1.0;
     
     private DigitalOutput digitalOut1;
     private DigitalOutput digitalOut2;
     private DigitalOutput digitalOut3;
     private DigitalOutput digitalOut4;
-    // We aren't actually using Victors, but this gives us an easy way
+    // We aren't actually using Jags, but this gives us an easy way
     // to control PWM outputs.
     private Jaguar pwmOut1;
     private Jaguar pwmOut2;
@@ -95,5 +95,8 @@ public class Lights extends Subsystem {
             rightAnalogOutput = value;
         }
         updateOutput();
+        
+        // a -1.0 PWM has a pulse width of 0.68 ms
+        // a 1.0 PWM has a pulse width of 2.29 ms
     }
 }
