@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Dumper extends Subsystem {
     CANJaguar DumperJag = null;
     private boolean m_fault = false;
-    private static final double defaultBackwardSpeed= -0.25;
+    private static final double defaultBackwardSpeed= -0.5;
     private static final double defaultForwardSpeed = 0.5;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;

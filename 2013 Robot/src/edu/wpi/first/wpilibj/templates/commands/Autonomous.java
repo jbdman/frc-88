@@ -28,17 +28,11 @@ public class Autonomous extends CommandGroup {
 //        addSequential(new DriveClosed(10.0, 20.0, 1.0, 20.0));
 //        addSequential(new DriveClosed(50.0, 50.0, 2.0, 100.0));
 //    
-          addSequential(new DriveClosed(-50, -10, 3.0, 5.0));
+          addSequential(new DriveClosed(-10.0, -10.0, 0.5, 5000.0));
+          addSequential(new DriveClosed(-20.0, -35.0, 3.0, 60.0));
+          addSequential(new DriveClosed(-30.0, -30.0, 3.0, 50.0));
           
-        /*0
-         * PROBLEM: instance 'drive2' overwrites the parameters of 'drive1'
-         * behavior of autonomous is same as (-10, -10, 4):
-         * [cRIO] DriveCloseddd(-20.0, -25.0, 3.0) Init @ 59120
-         * [cRIO] DriveCloseddd(-20.0, -25.0, 3.0) Ended @ 61140
-         * [cRIO] DriveCloseddd(-10.0, -10.0, 2.0) Init @ 61143
-         * [cRIO] DriveCloseddd(-10.0, -10.0, 2.0) Ended @ 63161
-         */
-
+ 
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());
