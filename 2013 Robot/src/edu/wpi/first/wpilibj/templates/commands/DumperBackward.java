@@ -10,7 +10,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class DumperBackward extends CommandBase {
     
-    private static final double CURRENT_LIMIT = 5.0;
+    private static final double CURRENT_LIMIT = 15.0;
     
     public DumperBackward() {
         super("DumperDown");

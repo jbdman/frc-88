@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.commands.BaseTalonHook;
 import edu.wpi.first.wpilibj.templates.commands.BaseTalonRelease;
+import edu.wpi.first.wpilibj.templates.commands.BaseTalonToggle;
 import edu.wpi.first.wpilibj.templates.commands.ClimberHome;
 import edu.wpi.first.wpilibj.templates.commands.TilterStop;
 import edu.wpi.first.wpilibj.templates.commands.DumperBackward;
@@ -50,16 +51,17 @@ public class OI {
     
     public OI() {
         //these buttons are for the bumpers and they are the open loop commands for the dumper
-        operatorButtonLeftBumper.whenPressed(new DumperBackward());
-        operatorButtonLeftBumper.whenReleased(new DumperStop());
-        operatorButtonRightBumper.whenPressed(new DumperForward());
-        operatorButtonRightBumper.whenReleased(new DumperStop());
+        driverButtonLeftBumper.whenPressed(new DumperBackward());
+        driverButtonLeftBumper.whenReleased(new DumperStop());
+        driverButtonRightBumper.whenPressed(new DumperForward());
+        driverButtonRightBumper.whenReleased(new DumperStop());
         
         // Buttons to control the base talons.  Currently assigned to the
         // driver's bumpers.
-        driverButtonLeftBumper.whenPressed(new BaseTalonRelease());
-        driverButtonRightBumper.whenPressed(new BaseTalonHook());
-
+        
+        operatorButtonLeftBumper.whenPressed(new BaseTalonRelease());
+        operatorButtonRightBumper.whenPressed(new BaseTalonHook());
+//        operatorButtonA.whenPressed(new BaseTalonToggle());
         operatorButtonY.whenPressed(new HomeGroup());
         operatorButtonB.whenPressed(new ClimbLevelOne());
 //          operatorButtonX.whenPressed(new ClimbLevelTwo());

@@ -11,10 +11,16 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 
 /**
  *
- * @author tj2
+ * @author Ag Despopoulos
  */
 public class BaseTalon extends Subsystem {
+    // A note on the two solenoids~
+    // talonPistonReverse should always be set to the opposite setting of 
+    // talonPiston.  All values like HOOKED_POSITION, isHooked(), etc are based
+    // on the value of talonPiston, and you can assume talonPistonReverse is set
+    // to the opposite.
     private Solenoid talonPiston;
+    private Solenoid talonPistonReverse;
     
     // This value for HOOKED_POSITION is a theory based on what the piston looks
     // to be doing, but will need to be verified.
@@ -24,6 +30,7 @@ public class BaseTalon extends Subsystem {
     public BaseTalon() {
         // Initialize our solenoid and set it to a default position.
         talonPiston = new Solenoid(Wiring.talonSolenoid);
+        talonPistonReverse = new Solenoid(Wiring.talonSolenoidReverse);
         setReleased();
     }
     
@@ -36,7 +43,9 @@ public class BaseTalon extends Subsystem {
      * Changes the position of the talons to be the opposite of the current position.
      */
     public void toggleTalon() {
-        talonPiston.set(!getTalon());
+        boolean change = !getTalon();
+        talonPiston.set(change);
+        talonPistonReverse.set(!change);
     }
     
     /*
@@ -48,6 +57,7 @@ public class BaseTalon extends Subsystem {
      */
     private void setTalon(boolean on) {
         talonPiston.set(on);
+        talonPistonReverse.set(!on);
         SmartDashboard.putBoolean("Talon Position", getTalon());
     }
     
@@ -82,6 +92,8 @@ public class BaseTalon extends Subsystem {
      * Returns whether or not the talons are in the forward, hooked position.
      * This position is where the solenoid is set, and is not guaranteed to be
      * it's actual, physical location.
+     * 
+     * @return  Returns whether the talons are in the forward, hooked position.
      */
     public boolean isHooked() {
         return getTalon() == HOOKED_POSITION;
@@ -91,6 +103,8 @@ public class BaseTalon extends Subsystem {
      * Returns whether or not the talons are in the pulled back, released position.
      * This position is where the solenoid is set, and is not guaranteed to be
      * it's actual, physical location.
+     * 
+     * @return  Returns whether the talons are in the pulled back, released position.
      */
     public boolean isReleased() {
         return getTalon() == RELEASED_POSITION;

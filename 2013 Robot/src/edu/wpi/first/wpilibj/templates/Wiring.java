@@ -35,6 +35,7 @@ public class Wiring {
      * 
      */
     public static final int talonSolenoid = 1;
+    public static final int talonSolenoidReverse = 2;
     
     /*
      * ### Lights ###
