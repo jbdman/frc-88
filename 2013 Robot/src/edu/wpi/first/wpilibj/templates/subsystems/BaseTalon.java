@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 public class BaseTalon extends Subsystem {
     private Solenoid talonPiston;
     
-    // This value for HOOKED_POSITION is a guess, and will need to be verified.
-    public static boolean HOOKED_POSITION = false;
+    // This value for HOOKED_POSITION is a theory based on what the piston looks
+    // to be doing, but will need to be verified.
+    public static boolean HOOKED_POSITION = true;
     public static boolean RELEASED_POSITION = !HOOKED_POSITION;
-    private static boolean DEFAULT_POSITION = RELEASED_POSITION;
     
     public BaseTalon() {
         // Initialize our solenoid and set it to a default position.
@@ -37,7 +37,6 @@ public class BaseTalon extends Subsystem {
      */
     public void toggleTalon() {
         talonPiston.set(!getTalon());
-        SmartDashboard.putBoolean("Talon Position", getTalon());
     }
     
     /*
