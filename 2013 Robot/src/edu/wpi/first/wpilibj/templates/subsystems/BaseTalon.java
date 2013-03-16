@@ -4,6 +4,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,7 @@ public class BaseTalon extends Subsystem {
     // to the opposite.
     private Solenoid talonPiston;
     private Solenoid talonPistonReverse;
+    private Compressor compressor = null;
     
     // This value for HOOKED_POSITION is a theory based on what the piston looks
     // to be doing, but will need to be verified.
@@ -32,6 +34,11 @@ public class BaseTalon extends Subsystem {
         talonPiston = new Solenoid(Wiring.talonSolenoid);
         talonPistonReverse = new Solenoid(Wiring.talonSolenoidReverse);
         setReleased();
+
+        compressor = new Compressor(Wiring.compressorSwitchChannel, Wiring.compressorRelayChannel);
+        if(compressor != null) {
+            compressor.start();
+        }
     }
     
     public void initDefaultCommand() {
@@ -60,7 +67,7 @@ public class BaseTalon extends Subsystem {
         talonPistonReverse.set(!on);
         SmartDashboard.putBoolean("Talon Position", getTalon());
     }
-    
+
     /*
      * Sets the talons to be the in the forward, hooked position.
      */

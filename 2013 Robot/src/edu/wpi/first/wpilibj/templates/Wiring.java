@@ -36,7 +36,8 @@ public class Wiring {
      */
     public static final int talonSolenoid = 1;
     public static final int talonSolenoidReverse = 2;
-    
+    public static final int compressorSwitchChannel = 3;
+    public static final int compressorRelayChannel = 4;
     /*
      * ### Lights ###
      */
