@@ -23,7 +23,7 @@ public class Wiring {
     public static final int cameraServoRight = 2;
 
     // ### Digital Input/Outputs ###
-    public static final int dumperLimitSwitch = 1;
+    public static final int dumperLimitSwitch = 14;
     public static final int rangeFinderPing = 2;
     public static final int rangeFinderEcho = 3;
     
@@ -36,8 +36,9 @@ public class Wiring {
      */
     public static final int talonSolenoid = 1;
     public static final int talonSolenoidReverse = 2;
-    public static final int compressorSwitchChannel = 3;
-    public static final int compressorRelayChannel = 4;
+    public static final int compressorSpike = 1;
+    public static final int pressureSwitch = 1;
+    
     /*
      * ### Lights ###
      */

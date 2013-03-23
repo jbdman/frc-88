@@ -62,7 +62,7 @@ public class OI {
         operatorButtonLeftBumper.whenPressed(new BaseTalonRelease());
         operatorButtonRightBumper.whenPressed(new BaseTalonHook());
 //        operatorButtonA.whenPressed(new BaseTalonToggle());
-        operatorButtonY.whenPressed(new HomeGroup());
+//        operatorButtonY.whenPressed(new HomeGroup());
         operatorButtonB.whenPressed(new ClimbLevelOne());
 //          operatorButtonX.whenPressed(new ClimbLevelTwo());
     }

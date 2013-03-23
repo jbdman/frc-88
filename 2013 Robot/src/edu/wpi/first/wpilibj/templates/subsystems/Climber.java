@@ -49,6 +49,7 @@ public class Climber extends Subsystem {
             System.out.println("*** Climber CAN Error ***");
         }
         
+        calibrateEncoder();
     }
     
     public void initDefaultCommand() {
@@ -144,17 +145,20 @@ public class Climber extends Subsystem {
      * @return  True if the Climber has tripped the sensor indicating full up position.
      */
     public boolean lowerLimitTripped() {
-        try {
-            /**
-             * The sensor is wired to the forward limit switch of the Jaguar
-             * The getForwardLimitOK() method returns false when the switch is tripped
-            **/
-            return !ClimbJag.getForwardLimitOK();
-        } catch(CANTimeoutException ex) {
-            m_fault = true;
-            System.err.println("****************CAN timeout***********");
-            return true;
+        boolean flag = true;
+        if(ClimbJag != null) {
+            try {
+                /**
+                 * The sensor is wired to the forward limit switch of the Jaguar
+                 * The getForwardLimitOK() method returns false when the switch is tripped
+                **/
+                flag = !ClimbJag.getForwardLimitOK();
+           } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
         }
+        return flag;
     }
 
     /**
@@ -165,17 +169,20 @@ public class Climber extends Subsystem {
      * @return  True if the Climber has tripped the sensor indicating full down position.
      */
     public boolean upperLimitTripped() {
-        try {
-            /**
-             * The sensor is wired to the reverse limit switch of the Jaguar
-             * The getReverseLimitOK() method returns false when the switch is tripped
-            **/
-            return !ClimbJag.getReverseLimitOK();
-        } catch(CANTimeoutException ex) {
-            m_fault = true;
-            System.err.println("****************CAN timeout***********");
-            return true;
+        boolean flag = true;
+        if(ClimbJag != null) {
+            try {
+                /**
+                 * The sensor is wired to the reverse limit switch of the Jaguar
+                 * The getReverseLimitOK() method returns false when the switch is tripped
+                 **/
+                flag = !ClimbJag.getReverseLimitOK();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+            }
         }
+        return flag;
     }
     
 
@@ -232,14 +239,16 @@ public class Climber extends Subsystem {
   
   private double getRevolution() {
       double revolution = 0.0;
-      try {
-        //the formula below will probably be subject to change
-        //also play with stuff under to see if it needs to be inverted
-                revolution = ClimbJag.getPosition();
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
+      if(ClimbJag != null) {
+          try {
+              //the formula below will probably be subject to change
+              //also play with stuff under to see if it needs to be inverted
+              revolution = ClimbJag.getPosition();
+          } catch(CANTimeoutException ex) {
+              m_fault = true;
+              System.err.println("****************CAN timeout***********");
+          }
+      }
       return revolution;
   }
      

@@ -25,8 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Dumper extends Subsystem {
     CANJaguar DumperJag = null;
     private boolean m_fault = false;
-    private static final double defaultBackwardSpeed= -0.5;
-    private static final double defaultForwardSpeed = 0.5;
+    private static final double defaultBackwardSpeed= 0.5;
+    private static final double defaultForwardSpeed = -0.5;
     private DigitalInput m_limitSwitch;
     private static final int linesPerRotation = 100;
     private static final double lowerScorePosition = -3;
@@ -65,6 +65,7 @@ public class Dumper extends Subsystem {
             try {
                 DumperJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
                 DumperJag.configEncoderCodesPerRev(linesPerRotation);
+                DumperJag.configNeutralMode(CANJaguar.NeutralMode.kBrake);
             }
             catch (CANTimeoutException ex) {
                 m_fault = true;
@@ -78,12 +79,14 @@ public class Dumper extends Subsystem {
      */
     public double getCurrent() {
         double current = 999.9;
-        try{
-        current = DumperJag.getOutputCurrent();
-        }
-        catch (CANTimeoutException ex) {
-        m_fault = true;
-        System.out.println("CAN timeout");
+        if (DumperJag != null) {
+            try {
+                current = DumperJag.getOutputCurrent();
+            }
+            catch (CANTimeoutException ex) {
+                m_fault = true;
+                System.out.println("CAN timeout");
+            }
         }
         return current;
     }  
@@ -216,16 +219,18 @@ public class Dumper extends Subsystem {
      */
     
     public double getPosition() {
-      double position = 0.0;
-      try {
-        //the formula below will probably be subject to change
-        //also play with stuff under to see if it needs to be inverted
-                position = DumperJag.getPosition();
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-      return position;
+    double position = 0.0;
+    if (DumperJag != null) {
+        try {
+            //the formula below will probably be subject to change
+            //also play with stuff under to see if it needs to be inverted
+            position = DumperJag.getPosition();
+        } catch(CANTimeoutException ex) {
+            m_fault = true;
+            System.err.println("****************CAN timeout***********");
+        }
+    }
+    return position;
   }
 
     /**

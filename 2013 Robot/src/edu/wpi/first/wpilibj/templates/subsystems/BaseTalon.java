@@ -33,9 +33,10 @@ public class BaseTalon extends Subsystem {
         // Initialize our solenoid and set it to a default position.
         talonPiston = new Solenoid(Wiring.talonSolenoid);
         talonPistonReverse = new Solenoid(Wiring.talonSolenoidReverse);
+        compressor = new Compressor(Wiring.pressureSwitch, Wiring.compressorSpike);
         setReleased();
 
-        compressor = new Compressor(Wiring.compressorSwitchChannel, Wiring.compressorRelayChannel);
+        compressor = new Compressor(Wiring.pressureSwitch, Wiring.compressorSpike);
         if(compressor != null) {
             compressor.start();
         }

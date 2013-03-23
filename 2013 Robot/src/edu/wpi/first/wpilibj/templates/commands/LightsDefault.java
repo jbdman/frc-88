@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  * @author Ag
  */
 public class LightsDefault extends CommandBase {
+    private boolean triggerWasHeld = false;
     
     public LightsDefault() {
         // Use requires() here to declare subsystem dependencies
@@ -35,11 +36,23 @@ public class LightsDefault extends CommandBase {
             }
         } else if (DriverStation.getInstance().isOperatorControl()) {
             // We're in teleop
-            // Need to set getting values for the analog input from drive motors
             lights.setMode(lights.MODE_DRIVE_FILL);
-            // Should do something better than the "80.0" magic number
-            lights.setAnalog(lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/80.0);
-            lights.setAnalog(lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/80.0);
+            if (Math.abs(oi.getOperatorTrigger()) > 0.5 && !triggerWasHeld) {
+                triggerWasHeld = true;
+                // Toggle the blinky mode
+                if (lights.getMode() == lights.MODE_BLINKY) {
+                    lights.setMode(lights.MODE_DRIVE_FILL);
+                } else {
+                    lights.setMode(lights.MODE_BLINKY);
+                }
+            } else if (!(Math.abs(oi.getOperatorTrigger()) < 0.5)) {
+                triggerWasHeld = false;
+            }
+            if (lights.getMode() == lights.MODE_DRIVE_FILL) {
+                // Should do something better than the "80.0" magic number
+                lights.setAnalog(lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/80.0);
+                lights.setAnalog(lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/80.0);
+            }
         } else if (DriverStation.getInstance().isDisabled()) {
             // We're disabled.  This should trigger at the end of the match.
             lights.setMode(lights.MODE_FLASH_GREEN);

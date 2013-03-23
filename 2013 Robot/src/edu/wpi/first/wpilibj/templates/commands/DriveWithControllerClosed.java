@@ -17,8 +17,11 @@ public class DriveWithControllerClosed extends CommandBase {
     
 //    private static final double BRAKE_THRESH = 0.5;
     private static final double MAX_SPEED = 80.0;
-//    private static final double RAMP_RATE = 10.0;
+    private static final double CLOSED_LOOP_RAMPRATE = 10.0;
 
+    // used for ramp rate limit
+    private double m_lastLeft = 0.0;
+    private double m_lastRight = 0.0;
     private boolean m_brake = false;
     
 //    private double last_left = 0.0;
@@ -67,21 +70,20 @@ public class DriveWithControllerClosed extends CommandBase {
 
         // limit the change in setpoint between calls
         // this is not a true ramp rate since we don't correct for the rate of update
-        // it should also be implemented in the subsystem
-//        if(left - last_left > RAMP_RATE) {
-//            left = last_left + RAMP_RATE;
-//        } else if(left - last_left < -RAMP_RATE) {
-//            left = last_left - RAMP_RATE;
-//        }
-//        if(right - last_right > RAMP_RATE) {
-//            right = last_right + RAMP_RATE;
-//        } else if(right - last_right < -RAMP_RATE) {
-//            right = last_right - RAMP_RATE;
-//        }
+        if(left - m_lastLeft > CLOSED_LOOP_RAMPRATE) {
+            left = m_lastLeft + CLOSED_LOOP_RAMPRATE;
+        } else if(left - m_lastLeft < -CLOSED_LOOP_RAMPRATE) {
+            left = m_lastLeft - CLOSED_LOOP_RAMPRATE;
+        }
+        if(right - m_lastRight > CLOSED_LOOP_RAMPRATE) {
+            right = m_lastRight + CLOSED_LOOP_RAMPRATE;
+        } else if(right - m_lastRight < -CLOSED_LOOP_RAMPRATE) {
+            right = m_lastRight - CLOSED_LOOP_RAMPRATE;
+        }
 
         drive.driveTankClosedLoop(left, right);
-//        last_left = left;
-//        last_right = right;
+        m_lastLeft = left;
+        m_lastRight = right;
         
     }
 

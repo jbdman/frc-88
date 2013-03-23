@@ -19,18 +19,11 @@ public class Autonomous extends CommandGroup {
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.        
-//        addParallel(new HomeGroup());
-//        addSequential(new DriveClosed(-10.0, -12.0, 0.5, 40.0));
-//        addSequential(new DriveClosed(-40.0, -40.0, 2.0, 40.0));
-//        addSequential(new DumperBackward());
-//        addSequential(new DriveClosed(-10.0, -10.0, 1.5, 20.0));
-//        addSequential(new WaitCommand(1.0));
-//        addSequential(new DriveClosed(10.0, 20.0, 1.0, 20.0));
-//        addSequential(new DriveClosed(50.0, 50.0, 2.0, 100.0));
 //    
-          addSequential(new DriveClosed(-10.0, -10.0, 0.5, 5000.0));
-          addSequential(new DriveClosed(-20.0, -35.0, 3.0, 60.0));
-          addSequential(new DriveClosed(-30.0, -30.0, 3.0, 50.0));
+         addSequential(new DriveClosed(-15.0, -15.0, 2, 30.0));
+//        addSequential(new DriveClosed(-20.0, -35.0, 3.0, 60.0));
+//        addSequential(new DriveClosed(-30.0, -30.0, 3.0, 50.0));
+//          addSequential(new TilterPosition(0.5, 2));
           
  
         // To run multiple commands at the same time,

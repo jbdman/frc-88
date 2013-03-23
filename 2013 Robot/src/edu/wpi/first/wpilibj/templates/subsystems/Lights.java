@@ -79,6 +79,10 @@ public class Lights extends Subsystem {
         updateOutput();
     }
     
+    public int getMode() {
+        return activeMode;
+    }
+    
     public void setAnalog(int channel, double value) {
         // Value should never go out of the range of 0.0 and 1.0, so we limit it
         //value = Math.abs(value);

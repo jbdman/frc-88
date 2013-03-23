@@ -62,6 +62,7 @@ public class TilterPosition extends CommandBase {
 
         boolean done = isTimedOut();
         
+        // HEY SHOULD THIS BE TILTER INSTEAD OF CLIMBER?
         if (Math.abs(climber.getPosition()) < m_epsilon) {
             m_count ++;
         } else {

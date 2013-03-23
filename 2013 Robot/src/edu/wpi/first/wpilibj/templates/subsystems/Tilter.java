@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.templates.commands.TilterJoystick;
  *
  * @author David + Ag
  */
-//must wait until there is a more definitive idea ie. must be built or described better - David
 public class Tilter extends Subsystem {
     CANJaguar TilterJag = null;
     
@@ -54,11 +53,13 @@ public class Tilter extends Subsystem {
             TilterJag.setVoltageRampRate(20.0);      
         } catch (CANTimeoutException ex) {
             m_fault = true;
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter Init " + ex.getMessage());
+            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter Init " + ex.toString());
         }
         // Calculate the values used in the angle-to-distance conversion
         angleAddition = (dimensionA * dimensionA) + (dimensionB * dimensionB);
         angleMultiplier = 2 * dimensionA * dimensionB;
+        
+        calibrateEncoder();
     }
     
     public void initDefaultCommand() {
@@ -95,13 +96,15 @@ public class Tilter extends Subsystem {
     public void calibrateEncoder() {
         m_calibrated = true;
         encoderHome = getRevolution();
-        try {
-            TilterJag.configSoftPositionLimits(encoderHome - 1, encoderHome + FORWARD_SOFT_LIMIT_INCHES / INCHES_PER_REV);
-        }
-        catch (CANTimeoutException ex) {
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter softLimit " + ex.getMessage());
-            m_fault = true;
-        }
+//        if (TilterJag != null) {
+//            try {
+//                TilterJag.configSoftPositionLimits(encoderHome - 1, encoderHome + FORWARD_SOFT_LIMIT_INCHES / INCHES_PER_REV);
+//            }
+//            catch (CANTimeoutException ex) {
+//                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter softLimit " + ex.toString());
+//                m_fault = true;
+//            }
+//        }
     }
     
       /**
@@ -126,7 +129,7 @@ public class Tilter extends Subsystem {
                 m_closedLoop = true;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
-                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter enableClosedLoop " + ex.getMessage());
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter enableClosedLoop " + ex.toString());
             }
         }
     }
@@ -134,14 +137,16 @@ public class Tilter extends Subsystem {
      * Disables closed loop control on the Tilter and enables open loop control of the Tilter.
      */
     public void disableClosedLoop(){
-        try{
-            TilterJag.disableControl();
-            TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-            m_closedLoop = false;
-        }
-        catch (CANTimeoutException ex){
-            m_fault = true;
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter disableClosedLoop " + ex.getMessage());
+        if (TilterJag != null) {
+            try{
+                TilterJag.disableControl();
+                TilterJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                m_closedLoop = false;
+            }
+            catch (CANTimeoutException ex){
+                m_fault = true;
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter disableClosedLoop " + ex.toString());
+            }
         }
     }
     /**
@@ -160,11 +165,13 @@ public class Tilter extends Subsystem {
      */
     public boolean LimitTripped() {
         boolean tripped = true;
-        try {
-            tripped = !TilterJag.getReverseLimitOK();
-        } catch(CANTimeoutException ex) {
-            m_fault = true;
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.getMessage());
+        if (TilterJag != null) {
+            try {
+                tripped = !TilterJag.getReverseLimitOK();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.toString());
+            }
         }
         return tripped;
     }
@@ -173,22 +180,23 @@ public class Tilter extends Subsystem {
         boolean bool;
         short num;
         double value;
-        try {
-            bool = TilterJag.getForwardLimitOK();
-            SmartDashboard.putBoolean("T-forwardLimit ", bool);
-            bool = TilterJag.getReverseLimitOK();
-            SmartDashboard.putBoolean("T-backwardLimit ", bool);
-            value = TilterJag.getOutputCurrent();
-            SmartDashboard.putNumber("T-current ", value);
-            value = TilterJag.getOutputVoltage();
-            SmartDashboard.putNumber("T-voltage ", value);
-            num = TilterJag.getFaults();
-            SmartDashboard.putNumber("T-faults ", num);
-        } catch(CANTimeoutException ex) {
-            m_fault = true;
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.getMessage());
+        if (TilterJag != null) {
+            try {
+                bool = TilterJag.getForwardLimitOK();
+                SmartDashboard.putBoolean("T-forwardLimit ", bool);
+                bool = TilterJag.getReverseLimitOK();
+                SmartDashboard.putBoolean("T-backwardLimit ", bool);
+                value = TilterJag.getOutputCurrent();
+                SmartDashboard.putNumber("T-current ", value);
+                value = TilterJag.getOutputVoltage();
+                SmartDashboard.putNumber("T-voltage ", value);
+                num = TilterJag.getFaults();
+                SmartDashboard.putNumber("T-faults ", num);
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter limitSwitch " + ex.toString());
+            }
         }
-        
     }
     
     /**
@@ -205,7 +213,7 @@ public class Tilter extends Subsystem {
                 TilterJag.setX(power * tiltMaxSpeed);
             } catch(CANTimeoutException ex) {
                 m_fault = true;
-                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter openLoop set " + ex.getMessage());
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter openLoop set " + ex.toString());
             }
         }
         
@@ -228,7 +236,7 @@ public class Tilter extends Subsystem {
                 // Need to determine encoder codes per rev
             } catch(CANTimeoutException ex) {
                 m_fault = true;
-                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter closedLoop set " + ex.getMessage());
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter closedLoop set " + ex.toString());
             }
         }
     }
@@ -255,13 +263,15 @@ public class Tilter extends Subsystem {
     
     private double getRevolution() {
         double revolution = 0.0;
-        try {
-            revolution = TilterJag.getPosition();
-        } catch(CANTimeoutException ex) {
-            m_fault = true;
-            CommandBase.reportCANError(Wiring.tilterCANID, "Tilter getPosition " + ex.getMessage());
+        if (TilterJag != null) {
+            try {
+                revolution = TilterJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                CommandBase.reportCANError(Wiring.tilterCANID, "Tilter getPosition " + ex.toString());
+            }
         }
-      return revolution;
+        return revolution;
     }
         
     public double getAngle() {
